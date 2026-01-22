@@ -4,9 +4,11 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageWrapper } from "@/components/page-wrapper";
 
 export default function Home() {
   return (
+    <PageWrapper>
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header />
 
@@ -565,5 +567,6 @@ export default function Home() {
 
       <Footer />
     </div>
+    </PageWrapper>
   );
 }
