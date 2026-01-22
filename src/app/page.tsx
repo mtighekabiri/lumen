@@ -5,6 +5,8 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageWrapper } from "@/components/page-wrapper";
+import { RotatingText } from "@/components/rotating-text";
+import { BrandCarousel } from "@/components/brand-carousel";
 
 export default function Home() {
   return (
@@ -21,11 +23,10 @@ export default function Home() {
               The Attention Technology Company
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-              Where <span className="text-[#01b3d4]">attention</span> turns into <span className="text-[#01b3d4]">action</span>.
+              Turn Attention into <RotatingText />
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Since 2013, Lumen has been pioneering attention measurement with predictive eye-tracking technology.
-              We help brands understand what people actually see, not just what they could see.
+              We help data-driven advertisers to minimise ad waste and maximise return.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
               <Link href="#contact">
@@ -40,6 +41,9 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
+
+            {/* Brand Logo Carousel */}
+            <BrandCarousel brands={[]} />
           </div>
 
           {/* Hero Image/Graphic */}
