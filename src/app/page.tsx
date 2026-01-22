@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, BarChart3, Target, Zap, LineChart, Shield, Globe, ArrowRight, Check } from "lucide-react";
+import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, Phone } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -14,22 +14,22 @@ export default function Home() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <div className="inline-flex items-center rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 mb-8">
+            <div className="inline-flex items-center rounded-full bg-[#01b3d4]/10 px-4 py-2 text-sm font-medium text-[#01b3d4] mb-8">
               <Eye className="h-4 w-4 mr-2" />
               Attention-First Advertising Platform
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Know When Your Ads Are{" "}
-              <span className="text-blue-600">Actually Seen</span>
+              <span className="text-[#01b3d4]">Actually Seen</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
               Lumen&apos;s predictive eye-tracking technology measures real attention across all your advertising channels.
               Stop guessing, start knowing what works.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
-              <Link href="/signup">
+              <Link href="#contact">
                 <Button size="lg">
-                  Start Free Trial
+                  Get In Touch
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -41,9 +41,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Hero Image/Graphic Placeholder */}
+          {/* Hero Image/Graphic */}
           <div className="mt-16 relative">
-            <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-100 p-8 shadow-xl">
+            <div className="rounded-2xl bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/20 p-8 shadow-xl">
               <div className="bg-white rounded-xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-semibold text-gray-900">Campaign Attention Overview</h3>
@@ -51,7 +51,7 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <p className="text-3xl font-bold text-blue-600">2.4s</p>
+                    <p className="text-3xl font-bold text-[#01b3d4]">2.4s</p>
                     <p className="text-sm text-gray-600 mt-1">Avg. View Time</p>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -59,7 +59,7 @@ export default function Home() {
                     <p className="text-sm text-gray-600 mt-1">Attention Rate</p>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <p className="text-3xl font-bold text-purple-600">1.2M</p>
+                    <p className="text-3xl font-bold text-[#01b3d4]">1.2M</p>
                     <p className="text-sm text-gray-600 mt-1">Impressions</p>
                   </div>
                 </div>
@@ -84,8 +84,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                  <Eye className="h-6 w-6 text-blue-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <Eye className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>Predictive Eye-Tracking</CardTitle>
                 <CardDescription>
@@ -96,8 +96,8 @@ export default function Home() {
 
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-green-100 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-6 w-6 text-green-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <BarChart3 className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>Unified Dashboard</CardTitle>
                 <CardDescription>
@@ -108,8 +108,8 @@ export default function Home() {
 
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center mb-4">
-                  <Target className="h-6 w-6 text-purple-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <Target className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>Creative Optimization</CardTitle>
                 <CardDescription>
@@ -120,8 +120,8 @@ export default function Home() {
 
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-orange-100 flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-orange-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <Zap className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>Real-Time Analytics</CardTitle>
                 <CardDescription>
@@ -132,8 +132,8 @@ export default function Home() {
 
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-red-100 flex items-center justify-center mb-4">
-                  <LineChart className="h-6 w-6 text-red-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <LineChart className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>ROI Attribution</CardTitle>
                 <CardDescription>
@@ -144,8 +144,8 @@ export default function Home() {
 
             <Card>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-teal-100 flex items-center justify-center mb-4">
-                  <Globe className="h-6 w-6 text-teal-600" />
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
+                  <Globe className="h-6 w-6 text-[#01b3d4]" />
                 </div>
                 <CardTitle>Global Benchmarks</CardTitle>
                 <CardDescription>
@@ -171,7 +171,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="mx-auto h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold mb-6">
+              <div className="mx-auto h-16 w-16 rounded-full bg-[#01b3d4] flex items-center justify-center text-white text-2xl font-bold mb-6">
                 1
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Upload Your Creative</h3>
@@ -181,7 +181,7 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="mx-auto h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold mb-6">
+              <div className="mx-auto h-16 w-16 rounded-full bg-[#01b3d4] flex items-center justify-center text-white text-2xl font-bold mb-6">
                 2
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Measure Attention</h3>
@@ -191,7 +191,7 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="mx-auto h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold mb-6">
+              <div className="mx-auto h-16 w-16 rounded-full bg-[#01b3d4] flex items-center justify-center text-white text-2xl font-bold mb-6">
                 3
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Optimize & Scale</h3>
@@ -203,133 +203,120 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      {/* Solutions Section */}
+      <section id="solutions" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Simple, Transparent Pricing
+              Solutions for Every Channel
             </h2>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Choose the plan that fits your needs. All plans include a 14-day free trial.
+              Measure attention across all your advertising investments in one unified platform.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Starter Plan */}
-            <Card className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="p-6">
               <CardHeader>
-                <CardTitle>Starter</CardTitle>
-                <CardDescription>For small teams getting started with attention measurement</CardDescription>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold text-gray-900">$299</span>
-                  <span className="text-gray-600">/month</span>
-                </div>
+                <CardTitle className="text-xl">Digital Advertising</CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Measure attention for display, video, social, and native ads. Understand which placements
+                  and creatives capture the most attention and drive results.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Up to 50 campaigns</span>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Display & banner ads
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Basic attention metrics</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Video pre-roll & mid-roll
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Email support</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">3 team members</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Social media ads
                   </li>
                 </ul>
-                <Link href="/signup" className="block mt-6">
-                  <Button variant="outline" className="w-full">Get Started</Button>
-                </Link>
               </CardContent>
             </Card>
 
-            {/* Professional Plan */}
-            <Card className="relative border-blue-600 border-2">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                  Most Popular
-                </span>
-              </div>
+            <Card className="p-6">
               <CardHeader>
-                <CardTitle>Professional</CardTitle>
-                <CardDescription>For growing teams that need advanced insights</CardDescription>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold text-gray-900">$799</span>
-                  <span className="text-gray-600">/month</span>
-                </div>
+                <CardTitle className="text-xl">TV & Connected TV</CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Bring attention measurement to the big screen. Compare performance across linear TV
+                  and streaming platforms.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Unlimited campaigns</span>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Linear TV commercials
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Advanced attention analytics</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Streaming & CTV ads
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Priority support</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">10 team members</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">API access</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Cross-platform comparison
                   </li>
                 </ul>
-                <Link href="/signup" className="block mt-6">
-                  <Button className="w-full">Get Started</Button>
-                </Link>
               </CardContent>
             </Card>
 
-            {/* Enterprise Plan */}
-            <Card className="relative">
+            <Card className="p-6">
               <CardHeader>
-                <CardTitle>Enterprise</CardTitle>
-                <CardDescription>For large organizations with custom needs</CardDescription>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold text-gray-900">Custom</span>
-                </div>
+                <CardTitle className="text-xl">Out-of-Home</CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Measure attention for billboards, transit ads, and digital out-of-home placements
+                  to optimize your OOH investments.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Everything in Professional</span>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Billboards & posters
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Custom integrations</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Transit advertising
                   </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Dedicated account manager</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">Unlimited team members</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-gray-600">SLA guarantee</span>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Digital OOH screens
                   </li>
                 </ul>
-                <Link href="#contact" className="block mt-6">
-                  <Button variant="outline" className="w-full">Contact Sales</Button>
-                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6">
+              <CardHeader>
+                <CardTitle className="text-xl">Print & Packaging</CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Understand how consumers engage with print media and packaging designs to
+                  optimize shelf impact and ad placement.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Magazine & newspaper ads
+                  </li>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Product packaging
+                  </li>
+                  <li className="flex items-center text-gray-600">
+                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
+                    Point-of-sale materials
+                  </li>
+                </ul>
               </CardContent>
             </Card>
           </div>
@@ -343,6 +330,9 @@ export default function Home() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Trusted by Leading Brands
             </h2>
+            <p className="mt-4 text-lg text-gray-600">
+              Join hundreds of companies using Lumen to optimize their advertising attention.
+            </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-60">
             <div className="h-12 w-32 bg-gray-200 rounded flex items-center justify-center text-gray-500 font-semibold">Brand 1</div>
@@ -354,27 +344,87 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-600">
-        <div className="mx-auto max-w-7xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Ready to Transform Your Advertising?
-          </h2>
-          <p className="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">
-            Join hundreds of brands using Lumen to understand and optimize attention.
-            Start your free trial today.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-4">
-            <Link href="/signup">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="mailto:sales@lumen-research.com">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-blue-700">
-                Contact Sales
-              </Button>
-            </Link>
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#01b3d4]">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Ready to Transform Your Advertising?
+              </h2>
+              <p className="mt-4 text-lg text-white/90">
+                Get in touch with our team to learn how Lumen can help you measure and optimize
+                attention across all your advertising channels.
+              </p>
+              <div className="mt-8 space-y-4">
+                <a
+                  href="mailto:info@lumen-research.com"
+                  className="flex items-center text-white hover:text-white/80 transition-colors"
+                >
+                  <Mail className="h-6 w-6 mr-3" />
+                  <span className="text-lg">info@lumen-research.com</span>
+                </a>
+                <a
+                  href="tel:+441onal234567890"
+                  className="flex items-center text-white hover:text-white/80 transition-colors"
+                >
+                  <Phone className="h-6 w-6 mr-3" />
+                  <span className="text-lg">+44 (0) 20 1234 5678</span>
+                </a>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-xl">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">Send us a message</h3>
+              <form className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
+                    placeholder="you@company.com"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+                    Company
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
+                    placeholder="Your company"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none resize-none"
+                    placeholder="Tell us about your advertising measurement needs..."
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Send Message
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       </section>

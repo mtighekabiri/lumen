@@ -15,34 +15,31 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Eye className="h-8 w-8 text-blue-600" />
+              <Eye className="h-8 w-8 text-[#01b3d4]" />
               <span className="text-xl font-bold text-gray-900">Lumen</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            <Link href="#features" className="text-sm font-medium text-gray-600 hover:text-gray-900">
+            <Link href="#features" className="text-sm font-medium text-gray-600 hover:text-[#01b3d4] transition-colors">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-gray-900">
+            <Link href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-[#01b3d4] transition-colors">
               How It Works
             </Link>
-            <Link href="#pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-              Pricing
+            <Link href="#solutions" className="text-sm font-medium text-gray-600 hover:text-[#01b3d4] transition-colors">
+              Solutions
             </Link>
-            <Link href="#contact" className="text-sm font-medium text-gray-600 hover:text-gray-900">
+            <Link href="#contact" className="text-sm font-medium text-gray-600 hover:text-[#01b3d4] transition-colors">
               Contact
             </Link>
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            <Link href="/login">
-              <Button variant="ghost">Log in</Button>
-            </Link>
-            <Link href="/signup">
-              <Button>Get Started</Button>
+          <div className="hidden md:flex md:items-center">
+            <Link href="#contact">
+              <Button>Get In Touch</Button>
             </Link>
           </div>
 
@@ -67,38 +64,35 @@ export function Header() {
           <div className="md:hidden py-4 space-y-4">
             <Link
               href="#features"
-              className="block text-sm font-medium text-gray-600 hover:text-gray-900"
+              className="block text-sm font-medium text-gray-600 hover:text-[#01b3d4]"
               onClick={() => setMobileMenuOpen(false)}
             >
               Features
             </Link>
             <Link
               href="#how-it-works"
-              className="block text-sm font-medium text-gray-600 hover:text-gray-900"
+              className="block text-sm font-medium text-gray-600 hover:text-[#01b3d4]"
               onClick={() => setMobileMenuOpen(false)}
             >
               How It Works
             </Link>
             <Link
-              href="#pricing"
-              className="block text-sm font-medium text-gray-600 hover:text-gray-900"
+              href="#solutions"
+              className="block text-sm font-medium text-gray-600 hover:text-[#01b3d4]"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Pricing
+              Solutions
             </Link>
             <Link
               href="#contact"
-              className="block text-sm font-medium text-gray-600 hover:text-gray-900"
+              className="block text-sm font-medium text-gray-600 hover:text-[#01b3d4]"
               onClick={() => setMobileMenuOpen(false)}
             >
               Contact
             </Link>
-            <div className="flex flex-col space-y-2 pt-4 border-t border-gray-100">
-              <Link href="/login">
-                <Button variant="outline" className="w-full">Log in</Button>
-              </Link>
-              <Link href="/signup">
-                <Button className="w-full">Get Started</Button>
+            <div className="pt-4 border-t border-gray-100">
+              <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full">Get In Touch</Button>
               </Link>
             </div>
           </div>
