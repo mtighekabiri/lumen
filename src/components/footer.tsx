@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Eye, Mail, Phone } from "lucide-react";
+import Image from "next/image";
+import { Mail, Phone } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,9 +9,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center space-x-2">
-              <Eye className="h-8 w-8 text-[#01b3d4]" />
-              <span className="text-xl font-bold">Lumen</span>
+            <Link href="/" className="inline-block">
+              <Image
+                src="/logo.png"
+                alt="Lumen"
+                width={120}
+                height={40}
+                className="h-8 w-auto brightness-110"
+              />
             </Link>
             <p className="mt-4 text-gray-400 max-w-md">
               Powering attention-first advertising with predictive eye-tracking technology.
@@ -34,23 +40,33 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* Navigation */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider">Product</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider">Navigation</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="#features" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="#how-it-works" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
-                  How It Works
+                <Link href="#about" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  About
                 </Link>
               </li>
               <li>
                 <Link href="#solutions" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="#news" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  News
+                </Link>
+              </li>
+              <li>
+                <Link href="#learn" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  Learn
+                </Link>
+              </li>
+              <li>
+                <Link href="#faqs" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  FAQs
                 </Link>
               </li>
               <li>
@@ -65,11 +81,6 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider">Company</h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
-                  About Us
-                </Link>
-              </li>
               <li>
                 <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Careers
