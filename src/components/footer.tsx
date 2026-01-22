@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone } from "lucide-react";
+import { Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -19,23 +19,16 @@ export function Footer() {
               />
             </Link>
             <p className="mt-4 text-gray-400 max-w-md">
-              Powering attention-first advertising with predictive eye-tracking technology.
-              Understand what captures attention and optimize your campaigns for maximum impact.
+              The Attention Technology Company. Since 2013, we&apos;ve been powering attention-first advertising
+              with predictive eye-tracking technology.
             </p>
-            <div className="mt-6 space-y-2">
+            <div className="mt-6">
               <a
-                href="mailto:info@lumen-research.com"
+                href="mailto:hello@lumen-research.com"
                 className="flex items-center text-gray-400 hover:text-[#01b3d4] transition-colors"
               >
                 <Mail className="h-4 w-4 mr-2" />
-                info@lumen-research.com
-              </a>
-              <a
-                href="tel:+442012345678"
-                className="flex items-center text-gray-400 hover:text-[#01b3d4] transition-colors"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                +44 (0) 20 1234 5678
+                hello@lumen-research.com
               </a>
             </div>
           </div>

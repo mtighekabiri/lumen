@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, Phone, ChevronDown, BookOpen, Newspaper, HelpCircle } from "lucide-react";
+import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Newspaper, Heart, Lightbulb, Shield } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageWrapper } from "@/components/page-wrapper";
+import { RotatingText } from "@/components/rotating-text";
+import { BrandCarousel } from "@/components/brand-carousel";
 
 export default function Home() {
   return (
@@ -18,14 +20,13 @@ export default function Home() {
           <div className="text-center">
             <div className="inline-flex items-center rounded-full bg-[#01b3d4]/10 px-4 py-2 text-sm font-medium text-[#01b3d4] mb-8">
               <Eye className="h-4 w-4 mr-2" />
-              Attention-First Advertising Platform
+              The Attention Technology Company
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-              Where <span className="text-[#01b3d4]">attention</span> turns into <span className="text-[#01b3d4]">action</span>.
+              Turn Attention into <RotatingText />
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Lumen&apos;s predictive eye-tracking technology measures real attention across all your advertising channels.
-              Stop guessing, start knowing what works.
+              We help data-driven advertisers to minimise ad waste and maximise return.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
               <Link href="#contact">
@@ -40,6 +41,9 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
+
+            {/* Brand Logo Carousel */}
+            <BrandCarousel brands={[]} />
           </div>
 
           {/* Hero Image/Graphic */}
@@ -79,62 +83,66 @@ export default function Home() {
                 About Lumen Research
               </h2>
               <p className="mt-6 text-lg text-gray-600 dark:text-gray-300">
-                Lumen Research is powering what we call &quot;attention-first advertising&quot;, driven by our predictive eye-tracking technology.
+                Founded in 2013, Lumen Research is The Attention Technology Company. We power attention-first advertising through our proprietary predictive eye-tracking technology.
               </p>
               <p className="mt-4 text-gray-600 dark:text-gray-300">
-                Our attention measurement and planning platform enables you to measure attention across all online and offline environments in a single dashboard. Compare your advertising investments to find out what works, what doesn&apos;t, and where you should spend future budget.
+                Our LAMP (Lumen Attention Measurement &amp; Planning) platform enables you to measure attention across all online and offline environments in a single dashboard. Compare your advertising investments to find out what works, what doesn&apos;t, and where you should spend future budget.
               </p>
               <p className="mt-4 text-gray-600 dark:text-gray-300">
-                By actually knowing when an ad is seen and for how long, Lumen&apos;s clients create more effective and robust advertising campaigns. As a powerful revenue-driver, the value of such an offering is clear.
+                With Attention Bidding, you can buy media based on predicted attention rather than just viewability. By actually knowing when an ad is seen and for how long, Lumen&apos;s clients create more effective and robust advertising campaigns.
               </p>
               <div className="mt-8 grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">500+</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Clients Worldwide</p>
+                  <p className="text-3xl font-bold text-[#01b3d4]">650K+</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Eye-Tracking Sessions</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">10B+</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Impressions Measured</p>
+                  <p className="text-3xl font-bold text-[#01b3d4]">30B+</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Programmatic Impressions</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">50+</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Countries</p>
+                  <p className="text-3xl font-bold text-[#01b3d4]">2013</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Founded</p>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="dark:bg-gray-900">
-                <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                    <Eye className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <CardTitle className="text-lg">Predictive Eye-Tracking</CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="dark:bg-gray-900">
-                <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                    <BarChart3 className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <CardTitle className="text-lg">Unified Analytics</CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="dark:bg-gray-900">
-                <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                    <Target className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <CardTitle className="text-lg">Creative Optimization</CardTitle>
-                </CardHeader>
-              </Card>
-              <Card className="dark:bg-gray-900">
-                <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                    <Globe className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <CardTitle className="text-lg">Global Benchmarks</CardTitle>
-                </CardHeader>
-              </Card>
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Our Values</h3>
+              <div className="grid grid-cols-1 gap-4">
+                <Card className="dark:bg-gray-900">
+                  <CardHeader className="flex flex-row items-center gap-4 py-4">
+                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                      <Heart className="h-6 w-6 text-[#01b3d4]" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Kind</CardTitle>
+                      <CardDescription className="mt-1 dark:text-gray-400">We treat everyone with respect and empathy</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+                <Card className="dark:bg-gray-900">
+                  <CardHeader className="flex flex-row items-center gap-4 py-4">
+                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                      <Lightbulb className="h-6 w-6 text-[#01b3d4]" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Brilliant</CardTitle>
+                      <CardDescription className="mt-1 dark:text-gray-400">We bring innovative thinking to every challenge</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+                <Card className="dark:bg-gray-900">
+                  <CardHeader className="flex flex-row items-center gap-4 py-4">
+                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                      <Shield className="h-6 w-6 text-[#01b3d4]" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Honest</CardTitle>
+                      <CardDescription className="mt-1 dark:text-gray-400">We deliver transparent and truthful insights</CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
@@ -145,10 +153,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Solutions for Every Channel
+              Our Solutions
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Measure attention across all your advertising investments in one unified platform.
+              Powered by LAMP (Lumen Attention Measurement &amp; Planning) and Attention Bidding technology.
             </p>
           </div>
 
@@ -305,7 +313,7 @@ export default function Home() {
               </div>
               <CardHeader>
                 <p className="text-sm text-[#01b3d4] font-medium">Research</p>
-                <CardTitle className="text-lg">2024 Attention Benchmarks Report Now Available</CardTitle>
+                <CardTitle className="text-lg">2025 Attention Benchmarks Report Now Available</CardTitle>
                 <CardDescription className="dark:text-gray-400">
                   Our annual report on attention benchmarks across industries and channels.
                 </CardDescription>
@@ -493,18 +501,11 @@ export default function Home() {
               </p>
               <div className="mt-8 space-y-4">
                 <a
-                  href="mailto:info@lumen-research.com"
+                  href="mailto:hello@lumen-research.com"
                   className="flex items-center text-white hover:text-white/80 transition-colors"
                 >
                   <Mail className="h-6 w-6 mr-3" />
-                  <span className="text-lg">info@lumen-research.com</span>
-                </a>
-                <a
-                  href="tel:+442012345678"
-                  className="flex items-center text-white hover:text-white/80 transition-colors"
-                >
-                  <Phone className="h-6 w-6 mr-3" />
-                  <span className="text-lg">+44 (0) 20 1234 5678</span>
+                  <span className="text-lg">hello@lumen-research.com</span>
                 </a>
               </div>
             </div>
