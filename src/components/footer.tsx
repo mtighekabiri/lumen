@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, Mail, Phone } from "lucide-react";
 
 export function Footer() {
   return (
@@ -9,13 +9,29 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center space-x-2">
-              <Eye className="h-8 w-8 text-blue-400" />
+              <Eye className="h-8 w-8 text-[#01b3d4]" />
               <span className="text-xl font-bold">Lumen</span>
             </Link>
             <p className="mt-4 text-gray-400 max-w-md">
               Powering attention-first advertising with predictive eye-tracking technology.
               Understand what captures attention and optimize your campaigns for maximum impact.
             </p>
+            <div className="mt-6 space-y-2">
+              <a
+                href="mailto:info@lumen-research.com"
+                className="flex items-center text-gray-400 hover:text-[#01b3d4] transition-colors"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                info@lumen-research.com
+              </a>
+              <a
+                href="tel:+442012345678"
+                className="flex items-center text-gray-400 hover:text-[#01b3d4] transition-colors"
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                +44 (0) 20 1234 5678
+              </a>
+            </div>
           </div>
 
           {/* Product */}
@@ -23,23 +39,23 @@ export function Footer() {
             <h3 className="text-sm font-semibold uppercase tracking-wider">Product</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="#features" className="text-gray-400 hover:text-white">
+                <Link href="#features" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Features
                 </Link>
               </li>
               <li>
-                <Link href="#pricing" className="text-gray-400 hover:text-white">
-                  Pricing
+                <Link href="#how-it-works" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="text-gray-400 hover:text-white">
-                  Dashboard
+                <Link href="#solutions" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  Solutions
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-white">
-                  API Documentation
+                <Link href="#contact" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  Contact
                 </Link>
               </li>
             </ul>
@@ -50,23 +66,23 @@ export function Footer() {
             <h3 className="text-sm font-semibold uppercase tracking-wider">Company</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="#" className="text-gray-400 hover:text-white">
+                <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-white">
+                <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-gray-400 hover:text-white">
-                  Contact
+                <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-white">
-                  Privacy Policy
+                <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -78,14 +94,11 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Lumen Research. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="#" className="text-gray-400 hover:text-white">
+            <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
               Twitter
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white">
+            <Link href="#" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
               LinkedIn
-            </Link>
-            <Link href="#" className="text-gray-400 hover:text-white">
-              GitHub
             </Link>
           </div>
         </div>
