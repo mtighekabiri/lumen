@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CookieBanner } from "@/components/cookie-banner";
 
 export const metadata: Metadata = {
   title: "Lumen Research - Attention-First Advertising Platform",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased bg-white text-gray-900">
         {children}
+        <CookieBanner />
       </body>
     </html>
   );
