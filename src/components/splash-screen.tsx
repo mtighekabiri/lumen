@@ -2,6 +2,16 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
+const rotatingWords = [
+  "action",
+  "conversion",
+  "awareness",
+  "consideration",
+  "profit",
+  "sales",
+  "memory",
+];
+
 interface SplashScreenProps {
   onComplete: () => void;
 }
@@ -79,6 +89,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isExiting, setIsExiting] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
   const [isMounted, setIsMounted] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isWordAnimating, setIsWordAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -160,6 +172,19 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
       if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     };
+  }, []);
+
+  // Rotate words carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsWordAnimating(true);
+      setTimeout(() => {
+        setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+        setIsWordAnimating(false);
+      }, 500);
+    }, 2500);
+
+    return () => clearInterval(interval);
   }, []);
 
   // Generate eye grid - larger size for fewer eyes
@@ -244,14 +269,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           onClick={handleEnter}
           onMouseEnter={handleButtonEnter}
           onMouseLeave={handleButtonLeave}
-          className={`relative px-14 py-5 text-2xl font-bold tracking-wider transition-all duration-700 ease-in-out ${
+          className={`relative px-14 py-5 text-2xl font-bold tracking-wider rounded-lg transition-all duration-700 ease-in-out ${
             isHovering
               ? "bg-[#2596be] text-white scale-110 shadow-2xl shadow-[#2596be]/50"
               : "bg-white text-gray-900 hover:scale-105"
           }`}
-          style={{
-            clipPath: "polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%)",
-          }}
         >
           {/* Progress ring */}
           {isHovering && (
@@ -281,27 +303,24 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
             </svg>
           )}
 
-          <span className="relative z-10">LUMEN</span>
+          <span className="relative z-10 flex items-center gap-2">
+            <span>Turn attention into</span>
+            <span className="inline-block relative h-[1.2em] overflow-hidden align-bottom min-w-[140px]">
+              <span
+                className={`inline-block transition-all duration-500 ease-in-out ${
+                  isWordAnimating ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+                } ${isHovering ? "text-white" : "text-[#2596be]"}`}
+              >
+                {rotatingWords[wordIndex]}
+              </span>
+            </span>
+          </span>
 
           {/* Animated glow effect when hovering */}
           {isHovering && (
             <div className="absolute inset-0 animate-pulse bg-white/20" />
           )}
         </button>
-      </div>
-
-      {/* Instructions */}
-      <div
-        className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-center transition-opacity duration-500 ${
-          isHovering ? "opacity-0" : "opacity-70"
-        }`}
-      >
-        <p className="text-white/60 text-sm">
-          Move your cursor to see the eyes follow
-        </p>
-        <p className="text-white/40 text-xs mt-1">
-          Click or hover on LUMEN to enter
-        </p>
       </div>
 
       {/* White overlay for exit transition */}
