@@ -21,15 +21,19 @@ function Eye({ x, y, mouseX, mouseY, size, isHovering }: EyeProps) {
   const dy = mouseY - y;
   const angle = Math.atan2(dy, dx);
 
-  // Calculate pupil offset (limited to stay within eye)
-  const maxOffset = size * 0.25;
-  const distance = Math.min(Math.sqrt(dx * dx + dy * dy) / 10, maxOffset);
-  const pupilX = Math.cos(angle) * distance;
-  const pupilY = Math.sin(angle) * distance;
+  // Calculate pupil offset - constrained to stay inside the eye
+  // Eye spans roughly x: 15-85 (width 70, center 50), y: 10-40 (height 30, center 25)
+  // Pupil radius is 10, so max horizontal offset is ~25, vertical is ~5
+  const maxOffsetX = 20;
+  const maxOffsetY = 8;
+  const rawDistance = Math.sqrt(dx * dx + dy * dy);
+  const normalizedDistance = Math.min(rawDistance / 150, 1);
+  const pupilX = Math.cos(angle) * maxOffsetX * normalizedDistance;
+  const pupilY = Math.sin(angle) * maxOffsetY * normalizedDistance;
 
   return (
     <div
-      className="relative transition-all duration-300"
+      className="relative"
       style={{
         width: size,
         height: size * 0.5,
@@ -39,28 +43,28 @@ function Eye({ x, y, mouseX, mouseY, size, isHovering }: EyeProps) {
       <svg
         viewBox="0 0 100 50"
         className="w-full h-full"
-        style={{ overflow: "visible" }}
+        style={{ overflow: "hidden" }}
       >
         {/* Eye white (sclera) - half circle shape */}
         <path
           d="M 5 25 Q 50 -15 95 25 Q 50 50 5 25 Z"
-          fill={isHovering ? "#01b3d4" : "#ffffff"}
-          className="transition-all duration-500"
+          fill={isHovering ? "#2596be" : "#ffffff"}
+          className="transition-colors duration-1000 ease-in-out"
         />
 
         {/* Pupil/Iris - follows mouse */}
         <g
           style={{
             transform: `translate(${pupilX}px, ${pupilY}px)`,
-            transition: "transform 0.1s ease-out",
+            transition: "transform 0.15s ease-out",
           }}
         >
           <circle
             cx="50"
             cy="25"
-            r="12"
-            fill={isHovering ? "#015c6e" : "#1a1a1a"}
-            className="transition-colors duration-500"
+            r="10"
+            fill={isHovering ? "#1a5f7a" : "#1a1a1a"}
+            className="transition-colors duration-1000 ease-in-out"
           />
         </g>
       </svg>
@@ -158,10 +162,10 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     };
   }, []);
 
-  // Generate eye grid
-  const eyeSize = 80;
-  const rows = Math.ceil(dimensions.height / (eyeSize * 0.6)) + 2;
-  const cols = Math.ceil(dimensions.width / eyeSize) + 2;
+  // Generate eye grid - larger size for fewer eyes
+  const eyeSize = 140;
+  const rows = Math.ceil(dimensions.height / (eyeSize * 0.6)) + 1;
+  const cols = Math.ceil(dimensions.width / eyeSize) + 1;
 
   const eyes = [];
   for (let row = 0; row < rows; row++) {
@@ -212,11 +216,12 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     >
       {/* Background color transition - radial from center */}
       <div
-        className="absolute inset-0 transition-all duration-1000 ease-out"
+        className="absolute inset-0 transition-all duration-[1500ms] ease-in-out"
         style={{
           background: isHovering
-            ? `radial-gradient(circle at 50% 50%, #01b3d4 0%, #01b3d4 ${hoverProgress}%, transparent ${hoverProgress + 10}%)`
+            ? `radial-gradient(circle at 50% 50%, #2596be 0%, #2596be ${hoverProgress}%, transparent ${hoverProgress + 20}%)`
             : "transparent",
+          opacity: isHovering ? 1 : 0,
         }}
       />
 
@@ -239,9 +244,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           onClick={handleEnter}
           onMouseEnter={handleButtonEnter}
           onMouseLeave={handleButtonLeave}
-          className={`relative px-12 py-4 text-2xl font-bold tracking-wider transition-all duration-500 ${
+          className={`relative px-14 py-5 text-2xl font-bold tracking-wider transition-all duration-700 ease-in-out ${
             isHovering
-              ? "bg-[#01b3d4] text-white scale-110 shadow-2xl shadow-[#01b3d4]/50"
+              ? "bg-[#2596be] text-white scale-110 shadow-2xl shadow-[#2596be]/50"
               : "bg-white text-gray-900 hover:scale-105"
           }`}
           style={{
