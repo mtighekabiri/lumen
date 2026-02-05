@@ -244,14 +244,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           onClick={handleEnter}
           onMouseEnter={handleButtonEnter}
           onMouseLeave={handleButtonLeave}
-          className={`relative px-14 py-5 text-2xl font-bold tracking-wider transition-all duration-700 ease-in-out ${
+          className={`relative px-14 py-5 text-2xl font-bold tracking-wider rounded-lg transition-all duration-700 ease-in-out ${
             isHovering
               ? "bg-[#2596be] text-white scale-110 shadow-2xl shadow-[#2596be]/50"
               : "bg-white text-gray-900 hover:scale-105"
           }`}
-          style={{
-            clipPath: "polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%)",
-          }}
         >
           {/* Progress ring */}
           {isHovering && (
@@ -288,20 +285,6 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
             <div className="absolute inset-0 animate-pulse bg-white/20" />
           )}
         </button>
-      </div>
-
-      {/* Instructions */}
-      <div
-        className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-center transition-opacity duration-500 ${
-          isHovering ? "opacity-0" : "opacity-70"
-        }`}
-      >
-        <p className="text-white/60 text-sm">
-          Move your cursor to see the eyes follow
-        </p>
-        <p className="text-white/40 text-xs mt-1">
-          Click or hover on LUMEN to enter
-        </p>
       </div>
 
       {/* White overlay for exit transition */}
