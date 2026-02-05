@@ -1,18 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 interface BrandCarouselProps {
   brands: string[];
 }
 
-export function BrandCarousel({ brands }: BrandCarouselProps) {
-  const [mounted, setMounted] = useState(false);
+// Hook to safely detect client-side mounting
+function useIsMounted() {
+  const subscribe = () => () => {};
+  const getSnapshot = () => true;
+  const getServerSnapshot = () => false;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export function BrandCarousel({ brands }: BrandCarouselProps) {
+  const mounted = useIsMounted();
 
   if (!mounted) {
     return null;
