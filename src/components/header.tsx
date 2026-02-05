@@ -10,12 +10,11 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "About", href: "/#about" },
-    { name: "Solutions", href: "/#solutions" },
+    { name: "About", href: "/about" },
+    { name: "Solutions", href: "/solutions" },
     { name: "News", href: "/news" },
-    { name: "Learn", href: "/#learn" },
-    { name: "FAQs", href: "/#faqs" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Learn", href: "/learn" },
+    { name: "FAQs", href: "/faqs" },
   ];
 
   return (
@@ -51,7 +50,7 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex lg:items-center">
-            <Link href="#contact">
+            <Link href="/#contact">
               <Button>Get In Touch</Button>
             </Link>
           </div>
@@ -86,7 +85,7 @@ export function Header() {
               </Link>
             ))}
             <div className="pt-4 border-t border-gray-100">
-              <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full">Get In Touch</Button>
               </Link>
             </div>

@@ -38,12 +38,12 @@ export function Footer() {
             <h3 className="text-sm font-semibold uppercase tracking-wider">Navigation</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="/#about" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                <Link href="/about" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/#solutions" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                <Link href="/solutions" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Solutions
                 </Link>
               </li>
@@ -53,18 +53,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#learn" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                <Link href="/learn" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Learn
                 </Link>
               </li>
               <li>
-                <Link href="/#faqs" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                <Link href="/faqs" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   FAQs
-                </Link>
-              </li>
-              <li>
-                <Link href="/#contact" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
-                  Contact
                 </Link>
               </li>
             </ul>

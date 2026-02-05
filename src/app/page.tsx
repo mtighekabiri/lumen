@@ -24,19 +24,19 @@ export default function Home() {
               The Attention Technology Company
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Turn Attention into <RotatingText />
+              Turn attention into <RotatingText />
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
               We help data-driven advertisers to minimise ad waste and maximise return.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
-              <Link href="#contact">
+              <Link href="/#contact">
                 <Button size="lg">
                   Get In Touch
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="#about">
+              <Link href="/about">
                 <Button variant="outline" size="lg">
                   Learn More
                 </Button>
