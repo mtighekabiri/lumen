@@ -10,12 +10,12 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "About", href: "#about" },
-    { name: "Solutions", href: "#solutions" },
-    { name: "News", href: "#news" },
-    { name: "Learn", href: "#learn" },
-    { name: "FAQs", href: "#faqs" },
-    { name: "Contact", href: "#contact" },
+    { name: "About", href: "/#about" },
+    { name: "Solutions", href: "/#solutions" },
+    { name: "News", href: "/news" },
+    { name: "Learn", href: "/#learn" },
+    { name: "FAQs", href: "/#faqs" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   return (
