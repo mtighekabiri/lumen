@@ -1,25 +1,31 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useSyncExternalStore, useCallback } from "react";
 import { SplashScreen } from "./splash-screen";
 
 interface PageWrapperProps {
   children: React.ReactNode;
 }
 
-export function PageWrapper({ children }: PageWrapperProps) {
-  // Start with splash showing to prevent flash
-  const [showSplash, setShowSplash] = useState(true);
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    // Check sessionStorage after mount
-    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-    if (hasSeenSplash) {
-      setShowSplash(false);
-    }
-    setIsReady(true);
+// Hook to safely check sessionStorage on client
+function useHasSeenSplash() {
+  const subscribe = useCallback(() => {
+    // No external changes to listen for, return empty cleanup
+    return () => {};
   }, []);
+
+  const getSnapshot = () => {
+    return sessionStorage.getItem("hasSeenSplash") === "true";
+  };
+
+  const getServerSnapshot = () => false;
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+export function PageWrapper({ children }: PageWrapperProps) {
+  const hasSeenSplash = useHasSeenSplash();
+  const [showSplash, setShowSplash] = useState(!hasSeenSplash);
 
   const handleSplashComplete = () => {
     setShowSplash(false);
@@ -38,7 +44,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
         style={{
           opacity: showSplash ? 0 : 1,
           transition: "opacity 0.5s ease-in-out",
-          visibility: showSplash && !isReady ? "hidden" : "visible",
+          visibility: showSplash && !hasSeenSplash ? "hidden" : "visible",
         }}
       >
         {children}

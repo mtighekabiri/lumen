@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Newspaper, Heart, Lightbulb, Shield } from "lucide-react";
+import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Heart, Lightbulb, Shield } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PageWrapper } from "@/components/page-wrapper";
 import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
+import { LatestNews } from "@/components/latest-news";
 
 export default function Home() {
   return (
@@ -23,19 +24,19 @@ export default function Home() {
               The Attention Technology Company
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Turn Attention into <RotatingText />
+              Turn attention into <RotatingText />
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
               We help data-driven advertisers to minimise ad waste and maximise return.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
-              <Link href="#contact">
+              <Link href="/#contact">
                 <Button size="lg">
                   Get In Touch
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="#about">
+              <Link href="/about">
                 <Button variant="outline" size="lg">
                   Learn More
                 </Button>
@@ -245,59 +246,7 @@ export default function Home() {
       </section>
 
       {/* News Section */}
-      <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Latest News
-            </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Stay updated with the latest from Lumen Research
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                <Newspaper className="h-16 w-16 text-[#01b3d4]/60" />
-              </div>
-              <CardHeader>
-                <p className="text-sm text-[#01b3d4] font-medium">Industry News</p>
-                <CardTitle className="text-lg">The Future of Attention Measurement in Digital Advertising</CardTitle>
-                <CardDescription>
-                  How predictive eye-tracking is changing the way brands measure ad effectiveness.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                <Newspaper className="h-16 w-16 text-[#01b3d4]/60" />
-              </div>
-              <CardHeader>
-                <p className="text-sm text-[#01b3d4] font-medium">Case Study</p>
-                <CardTitle className="text-lg">How a Leading CPG Brand Increased ROI by 40%</CardTitle>
-                <CardDescription>
-                  Learn how attention metrics helped optimize their media spend across channels.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                <Newspaper className="h-16 w-16 text-[#01b3d4]/60" />
-              </div>
-              <CardHeader>
-                <p className="text-sm text-[#01b3d4] font-medium">Research</p>
-                <CardTitle className="text-lg">2025 Attention Benchmarks Report Now Available</CardTitle>
-                <CardDescription>
-                  Our annual report on attention benchmarks across industries and channels.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      </section>
+      <LatestNews />
 
       {/* Learn Section */}
       <section id="learn" className="py-20 px-4 sm:px-6 lg:px-8">

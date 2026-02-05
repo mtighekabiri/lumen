@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useSyncExternalStore, useCallback } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -12,16 +12,27 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    }
+// Hook to safely read theme from localStorage
+function useStoredTheme(): Theme {
+  const subscribe = useCallback((callback: () => void) => {
+    window.addEventListener("storage", callback);
+    return () => window.removeEventListener("storage", callback);
   }, []);
+
+  const getSnapshot = () => {
+    const stored = localStorage.getItem("theme");
+    return (stored as Theme) || "light";
+  };
+
+  const getServerSnapshot = () => "light" as Theme;
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const storedTheme = useStoredTheme();
+  const [theme, setTheme] = useState<Theme>(storedTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const root = document.documentElement;

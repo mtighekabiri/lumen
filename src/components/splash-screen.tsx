@@ -1,286 +1,308 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface SplashScreenProps {
   onComplete: () => void;
 }
 
-export function SplashScreen({ onComplete }: SplashScreenProps) {
-  const [animationPhase, setAnimationPhase] = useState<
-    "initial" | "blink1" | "open1" | "blink2" | "reveal" | "zoom" | "done"
-  >("initial");
+interface EyeProps {
+  x: number;
+  y: number;
+  mouseX: number;
+  mouseY: number;
+  size: number;
+  isHovering: boolean;
+}
 
-  useEffect(() => {
-    const timeline = [
-      { phase: "blink1" as const, delay: 1000 },
-      { phase: "open1" as const, delay: 1200 },
-      { phase: "blink2" as const, delay: 2200 },
-      { phase: "reveal" as const, delay: 2400 },
-      { phase: "zoom" as const, delay: 2600 },
-      { phase: "done" as const, delay: 3600 },
-    ];
+function Eye({ x, y, mouseX, mouseY, size, isHovering }: EyeProps) {
+  // Calculate the angle from the eye to the mouse
+  const dx = mouseX - x;
+  const dy = mouseY - y;
+  const angle = Math.atan2(dy, dx);
 
-    const timeouts = timeline.map(({ phase, delay }) =>
-      setTimeout(() => setAnimationPhase(phase), delay)
-    );
-
-    return () => timeouts.forEach(clearTimeout);
-  }, []);
-
-  useEffect(() => {
-    if (animationPhase === "done") {
-      onComplete();
-    }
-  }, [animationPhase, onComplete]);
-
-  const isBlinking = animationPhase === "blink1" || animationPhase === "blink2";
-  const isRevealing = animationPhase === "reveal" || animationPhase === "zoom" || animationPhase === "done";
-  const isZooming = animationPhase === "zoom" || animationPhase === "done";
+  // Calculate pupil offset (limited to stay within eye)
+  const maxOffset = size * 0.25;
+  const distance = Math.min(Math.sqrt(dx * dx + dy * dy) / 10, maxOffset);
+  const pupilX = Math.cos(angle) * distance;
+  const pupilY = Math.sin(angle) * distance;
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-500 ${
-        animationPhase === "done" ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
-      style={{ backgroundColor: "#01b3d4" }}
+      className="relative transition-all duration-300"
+      style={{
+        width: size,
+        height: size * 0.5,
+      }}
     >
-      {/* Zoom container */}
-      <div
-        className={`transition-transform duration-1000 ease-in-out ${
-          isZooming ? "scale-[50]" : "scale-100"
-        }`}
+      {/* Eye shape - almond/half-circle like the image */}
+      <svg
+        viewBox="0 0 100 50"
+        className="w-full h-full"
+        style={{ overflow: "visible" }}
       >
-        {/* Professional Eye SVG - larger and more intricate */}
-        <svg
-          viewBox="0 0 300 150"
-          className="w-80 h-40 md:w-[500px] md:h-[250px]"
-          style={{ overflow: "visible" }}
+        {/* Eye white (sclera) - half circle shape */}
+        <path
+          d="M 5 25 Q 50 -15 95 25 Q 50 50 5 25 Z"
+          fill={isHovering ? "#01b3d4" : "#ffffff"}
+          className="transition-all duration-500"
+        />
+
+        {/* Pupil/Iris - follows mouse */}
+        <g
+          style={{
+            transform: `translate(${pupilX}px, ${pupilY}px)`,
+            transition: "transform 0.1s ease-out",
+          }}
         >
-          <defs>
-            {/* Clip path for eye shape */}
-            <clipPath id="eyeClip">
-              <path d="M 30 75 Q 150 0 270 75 Q 150 150 30 75 Z" />
-            </clipPath>
-
-            {/* Gradient for iris depth */}
-            <radialGradient id="irisGradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#0d5c6e" />
-              <stop offset="40%" stopColor="#0a4a5c" />
-              <stop offset="70%" stopColor="#073845" />
-              <stop offset="100%" stopColor="#052530" />
-            </radialGradient>
-
-            {/* Gradient for iris detail rings */}
-            <radialGradient id="irisDetailGradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="transparent" />
-              <stop offset="60%" stopColor="rgba(1, 179, 212, 0.15)" />
-              <stop offset="100%" stopColor="rgba(1, 179, 212, 0.3)" />
-            </radialGradient>
-
-            {/* Pupil gradient */}
-            <radialGradient id="pupilGradient" cx="40%" cy="40%" r="60%">
-              <stop offset="0%" stopColor="#0a2530" />
-              <stop offset="100%" stopColor="#000000" />
-            </radialGradient>
-
-            {/* Sclera gradient for realism */}
-            <radialGradient id="scleraGradient" cx="60%" cy="50%" r="70%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="70%" stopColor="#f8f8f8" />
-              <stop offset="100%" stopColor="#e8e8e8" />
-            </radialGradient>
-
-            {/* Subtle shadow for depth */}
-            <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-              <feOffset dx="0" dy="2" result="offsetBlur" />
-              <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
-            </filter>
-          </defs>
-
-          {/* Eye shape outline */}
-          <path
-            d="M 30 75 Q 150 0 270 75 Q 150 150 30 75 Z"
-            fill="url(#scleraGradient)"
-            stroke="#0a4a5c"
-            strokeWidth="2.5"
+          <circle
+            cx="50"
+            cy="25"
+            r="12"
+            fill={isHovering ? "#015c6e" : "#1a1a1a"}
+            className="transition-colors duration-500"
           />
+        </g>
+      </svg>
+    </div>
+  );
+}
 
-          {/* Inner eye content - clipped */}
-          <g clipPath="url(#eyeClip)">
-            {/* Subtle vein details on sclera */}
-            <g
-              className={`transition-opacity duration-200 ${
-                isRevealing ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              <path
-                d="M 40 70 Q 60 65 80 72"
-                stroke="rgba(200, 180, 180, 0.3)"
-                strokeWidth="0.5"
-                fill="none"
-              />
-              <path
-                d="M 45 80 Q 55 82 70 78"
-                stroke="rgba(200, 180, 180, 0.25)"
-                strokeWidth="0.4"
-                fill="none"
-              />
-            </g>
+export function SplashScreen({ onComplete }: SplashScreenProps) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [hoverProgress, setHoverProgress] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
+  const [isMounted, setIsMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-            {/* Iris - positioned looking right */}
-            <g
-              className={`transition-opacity duration-300 ${
-                isRevealing ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              {/* Main iris circle */}
-              <circle
-                cx="185"
-                cy="75"
-                r="45"
-                fill="url(#irisGradient)"
-              />
+  // Set up dimensions and mouse tracking on mount
+  useEffect(() => {
+    setIsMounted(true);
+    setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    setMousePos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
-              {/* Iris texture rings */}
-              <circle
-                cx="185"
-                cy="75"
-                r="44"
-                fill="none"
-                stroke="rgba(1, 179, 212, 0.2)"
-                strokeWidth="0.5"
-              />
-              <circle
-                cx="185"
-                cy="75"
-                r="38"
-                fill="none"
-                stroke="rgba(1, 179, 212, 0.15)"
-                strokeWidth="0.5"
-              />
-              <circle
-                cx="185"
-                cy="75"
-                r="32"
-                fill="none"
-                stroke="rgba(1, 179, 212, 0.2)"
-                strokeWidth="0.5"
-              />
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
 
-              {/* Iris fiber patterns - radiating lines */}
-              {[...Array(24)].map((_, i) => {
-                const angle = (i * 15 * Math.PI) / 180;
-                const x1 = 185 + Math.cos(angle) * 20;
-                const y1 = 75 + Math.sin(angle) * 20;
-                const x2 = 185 + Math.cos(angle) * 43;
-                const y2 = 75 + Math.sin(angle) * 43;
-                return (
-                  <line
-                    key={i}
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                    stroke="rgba(1, 179, 212, 0.15)"
-                    strokeWidth="0.8"
-                  />
-                );
-              })}
+    const handleResize = () => {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    };
 
-              {/* Limbal ring (dark edge of iris) */}
-              <circle
-                cx="185"
-                cy="75"
-                r="45"
-                fill="none"
-                stroke="#052530"
-                strokeWidth="2"
-              />
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("resize", handleResize);
 
-              {/* Pupil */}
-              <circle
-                cx="190"
-                cy="75"
-                r="18"
-                fill="url(#pupilGradient)"
-              />
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-              {/* Catchlight reflections */}
-              <ellipse
-                cx="198"
-                cy="65"
-                rx="8"
-                ry="10"
-                fill="#ffffff"
-                opacity="0.9"
-              />
-              <circle
-                cx="178"
-                cy="82"
-                r="4"
-                fill="#ffffff"
-                opacity="0.5"
-              />
-              <circle
-                cx="195"
-                cy="85"
-                r="2"
-                fill="#ffffff"
-                opacity="0.3"
-              />
-            </g>
-          </g>
+  // Handle button hover - start 5 second timer
+  const handleButtonEnter = useCallback(() => {
+    setIsHovering(true);
+    setHoverProgress(0);
 
-          {/* Upper eyelid for blinking */}
-          <path
-            d="M 25 75 Q 150 -5 275 75 L 275 0 L 25 0 Z"
-            fill="#01b3d4"
-            style={{
-              transform: isBlinking ? "translateY(0)" : "translateY(-80px)",
-              transition: "transform 0.15s ease-in-out",
-            }}
+    // Start progress animation
+    let progress = 0;
+    progressIntervalRef.current = setInterval(() => {
+      progress += 2; // 2% every 100ms = 5 seconds total
+      setHoverProgress(Math.min(progress, 100));
+    }, 100);
+
+    // Auto-enter after 5 seconds
+    hoverTimerRef.current = setTimeout(() => {
+      handleEnter();
+    }, 5000);
+  }, []);
+
+  const handleButtonLeave = useCallback(() => {
+    setIsHovering(false);
+    setHoverProgress(0);
+
+    // Clear timers
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+  }, []);
+
+  const handleEnter = useCallback(() => {
+    // Clear any pending timers
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+
+    setIsExiting(true);
+    setTimeout(() => {
+      onComplete();
+    }, 800);
+  }, [onComplete]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, []);
+
+  // Generate eye grid
+  const eyeSize = 80;
+  const rows = Math.ceil(dimensions.height / (eyeSize * 0.6)) + 2;
+  const cols = Math.ceil(dimensions.width / eyeSize) + 2;
+
+  const eyes = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      // Offset every other row for staggered effect
+      const offsetX = row % 2 === 0 ? 0 : eyeSize / 2;
+      const x = col * eyeSize + offsetX - eyeSize;
+      const y = row * (eyeSize * 0.6) - eyeSize * 0.3;
+
+      eyes.push(
+        <div
+          key={`${row}-${col}`}
+          className="absolute"
+          style={{
+            left: x,
+            top: y,
+          }}
+        >
+          <Eye
+            x={x + eyeSize / 2}
+            y={y + eyeSize * 0.25}
+            mouseX={mousePos.x}
+            mouseY={mousePos.y}
+            size={eyeSize}
+            isHovering={isHovering}
           />
+        </div>
+      );
+    }
+  }
 
-          {/* Lower eyelid for blinking */}
-          <path
-            d="M 25 75 Q 150 155 275 75 L 275 155 L 25 155 Z"
-            fill="#01b3d4"
-            style={{
-              transform: isBlinking ? "translateY(0)" : "translateY(80px)",
-              transition: "transform 0.15s ease-in-out",
-            }}
-          />
+  // Don't render until mounted to avoid hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className="fixed inset-0 z-[100] bg-[#1a1a1a]" />
+    );
+  }
 
-          {/* Subtle eye shape shadow/definition - no lashes */}
-          <path
-            d="M 30 75 Q 150 0 270 75"
-            fill="none"
-            stroke="#0a4a5c"
-            strokeWidth="1"
-            opacity="0.3"
-            className={`transition-opacity duration-200 ${
-              isRevealing ? "opacity-0" : "opacity-100"
-            }`}
-          />
-          <path
-            d="M 30 75 Q 150 150 270 75"
-            fill="none"
-            stroke="#0a4a5c"
-            strokeWidth="1"
-            opacity="0.2"
-            className={`transition-opacity duration-200 ${
-              isRevealing ? "opacity-0" : "opacity-100"
-            }`}
-          />
-        </svg>
+  return (
+    <div
+      ref={containerRef}
+      className={`fixed inset-0 z-[100] overflow-hidden transition-opacity duration-700 ${
+        isExiting ? "opacity-0" : "opacity-100"
+      }`}
+      style={{
+        backgroundColor: "#1a1a1a",
+      }}
+    >
+      {/* Background color transition - radial from center */}
+      <div
+        className="absolute inset-0 transition-all duration-1000 ease-out"
+        style={{
+          background: isHovering
+            ? `radial-gradient(circle at 50% 50%, #01b3d4 0%, #01b3d4 ${hoverProgress}%, transparent ${hoverProgress + 10}%)`
+            : "transparent",
+        }}
+      />
+
+      {/* Noise texture overlay */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Eye grid */}
+      <div className="absolute inset-0">
+        {eyes}
       </div>
 
-      {/* White overlay for final transition */}
+      {/* Center button */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <button
+          onClick={handleEnter}
+          onMouseEnter={handleButtonEnter}
+          onMouseLeave={handleButtonLeave}
+          className={`relative px-12 py-4 text-2xl font-bold tracking-wider transition-all duration-500 ${
+            isHovering
+              ? "bg-[#01b3d4] text-white scale-110 shadow-2xl shadow-[#01b3d4]/50"
+              : "bg-white text-gray-900 hover:scale-105"
+          }`}
+          style={{
+            clipPath: "polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%)",
+          }}
+        >
+          {/* Progress ring */}
+          {isHovering && (
+            <svg
+              className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)]"
+              viewBox="0 0 100 100"
+              style={{ transform: "rotate(-90deg)" }}
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                strokeWidth="2"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeDasharray={`${hoverProgress * 2.83} 283`}
+                className="transition-all duration-100"
+              />
+            </svg>
+          )}
+
+          <span className="relative z-10">LUMEN</span>
+
+          {/* Animated glow effect when hovering */}
+          {isHovering && (
+            <div className="absolute inset-0 animate-pulse bg-white/20" />
+          )}
+        </button>
+      </div>
+
+      {/* Instructions */}
       <div
-        className={`absolute inset-0 bg-white transition-opacity duration-500 ${
-          isZooming ? "opacity-100" : "opacity-0"
+        className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-center transition-opacity duration-500 ${
+          isHovering ? "opacity-0" : "opacity-70"
+        }`}
+      >
+        <p className="text-white/60 text-sm">
+          Move your cursor to see the eyes follow
+        </p>
+        <p className="text-white/40 text-xs mt-1">
+          Click or hover on LUMEN to enter
+        </p>
+      </div>
+
+      {/* White overlay for exit transition */}
+      <div
+        className={`absolute inset-0 bg-white transition-opacity duration-500 pointer-events-none ${
+          isExiting ? "opacity-100" : "opacity-0"
         }`}
       />
     </div>
