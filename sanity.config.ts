@@ -1,8 +1,8 @@
 import { defineConfig } from 'sanity';
 import { structureTool, type StructureBuilder } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
-import { schemaTypes } from './src/sanity/schemas';
-import { projectId, dataset } from './src/sanity/config';
+import { schemaTypes } from '@/sanity/schemas';
+import { projectId, dataset } from '@/sanity/config';
 
 export default defineConfig({
   name: 'lumen-cms',
