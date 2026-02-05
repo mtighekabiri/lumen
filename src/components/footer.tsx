@@ -85,7 +85,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                <Link href="/studio" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
                   Content Manager
                 </Link>
               </li>
