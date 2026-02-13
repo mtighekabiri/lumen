@@ -1,10 +1,20 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { BlogPost, BlogPostInput } from '@/types/blog';
+import {
+  wpGetPublishedPosts,
+  wpGetLatestPosts,
+  wpGetFeaturedPosts,
+  wpGetPostBySlug,
+  wpGetPostsByCategory,
+  wpGetAllSlugs,
+  wpGetAllTags,
+} from '@/lib/wordpress';
 
 const DATA_FILE = path.join(process.cwd(), 'content', 'posts.json');
 
-// Ensure the content directory and file exist
+// --- Local JSON helpers (unchanged) ---
+
 async function ensureDataFile(): Promise<void> {
   const dir = path.dirname(DATA_FILE);
   try {
@@ -20,7 +30,6 @@ async function ensureDataFile(): Promise<void> {
   }
 }
 
-// Generate a URL-friendly slug from a title
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -28,57 +37,86 @@ function generateSlug(title: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
-// Generate a unique ID
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }
 
-// Get all posts
+// Get all posts from local JSON
 export async function getAllPosts(): Promise<BlogPost[]> {
   await ensureDataFile();
   const data = await fs.readFile(DATA_FILE, 'utf-8');
   return JSON.parse(data);
 }
 
-// Get published posts only (sorted by date, newest first)
+// --- Read functions: WordPress primary, JSON fallback ---
+
 export async function getPublishedPosts(): Promise<BlogPost[]> {
+  const wpPosts = await wpGetPublishedPosts();
+  if (wpPosts) return wpPosts;
+
   const posts = await getAllPosts();
   return posts
     .filter(post => post.status === 'published')
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
-// Get featured posts
 export async function getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
+  const wpPosts = await wpGetFeaturedPosts(limit);
+  if (wpPosts) return wpPosts;
+
   const posts = await getPublishedPosts();
   return posts.filter(post => post.featured).slice(0, limit);
 }
 
-// Get latest posts
 export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
+  const wpPosts = await wpGetLatestPosts(limit);
+  if (wpPosts) return wpPosts;
+
   const posts = await getPublishedPosts();
   return posts.slice(0, limit);
 }
 
-// Get a single post by slug
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  const wpPost = await wpGetPostBySlug(slug);
+  if (wpPost) return wpPost;
+
   const posts = await getAllPosts();
   return posts.find(post => post.slug === slug) || null;
 }
 
-// Get a single post by ID
 export async function getPostById(id: string): Promise<BlogPost | null> {
   const posts = await getAllPosts();
   return posts.find(post => post.id === id) || null;
 }
 
-// Get posts by category
 export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
+  const wpPosts = await wpGetPostsByCategory(category);
+  if (wpPosts) return wpPosts;
+
   const posts = await getPublishedPosts();
   return posts.filter(post => post.category === category);
 }
 
-// Create a new post
+export async function getAllTags(): Promise<string[]> {
+  const wpTags = await wpGetAllTags();
+  if (wpTags) return wpTags;
+
+  const posts = await getPublishedPosts();
+  const tags = new Set<string>();
+  posts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
+  return Array.from(tags).sort();
+}
+
+export async function getAllSlugs(): Promise<string[]> {
+  const wpSlugs = await wpGetAllSlugs();
+  if (wpSlugs) return wpSlugs;
+
+  const posts = await getPublishedPosts();
+  return posts.map(post => post.slug);
+}
+
+// --- Write functions: local JSON only ---
+
 export async function createPost(input: BlogPostInput): Promise<BlogPost> {
   const posts = await getAllPosts();
 
@@ -99,7 +137,6 @@ export async function createPost(input: BlogPostInput): Promise<BlogPost> {
     status: input.status || 'draft',
   };
 
-  // Ensure unique slug
   let slugCounter = 1;
   while (posts.some(p => p.slug === newPost.slug)) {
     newPost.slug = `${generateSlug(input.title)}-${slugCounter}`;
@@ -112,7 +149,6 @@ export async function createPost(input: BlogPostInput): Promise<BlogPost> {
   return newPost;
 }
 
-// Update a post
 export async function updatePost(id: string, input: Partial<BlogPostInput>): Promise<BlogPost | null> {
   const posts = await getAllPosts();
   const index = posts.findIndex(post => post.id === id);
@@ -125,7 +161,6 @@ export async function updatePost(id: string, input: Partial<BlogPostInput>): Pro
     updatedAt: new Date().toISOString(),
   };
 
-  // Update slug if title changed
   if (input.title && input.title !== posts[index].title) {
     let newSlug = generateSlug(input.title);
     let slugCounter = 1;
@@ -142,7 +177,6 @@ export async function updatePost(id: string, input: Partial<BlogPostInput>): Pro
   return updatedPost;
 }
 
-// Delete a post
 export async function deletePost(id: string): Promise<boolean> {
   const posts = await getAllPosts();
   const index = posts.findIndex(post => post.id === id);
@@ -153,18 +187,4 @@ export async function deletePost(id: string): Promise<boolean> {
   await fs.writeFile(DATA_FILE, JSON.stringify(posts, null, 2));
 
   return true;
-}
-
-// Get all unique tags
-export async function getAllTags(): Promise<string[]> {
-  const posts = await getPublishedPosts();
-  const tags = new Set<string>();
-  posts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
-  return Array.from(tags).sort();
-}
-
-// Get all slugs for static generation
-export async function getAllSlugs(): Promise<string[]> {
-  const posts = await getPublishedPosts();
-  return posts.map(post => post.slug);
 }

@@ -152,7 +152,7 @@ export function CaseStudyCarousel({ posts, caseStudies }: CaseStudyCarouselProps
                 >
                   <div className="relative h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
                     <Image
-                      src={`/case-studies/${study.image}`}
+                      src={study.image}
                       alt={study.headline}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform"

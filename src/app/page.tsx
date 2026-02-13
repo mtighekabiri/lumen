@@ -9,9 +9,10 @@ import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
 import { HeroBanner } from "@/components/hero-banner";
 import { CaseStudyCarousel } from "@/components/case-study-carousel";
-import { caseStudies } from "@/data/case-studies";
+import { getCaseStudies } from "@/data/case-studies";
 
-export default function Home() {
+export default async function Home() {
+  const caseStudies = await getCaseStudies();
   return (
     <div className="min-h-screen bg-white">
       <Header />
