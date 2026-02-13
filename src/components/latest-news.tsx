@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Newspaper, Calendar, User } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ArrowRight, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLatestPosts } from "@/lib/blog";
+import { CaseStudyCarousel } from "@/components/case-study-carousel";
 
 export async function LatestNews() {
   const posts = await getLatestPosts(3);
@@ -26,49 +26,7 @@ export async function LatestNews() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {posts.map((post) => (
-                <Link key={post.id} href={`/news/${post.slug}`}>
-                  <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow cursor-pointer group">
-                    <div className="h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                      <Newspaper className="h-16 w-16 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm text-[#01b3d4] font-medium">
-                          {post.category}
-                        </span>
-                        {post.featured && (
-                          <span className="text-xs bg-[#01b3d4]/10 text-[#01b3d4] px-2 py-0.5 rounded-full">
-                            Featured
-                          </span>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg group-hover:text-[#01b3d4] transition-colors line-clamp-2">
-                        {post.title}
-                      </CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {post.excerpt}
-                      </CardDescription>
-                      <div className="flex items-center gap-4 mt-4 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <User className="h-3 w-3" />
-                          {post.author}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+            <CaseStudyCarousel posts={posts} />
 
             <div className="text-center mt-12">
               <Link href="/news">
