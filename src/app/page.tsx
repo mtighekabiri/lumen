@@ -9,6 +9,8 @@ import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
 import { HeroBanner } from "@/components/hero-banner";
+import { CaseStudyCarousel } from "@/components/case-study-carousel";
+import { caseStudies } from "@/data/case-studies";
 
 export default function Home() {
   return (
@@ -20,7 +22,7 @@ export default function Home() {
       <HeroBanner>
         <div className="text-center px-4">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
-            Turn attention into <RotatingText />
+            Attention into <RotatingText />
           </h1>
           <div className="mt-8 flex items-center justify-center gap-x-4">
             <Link href="/#contact">
@@ -29,7 +31,7 @@ export default function Home() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/about">
+            <Link href="/#brands">
               <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
                 Learn More
               </Button>
@@ -39,17 +41,29 @@ export default function Home() {
       </HeroBanner>
 
       {/* Brand Logo Carousel */}
-      <BrandCarousel brands={[
+      <BrandCarousel id="brands" brands={[
         "dentsu.png",
-        "havas.png",
-        "ipg.png",
-        "publicis.png",
-        "wpp.png",
-        "omnicom.png",
-        "mars.png",
-        "unilever.png",
-        "ebay.png",
-        "nestle.png",
+        "adidas.png",
+        "amazon.png",
+        "anzu.png",
+        "bbc.png",
+        "carlsberg.png",
+        "condenast.png",
+        "criteo.png",
+        "facebook.png",
+        "google.png",
+        "heineken.png",
+        "ias.png",
+        "mastercard.png",
+        "pinterest.png",
+        "seedtag.png",
+        "snapchat.png",
+        "teads.png",
+        "thetradedesk.png",
+        "tiktok.png",
+        "tvision.png",
+        "workday.png",
+        "youtube.png",
       ]} />
 
       {/* About Section */}
@@ -242,6 +256,29 @@ export default function Home() {
                 </ul>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies Section */}
+      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-center">
+            <CaseStudyCarousel caseStudies={caseStudies} />
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Case Studies
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                See how leading brands use Lumen&apos;s attention technology to transform their advertising performance.
+              </p>
+              <Link href="/news">
+                <Button variant="outline" size="lg" className="mt-8">
+                  View All Case Studies
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
