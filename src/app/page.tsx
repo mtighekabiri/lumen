@@ -4,7 +4,6 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PageWrapper } from "@/components/page-wrapper";
 import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
@@ -12,7 +11,6 @@ import { HeroBanner } from "@/components/hero-banner";
 
 export default function Home() {
   return (
-    <PageWrapper>
     <div className="min-h-screen bg-white">
       <Header />
 
@@ -474,6 +472,5 @@ export default function Home() {
 
       <Footer />
     </div>
-    </PageWrapper>
   );
 }
