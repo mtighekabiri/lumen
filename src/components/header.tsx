@@ -118,9 +118,9 @@ export function Header() {
               <Image
                 src="/logo.png"
                 alt="Lumen"
-                width={120}
-                height={40}
-                className="h-8 w-auto"
+                width={60}
+                height={20}
+                className="h-4 w-auto"
                 priority
               />
             </Link>
