@@ -202,8 +202,13 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile menu + search buttons */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile menu + search + CTA */}
+          <div className="flex lg:hidden items-center gap-1">
+            <Link href="/#contact">
+              <Button size="sm" className="text-xs px-3 h-8">
+                Get In Touch
+              </Button>
+            </Link>
             <button
               type="button"
               className="p-2 text-gray-600 hover:text-[#01b3d4] transition-colors"
@@ -222,6 +227,7 @@ export function Header() {
                 setMobileMenuOpen(!mobileMenuOpen);
                 if (mobileSearchOpen) setMobileSearchOpen(false);
               }}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
