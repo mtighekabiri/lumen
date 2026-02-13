@@ -20,7 +20,7 @@ export default function Home() {
       <HeroBanner>
         <div className="text-center px-4">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
-            Turn attention into <RotatingText />
+            Attention into <RotatingText />
           </h1>
           <div className="mt-8 flex items-center justify-center gap-x-4">
             <Link href="/#contact">

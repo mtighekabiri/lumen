@@ -304,8 +304,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           )}
 
           <span className="relative z-10 flex items-center gap-2">
-            <span>Turn attention into</span>
-            <span className="inline-block relative h-[1.2em] overflow-hidden align-bottom min-w-[140px]">
+            <span>Attention into</span>
+            <span className="inline-block relative h-[1em] overflow-hidden align-bottom min-w-[140px]">
               <span
                 className={`inline-block transition-all duration-500 ease-in-out ${
                   isWordAnimating ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
