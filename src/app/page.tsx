@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Heart, Lightbulb, Shield } from "lucide-react";
+import { BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Heart, Lightbulb, Shield } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -18,54 +18,39 @@ export default function Home() {
 
       {/* Hero Banner Video */}
       <HeroBanner>
-        <div className="flex items-center gap-x-4">
-          <Link href="/#contact">
-            <Button size="lg">
-              Get In Touch
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <Link href="/about">
-            <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
-              Learn More
-            </Button>
-          </Link>
+        <div className="text-center px-4">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
+            Turn attention into <RotatingText />
+          </h1>
+          <div className="mt-8 flex items-center justify-center gap-x-4">
+            <Link href="/#contact">
+              <Button size="lg">
+                Get In Touch
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/about">
+              <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
+                Learn More
+              </Button>
+            </Link>
+          </div>
         </div>
       </HeroBanner>
 
-      {/* Hero Section */}
-      <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center">
-            <div className="inline-flex items-center rounded-full bg-[#01b3d4]/10 px-4 py-2 text-sm font-medium text-[#01b3d4] mb-8">
-              <Eye className="h-4 w-4 mr-2" />
-              The Attention Technology Company
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Turn attention into <RotatingText />
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              We help data-driven advertisers to minimise ad waste and maximise return.
-            </p>
-          </div>
-
-          {/* Brand Logo Carousel */}
-          <div className="mt-16">
-            <BrandCarousel brands={[
-              "Dentsu",
-              "Havas",
-              "IPG",
-              "Publicis",
-              "WPP",
-              "Omnicom",
-              "Mars",
-              "Unilever",
-              "eBay",
-              "Nestlé",
-            ]} />
-          </div>
-        </div>
-      </section>
+      {/* Brand Logo Carousel */}
+      <BrandCarousel brands={[
+        "dentsu.png",
+        "havas.png",
+        "ipg.png",
+        "publicis.png",
+        "wpp.png",
+        "omnicom.png",
+        "mars.png",
+        "unilever.png",
+        "ebay.png",
+        "nestle.png",
+      ]} />
 
       {/* About Section */}
       <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
