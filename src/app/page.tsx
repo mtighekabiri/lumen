@@ -29,7 +29,7 @@ export default function Home() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/about">
+            <Link href="/#brands">
               <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
                 Learn More
               </Button>
@@ -39,17 +39,29 @@ export default function Home() {
       </HeroBanner>
 
       {/* Brand Logo Carousel */}
-      <BrandCarousel brands={[
+      <BrandCarousel id="brands" brands={[
         "dentsu.png",
-        "havas.png",
-        "ipg.png",
-        "publicis.png",
-        "wpp.png",
-        "omnicom.png",
-        "mars.png",
-        "unilever.png",
-        "ebay.png",
-        "nestle.png",
+        "adidas.png",
+        "amazon.png",
+        "anzu.png",
+        "bbc.png",
+        "carlsberg.png",
+        "condenast.png",
+        "criteo.png",
+        "facebook.png",
+        "google.png",
+        "heineken.png",
+        "ias.png",
+        "mastercard.png",
+        "pinterest.png",
+        "seedtag.png",
+        "snapchat.png",
+        "teads.png",
+        "thetradedesk.png",
+        "tiktok.png",
+        "tvision.png",
+        "workday.png",
+        "youtube.png",
       ]} />
 
       {/* About Section */}

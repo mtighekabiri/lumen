@@ -3,10 +3,11 @@
 import Image from "next/image";
 
 interface BrandCarouselProps {
+  id?: string;
   brands: string[];
 }
 
-export function BrandCarousel({ brands }: BrandCarouselProps) {
+export function BrandCarousel({ id, brands }: BrandCarouselProps) {
   if (brands.length === 0) {
     return null;
   }
@@ -15,7 +16,7 @@ export function BrandCarousel({ brands }: BrandCarouselProps) {
   const duplicatedBrands = [...brands, ...brands, ...brands];
 
   return (
-    <div className="w-full overflow-hidden py-10 bg-white">
+    <div id={id} className="w-full overflow-hidden py-10 bg-white scroll-mt-16">
       <div className="relative">
         {/* Gradient overlays for fade effect */}
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10" />
