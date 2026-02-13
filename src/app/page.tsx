@@ -8,6 +8,7 @@ import { PageWrapper } from "@/components/page-wrapper";
 import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
+import { HeroBanner } from "@/components/hero-banner";
 
 export default function Home() {
   return (
@@ -15,8 +16,11 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
 
+      {/* Hero Banner Video */}
+      <HeroBanner />
+
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <div className="inline-flex items-center rounded-full bg-[#01b3d4]/10 px-4 py-2 text-sm font-medium text-[#01b3d4] mb-8">
