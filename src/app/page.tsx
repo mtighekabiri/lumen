@@ -17,7 +17,21 @@ export default function Home() {
       <Header />
 
       {/* Hero Banner Video */}
-      <HeroBanner />
+      <HeroBanner>
+        <div className="flex items-center gap-x-4">
+          <Link href="/#contact">
+            <Button size="lg">
+              Get In Touch
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href="/about">
+            <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
+              Learn More
+            </Button>
+          </Link>
+        </div>
+      </HeroBanner>
 
       {/* Hero Section */}
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8">
@@ -33,19 +47,6 @@ export default function Home() {
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
               We help data-driven advertisers to minimise ad waste and maximise return.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-4">
-              <Link href="/#contact">
-                <Button size="lg">
-                  Get In Touch
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/about">
-                <Button variant="outline" size="lg">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
           </div>
 
           {/* Brand Logo Carousel */}

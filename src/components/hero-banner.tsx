@@ -1,27 +1,29 @@
-export function HeroBanner() {
-  return (
-    <div className="w-full pt-16">
-      {/* Desktop video - hidden on mobile */}
-      <video
-        className="hidden md:block w-full"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/hero-banner-desktop.mp4" type="video/mp4" />
-      </video>
+interface HeroBannerProps {
+  children?: React.ReactNode;
+}
 
-      {/* Mobile video - hidden on desktop */}
-      <video
-        className="block md:hidden w-full"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/hero-banner-mobile.mp4" type="video/mp4" />
-      </video>
+export function HeroBanner({ children }: HeroBannerProps) {
+  return (
+    <div className="relative w-full pt-16">
+      {/* Video container: 16:9 on desktop, 9:16 on mobile */}
+      <div className="relative w-full aspect-[9/16] md:aspect-video overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/hero-banner.mp4" type="video/mp4" />
+        </video>
+
+        {/* Overlay content */}
+        {children && (
+          <div className="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
+            {children}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
