@@ -19,7 +19,7 @@ export function HeroBanner({ children }: HeroBannerProps) {
 
         {/* Overlay content */}
         {children && (
-          <div className="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
+          <div className="absolute inset-0 flex items-center justify-center">
             {children}
           </div>
         )}
