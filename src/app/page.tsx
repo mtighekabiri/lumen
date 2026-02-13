@@ -46,7 +46,18 @@ export default function Home() {
 
           {/* Brand Logo Carousel */}
           <div className="mt-16">
-            <BrandCarousel brands={[]} />
+            <BrandCarousel brands={[
+              "Dentsu",
+              "Havas",
+              "IPG",
+              "Publicis",
+              "WPP",
+              "Omnicom",
+              "Mars",
+              "Unilever",
+              "eBay",
+              "Nestlé",
+            ]} />
           </div>
         </div>
       </section>
