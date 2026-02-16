@@ -1,0 +1,271 @@
+import { BlogPost, BlogPostInput } from '@/types/blog';
+
+// ---------- WordPress REST API response types ----------
+
+interface WpPost {
+  id: number;
+  slug: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  content: { rendered: string };
+  date: string;
+  modified: string;
+  status: string;
+  sticky: boolean;
+  categories: number[];
+  tags: number[];
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{ source_url: string }>;
+    'wp:term'?: Array<Array<{ id: number; name: string; slug: string }>>;
+    author?: Array<{ name: string }>;
+  };
+}
+
+export interface WpPage {
+  id: number;
+  slug: string;
+  title: { rendered: string };
+  content: { rendered: string };
+  excerpt: { rendered: string };
+  date: string;
+  modified: string;
+  status: string;
+}
+
+interface WpCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+// ---------- Configuration ----------
+
+const WP_URL = process.env.WORDPRESS_URL || '';
+const WP_USER = process.env.WORDPRESS_USERNAME || '';
+const WP_APP_PASSWORD = process.env.WORDPRESS_APP_PASSWORD || '';
+const REVALIDATE_SECONDS = 60;
+
+// ---------- Helpers ----------
+
+function getAuthHeaders(): Record<string, string> {
+  if (!WP_USER || !WP_APP_PASSWORD) return {};
+  const encoded = Buffer.from(`${WP_USER}:${WP_APP_PASSWORD}`).toString('base64');
+  return { Authorization: `Basic ${encoded}` };
+}
+
+async function wpFetch<T>(
+  endpoint: string,
+  init?: RequestInit & { next?: { revalidate?: number; tags?: string[] } },
+): Promise<T> {
+  if (!WP_URL) {
+    throw new Error(
+      'WORDPRESS_URL environment variable is not set. ' +
+      'See .env.example for required WordPress configuration.',
+    );
+  }
+
+  const url = `${WP_URL}/wp-json/wp/v2${endpoint}`;
+
+  const res = await fetch(url, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+      ...(init?.headers as Record<string, string> | undefined),
+    },
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`WordPress API ${res.status}: ${res.statusText} – ${body}`);
+  }
+
+  return res.json() as Promise<T>;
+}
+
+function decodeHtmlEntities(html: string): string {
+  return html
+    .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(Number(num)))
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+}
+
+function stripHtmlTags(html: string): string {
+  return html.replace(/<[^>]*>/g, '').trim();
+}
+
+function mapWpPost(wp: WpPost): BlogPost {
+  const categories = wp._embedded?.['wp:term']?.[0] || [];
+  const tags = wp._embedded?.['wp:term']?.[1] || [];
+  const author = wp._embedded?.author?.[0];
+  const media = wp._embedded?.['wp:featuredmedia']?.[0];
+
+  return {
+    id: wp.id.toString(),
+    slug: wp.slug,
+    title: decodeHtmlEntities(stripHtmlTags(wp.title.rendered)),
+    excerpt: decodeHtmlEntities(stripHtmlTags(wp.excerpt.rendered)),
+    content: wp.content.rendered,
+    category: categories[0]?.name || 'Uncategorized',
+    author: author?.name || 'Unknown',
+    publishedAt: wp.date,
+    updatedAt: wp.modified,
+    featured: wp.sticky,
+    imageUrl: media?.source_url,
+    tags: tags.map(t => t.name),
+    status: wp.status === 'publish' ? 'published' : 'draft',
+  };
+}
+
+// ---------- Read operations (posts) ----------
+
+export async function getAllPosts(): Promise<BlogPost[]> {
+  const wpPosts = await wpFetch<WpPost[]>(
+    '/posts?per_page=100&_embed&status=any',
+    { cache: 'no-store' },
+  );
+  return wpPosts.map(mapWpPost);
+}
+
+export async function getPublishedPosts(): Promise<BlogPost[]> {
+  const wpPosts = await wpFetch<WpPost[]>(
+    '/posts?per_page=100&_embed&status=publish&orderby=date&order=desc',
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  return wpPosts.map(mapWpPost);
+}
+
+export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
+  const wpPosts = await wpFetch<WpPost[]>(
+    `/posts?per_page=${limit}&_embed&status=publish&orderby=date&order=desc`,
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  return wpPosts.map(mapWpPost);
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  const wpPosts = await wpFetch<WpPost[]>(
+    `/posts?slug=${encodeURIComponent(slug)}&_embed&status=any`,
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  return wpPosts.length > 0 ? mapWpPost(wpPosts[0]) : null;
+}
+
+export async function getPostById(id: string): Promise<BlogPost | null> {
+  try {
+    const wp = await wpFetch<WpPost>(
+      `/posts/${id}?_embed`,
+      { cache: 'no-store' },
+    );
+    return mapWpPost(wp);
+  } catch {
+    return null;
+  }
+}
+
+// ---------- Write operations (posts) ----------
+
+async function findOrCreateCategory(name: string): Promise<number> {
+  const cats = await wpFetch<WpCategory[]>(
+    `/categories?search=${encodeURIComponent(name)}&per_page=100`,
+    { cache: 'no-store' },
+  );
+  const match = cats.find(c => c.name.toLowerCase() === name.toLowerCase());
+  if (match) return match.id;
+
+  const newCat = await wpFetch<WpCategory>('/categories', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+    cache: 'no-store',
+  });
+  return newCat.id;
+}
+
+export async function createPost(input: BlogPostInput): Promise<BlogPost> {
+  const categoryId = await findOrCreateCategory(input.category);
+
+  const wpPost = await wpFetch<WpPost>('/posts?_embed', {
+    method: 'POST',
+    body: JSON.stringify({
+      title: input.title,
+      content: input.content,
+      excerpt: input.excerpt,
+      status: input.status === 'published' ? 'publish' : 'draft',
+      categories: [categoryId],
+      sticky: input.featured || false,
+    }),
+    cache: 'no-store',
+  });
+
+  return mapWpPost(wpPost);
+}
+
+export async function updatePost(
+  id: string,
+  input: Partial<BlogPostInput>,
+): Promise<BlogPost | null> {
+  try {
+    const body: Record<string, unknown> = {};
+    if (input.title !== undefined) body.title = input.title;
+    if (input.content !== undefined) body.content = input.content;
+    if (input.excerpt !== undefined) body.excerpt = input.excerpt;
+    if (input.status !== undefined) {
+      body.status = input.status === 'published' ? 'publish' : 'draft';
+    }
+    if (input.featured !== undefined) body.sticky = input.featured;
+    if (input.category !== undefined) {
+      body.categories = [await findOrCreateCategory(input.category)];
+    }
+
+    const wpPost = await wpFetch<WpPost>(`/posts/${id}?_embed`, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+      cache: 'no-store',
+    });
+
+    return mapWpPost(wpPost);
+  } catch {
+    return null;
+  }
+}
+
+export async function deletePost(id: string): Promise<boolean> {
+  try {
+    await wpFetch<unknown>(`/posts/${id}?force=true`, {
+      method: 'DELETE',
+      cache: 'no-store',
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function getAllSlugs(): Promise<string[]> {
+  const wpPosts = await wpFetch<Array<{ slug: string }>>(
+    '/posts?per_page=100&status=publish&_fields=slug',
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  return wpPosts.map(p => p.slug);
+}
+
+// ---------- Pages ----------
+
+export async function getAllPages(): Promise<WpPage[]> {
+  return wpFetch<WpPage[]>(
+    '/pages?per_page=100&status=publish',
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+}
+
+export async function getPageBySlug(slug: string): Promise<WpPage | null> {
+  const pages = await wpFetch<WpPage[]>(
+    `/pages?slug=${encodeURIComponent(slug)}&status=publish`,
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  return pages.length > 0 ? pages[0] : null;
+}
