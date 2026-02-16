@@ -48,12 +48,6 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
-// Get featured posts
-export async function getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
-  const posts = await getPublishedPosts();
-  return posts.filter(post => post.featured).slice(0, limit);
-}
-
 // Get latest posts
 export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
   const posts = await getPublishedPosts();
@@ -70,12 +64,6 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 export async function getPostById(id: string): Promise<BlogPost | null> {
   const posts = await getAllPosts();
   return posts.find(post => post.id === id) || null;
-}
-
-// Get posts by category
-export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
-  const posts = await getPublishedPosts();
-  return posts.filter(post => post.category === category);
 }
 
 // Create a new post
@@ -153,14 +141,6 @@ export async function deletePost(id: string): Promise<boolean> {
   await fs.writeFile(DATA_FILE, JSON.stringify(posts, null, 2));
 
   return true;
-}
-
-// Get all unique tags
-export async function getAllTags(): Promise<string[]> {
-  const posts = await getPublishedPosts();
-  const tags = new Set<string>();
-  posts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
-  return Array.from(tags).sort();
 }
 
 // Get all slugs for static generation
