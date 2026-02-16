@@ -32,48 +32,6 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-// Simple markdown-to-HTML converter for basic formatting
-function renderMarkdown(content: string): string {
-  return content
-    // Headers
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-gray-900 mt-8 mb-4">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-gray-900 mt-8 mb-6">$1</h1>')
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-    // Italic
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    // Blockquotes
-    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-[#01b3d4] pl-4 py-2 my-6 text-gray-700 italic bg-gray-50 rounded-r">$1</blockquote>')
-    // Unordered lists
-    .replace(/^\- (.*$)/gim, '<li class="ml-6 list-disc text-gray-600 mb-2">$1</li>')
-    // Ordered lists
-    .replace(/^\d+\. (.*$)/gim, '<li class="ml-6 list-decimal text-gray-600 mb-2">$1</li>')
-    // Horizontal rules
-    .replace(/^---$/gim, '<hr class="my-8 border-gray-200" />')
-    // Tables (basic support)
-    .replace(/\|(.+)\|/g, (match) => {
-      const cells = match.split('|').filter(cell => cell.trim());
-      if (cells.every(cell => cell.trim().match(/^-+$/))) {
-        return ''; // Skip separator rows
-      }
-      const isHeader = cells.some(cell => cell.includes('---'));
-      const cellTag = isHeader ? 'th' : 'td';
-      const cellClass = isHeader ? 'border border-gray-200 px-4 py-2 bg-gray-50 font-semibold text-left' : 'border border-gray-200 px-4 py-2';
-      return `<tr>${cells.map(cell => `<${cellTag} class="${cellClass}">${cell.trim()}</${cellTag}>`).join('')}</tr>`;
-    })
-    // Code blocks
-    .replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-6 text-sm"><code>$1</code></pre>')
-    // Inline code
-    .replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-[#01b3d4] px-1.5 py-0.5 rounded text-sm">$1</code>')
-    // Paragraphs (lines that don't match other patterns)
-    .replace(/^(?!<[hl]|<li|<block|<hr|<pre|<tr)(.+)$/gim, '<p class="text-gray-600 leading-relaxed mb-4">$1</p>')
-    // Wrap tables
-    .replace(/(<tr>[\s\S]*?<\/tr>)/g, '<table class="w-full border-collapse my-6">$1</table>')
-    // Clean up empty paragraphs
-    .replace(/<p class="[^"]*"><\/p>/g, '');
-}
-
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -153,7 +111,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <article className="py-12 px-4 sm:px-6 lg:px-8">
         <div
           className="mx-auto max-w-4xl prose-custom"
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+          dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
 

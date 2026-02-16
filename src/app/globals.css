@@ -119,3 +119,148 @@ html {
 .carousel-scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* WordPress content typography (used in blog post pages) */
+.prose-custom h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+.prose-custom h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.prose-custom h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.prose-custom h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-custom p {
+  color: #4b5563;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.prose-custom a {
+  color: var(--lumen-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-custom a:hover {
+  color: var(--lumen-primary-dark);
+}
+.prose-custom strong {
+  font-weight: 600;
+}
+.prose-custom ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #4b5563;
+}
+.prose-custom ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #4b5563;
+}
+.prose-custom li {
+  margin-bottom: 0.5rem;
+  line-height: 1.75;
+}
+.prose-custom blockquote {
+  border-left: 4px solid var(--lumen-primary);
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #374151;
+  font-style: italic;
+  background-color: #f9fafb;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+.prose-custom img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.prose-custom figure {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.prose-custom figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+.prose-custom pre {
+  background-color: #111827;
+  color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+.prose-custom code {
+  background-color: #f3f4f6;
+  color: var(--lumen-primary);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+.prose-custom pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+.prose-custom hr {
+  border-color: #e5e7eb;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.prose-custom table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.prose-custom th,
+.prose-custom td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+.prose-custom th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+.prose-custom .wp-block-image {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.prose-custom .wp-block-image img {
+  margin: 0 auto;
+}
+.prose-custom .wp-block-embed {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
