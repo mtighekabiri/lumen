@@ -13,8 +13,14 @@ interface PageProps {
 
 // Generate static paths for all posts
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
-  return slugs.map((slug) => ({ slug }));
+  try {
+    const slugs = await getAllSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch {
+    // If WordPress is unreachable during build, skip static generation.
+    // Pages will be rendered on-demand instead.
+    return [];
+  }
 }
 
 // Generate metadata for SEO
