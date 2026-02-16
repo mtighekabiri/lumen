@@ -34,5 +34,3 @@ export const CATEGORIES = [
   'Thought Leadership',
   'Product Updates',
 ] as const;
-
-export type Category = typeof CATEGORIES[number];
