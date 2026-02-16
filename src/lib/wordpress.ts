@@ -58,10 +58,11 @@ async function wpFetch<T>(
   init?: RequestInit & { next?: { revalidate?: number; tags?: string[] } },
 ): Promise<T> {
   if (!WP_URL) {
-    throw new Error(
-      'WORDPRESS_URL environment variable is not set. ' +
-      'See .env.example for required WordPress configuration.',
-    );
+    // During build, return empty data instead of throwing so that
+    // force-dynamic pages can pass the "collecting page data" phase.
+    // At runtime the env var is expected to be present.
+    console.warn('WORDPRESS_URL is not set – returning empty result for', endpoint);
+    return [] as unknown as T;
   }
 
   const url = `${WP_URL}/wp-json/wp/v2${endpoint}`;
