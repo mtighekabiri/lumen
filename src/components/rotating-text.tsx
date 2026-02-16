@@ -31,7 +31,7 @@ export function RotatingText() {
   return (
     <span className="inline-block relative h-[1em] overflow-hidden align-bottom">
       <span
-        className={`inline-block text-[#01b3d4] transition-transform duration-500 ease-in-out ${
+        className={`inline-block text-white transition-transform duration-500 ease-in-out ${
           isAnimating ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
         }`}
       >

@@ -8,7 +8,7 @@ import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
 import { HeroBanner } from "@/components/hero-banner";
-import { CaseStudyCarousel } from "@/components/case-study-carousel";
+import { CaseStudy3DCarousel } from "@/components/case-study-3d-carousel";
 import { caseStudies } from "@/data/case-studies";
 
 export default function Home() {
@@ -259,24 +259,24 @@ export default function Home() {
       </section>
 
       {/* Case Studies Section */}
-      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-center">
-            <CaseStudyCarousel caseStudies={caseStudies} />
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Case Studies
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                See how leading brands use Lumen&apos;s attention technology to transform their advertising performance.
-              </p>
-              <Link href="/news">
-                <Button variant="outline" size="lg" className="mt-8">
-                  View All Case Studies
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Case Studies
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              See how leading brands use Lumen&apos;s attention technology to transform their advertising performance.
+            </p>
+          </div>
+          <CaseStudy3DCarousel caseStudies={caseStudies} />
+          <div className="text-center mt-8">
+            <Link href="/news">
+              <Button variant="outline" size="lg">
+                View All Case Studies
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
