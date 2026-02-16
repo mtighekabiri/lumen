@@ -5,22 +5,12 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getPostBySlug, getPublishedPosts, getAllSlugs } from "@/lib/blog";
+import { getPostBySlug, getPublishedPosts } from "@/lib/blog";
+
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-// Generate static paths for all posts
-export async function generateStaticParams() {
-  try {
-    const slugs = await getAllSlugs();
-    return slugs.map((slug) => ({ slug }));
-  } catch {
-    // If WordPress is unreachable during build, skip static generation.
-    // Pages will be rendered on-demand instead.
-    return [];
-  }
 }
 
 // Generate metadata for SEO
