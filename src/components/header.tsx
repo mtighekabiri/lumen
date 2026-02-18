@@ -16,6 +16,7 @@ const searchableContent = [
   { title: "Out-of-Home", description: "Billboards, transit ads, and digital OOH", href: "/solutions#ooh", keywords: "out of home ooh billboards transit advertising digital screens posters" },
   { title: "Print & Packaging", description: "Print media and packaging design measurement", href: "/solutions#print", keywords: "print packaging magazine newspaper product shelf" },
   { title: "News", description: "Latest news and updates from Lumen", href: "/news", keywords: "news articles blog updates latest" },
+  { title: "Learn", description: "Resources for attention measurement", href: "/learn", keywords: "learn resources guides tutorials education" },
   { title: "FAQs", description: "Frequently asked questions about Lumen", href: "/faqs", keywords: "faqs frequently asked questions help support" },
   { title: "Predictive Eye-Tracking", description: "AI models trained on millions of real data points", href: "/faqs", keywords: "predictive eye tracking ai models data" },
   { title: "Contact Us", description: "Get in touch with the Lumen team", href: "/#contact", keywords: "contact get in touch email message form" },
@@ -37,6 +38,7 @@ export function Header() {
     { name: "About", href: "/about" },
     { name: "Solutions", href: "/solutions" },
     { name: "News", href: "/news" },
+    { name: "Learn", href: "/learn" },
     { name: "FAQs", href: "/faqs" },
   ];
 
