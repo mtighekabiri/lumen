@@ -3,13 +3,11 @@
 import { useState, useEffect } from "react";
 
 const words = [
-  "action",
-  "conversion",
-  "awareness",
-  "consideration",
   "profit",
   "sales",
+  "action",
   "memory",
+  "choice",
 ];
 
 export function RotatingText() {
