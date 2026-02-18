@@ -6,16 +6,11 @@ import Image from "next/image";
 import { Newspaper, Calendar, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import type { BlogPost } from "@/types/blog";
-import type { CaseStudy } from "@/data/case-studies";
 
-type CaseStudyCarouselProps =
-  | { posts: BlogPost[]; caseStudies?: never }
-  | { posts?: never; caseStudies: CaseStudy[] };
-
-export function CaseStudyCarousel({ posts, caseStudies }: CaseStudyCarouselProps) {
+export function CaseStudyCarousel({ posts }: { posts: BlogPost[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const itemCount = posts ? posts.length : caseStudies.length;
+  const itemCount = posts.length;
   const middleIndex = Math.floor(itemCount / 2);
 
   const markInteracted = useCallback(() => {
@@ -83,8 +78,7 @@ export function CaseStudyCarousel({ posts, caseStudies }: CaseStudyCarouselProps
         ref={containerRef}
         className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 carousel-scrollbar-hide"
       >
-        {posts
-          ? posts.map((post, index) => (
+        {posts.map((post, index) => (
               <Link
                 key={post.id}
                 href={`/news/${post.slug}`}
@@ -98,8 +92,17 @@ export function CaseStudyCarousel({ posts, caseStudies }: CaseStudyCarouselProps
                       : ""
                   }`}
                 >
-                  <div className="h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                    <Newspaper className="h-16 w-16 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
+                  <div className="relative h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
+                    {post.imageUrl ? (
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    ) : (
+                      <Newspaper className="h-16 w-16 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
+                    )}
                   </div>
                   <CardHeader>
                     <div className="flex items-center gap-2 mb-1">
@@ -132,36 +135,6 @@ export function CaseStudyCarousel({ posts, caseStudies }: CaseStudyCarouselProps
                         })}
                       </span>
                     </div>
-                  </CardHeader>
-                </Card>
-              </Link>
-            ))
-          : caseStudies.map((study, index) => (
-              <Link
-                key={study.id}
-                href={study.href}
-                data-carousel-card
-                className="flex-shrink-0 w-[80vw] sm:w-[70vw] md:w-[calc((100%-3rem)/3)] snap-center"
-              >
-                <Card
-                  className={`overflow-hidden h-full hover:shadow-lg transition-shadow cursor-pointer group ${
-                    index === middleIndex && !hasInteracted
-                      ? "animate-card-shake"
-                      : ""
-                  }`}
-                >
-                  <div className="relative h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                    <Image
-                      src={`/case-studies/${study.image}`}
-                      alt={study.headline}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="text-lg group-hover:text-[#01b3d4] transition-colors line-clamp-2">
-                      {study.headline}
-                    </CardTitle>
                   </CardHeader>
                 </Card>
               </Link>

@@ -3,17 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { CaseStudy } from "@/data/case-studies";
+import type { BlogPost } from "@/types/blog";
 
 export function CaseStudy3DCarousel({
-  caseStudies,
+  posts,
 }: {
-  caseStudies: CaseStudy[];
+  posts: BlogPost[];
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const total = caseStudies.length;
+  const total = posts.length;
 
   const prev = () =>
     setActiveIndex((i) => (i - 1 + total) % total);
@@ -27,6 +27,15 @@ export function CaseStudy3DCarousel({
     return offset;
   };
 
+  if (total === 0) {
+    return (
+      <div className="flex items-center justify-center h-48 text-gray-400">
+        <Newspaper className="h-12 w-12 mr-3" />
+        <span>No case studies available yet.</span>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full select-none">
       {/* Carousel container with perspective */}
@@ -38,7 +47,7 @@ export function CaseStudy3DCarousel({
           className="relative w-full h-full flex items-center justify-center"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {caseStudies.map((study, index) => {
+          {posts.map((post, index) => {
             const offset = getOffset(index);
             const absOffset = Math.abs(offset);
 
@@ -55,7 +64,7 @@ export function CaseStudy3DCarousel({
 
             return (
               <div
-                key={study.id}
+                key={post.id}
                 className="absolute transition-all duration-500 ease-out"
                 style={{
                   width: "280px",
@@ -66,13 +75,17 @@ export function CaseStudy3DCarousel({
               >
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                   {/* Image — top 50% */}
-                  <div className="relative w-full" style={{ height: "190px" }}>
-                    <Image
-                      src={`/case-studies/${study.image}`}
-                      alt={study.headline}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="relative w-full bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center" style={{ height: "190px" }}>
+                    {post.imageUrl ? (
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <Newspaper className="h-12 w-12 text-[#01b3d4]/60" />
+                    )}
                   </div>
                   {/* Content — bottom 50% */}
                   <div
@@ -80,9 +93,9 @@ export function CaseStudy3DCarousel({
                     style={{ height: "190px" }}
                   >
                     <h3 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-3">
-                      {study.headline}
+                      {post.title}
                     </h3>
-                    <Link href={study.href}>
+                    <Link href={`/news/${post.slug}`}>
                       <Button
                         variant="outline"
                         size="sm"

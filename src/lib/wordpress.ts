@@ -311,6 +311,32 @@ export async function getAllSlugs(): Promise<string[]> {
   }
 }
 
+// ---------- Posts by category ----------
+
+export async function getPostsByCategory(
+  categoryName: string,
+  limit: number = 10,
+): Promise<BlogPost[]> {
+  try {
+    // Look up the category ID by name
+    const cats = await wpFetch<WpCategory[]>(
+      `/categories?search=${encodeURIComponent(categoryName)}&per_page=10`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    const match = cats.find(c => c.name.toLowerCase() === categoryName.toLowerCase());
+    if (!match) return [];
+
+    const wpPosts = await wpFetch<WpPost[]>(
+      `/posts?per_page=${limit}&_embed&status=publish&categories=${match.id}&orderby=date&order=desc&${LISTING_FIELDS}`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.map(mapWpPost);
+  } catch (error) {
+    console.error(`Failed to fetch posts for category "${categoryName}":`, error);
+    return [];
+  }
+}
+
 // ---------- Pages ----------
 
 export async function getAllPages(): Promise<WpPage[]> {

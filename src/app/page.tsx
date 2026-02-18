@@ -10,9 +10,12 @@ import { LatestNews } from "@/components/latest-news";
 import { HeroBanner } from "@/components/hero-banner";
 import { CaseStudy3DCarousel } from "@/components/case-study-3d-carousel";
 import { LumenMediaCreative } from "@/components/lumen-media-creative";
-import { caseStudies } from "@/data/case-studies";
+import { getPostsByCategory } from "@/lib/blog";
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const caseStudyPosts = await getPostsByCategory('Case Study', 10);
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -74,7 +77,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
             {/* Carousel — left 60% */}
             <div className="lg:col-span-3">
-              <CaseStudy3DCarousel caseStudies={caseStudies} />
+              <CaseStudy3DCarousel posts={caseStudyPosts} />
             </div>
             {/* Text — right 40% */}
             <div className="lg:col-span-2 text-center lg:text-left">
