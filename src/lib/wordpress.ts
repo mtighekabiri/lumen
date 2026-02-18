@@ -125,35 +125,55 @@ function mapWpPost(wp: WpPost): BlogPost {
 // ---------- Read operations (posts) ----------
 
 export async function getAllPosts(): Promise<BlogPost[]> {
-  const wpPosts = await wpFetch<WpPost[]>(
-    '/posts?per_page=100&_embed&status=any',
-    { cache: 'no-store' },
-  );
-  return wpPosts.map(mapWpPost);
+  try {
+    const wpPosts = await wpFetch<WpPost[]>(
+      '/posts?per_page=100&_embed&status=any',
+      { cache: 'no-store' },
+    );
+    return wpPosts.map(mapWpPost);
+  } catch (error) {
+    console.error('Failed to fetch all posts:', error);
+    return [];
+  }
 }
 
 export async function getPublishedPosts(): Promise<BlogPost[]> {
-  const wpPosts = await wpFetch<WpPost[]>(
-    '/posts?per_page=100&_embed&status=publish&orderby=date&order=desc',
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
-  return wpPosts.map(mapWpPost);
+  try {
+    const wpPosts = await wpFetch<WpPost[]>(
+      '/posts?per_page=100&_embed&status=publish&orderby=date&order=desc',
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.map(mapWpPost);
+  } catch (error) {
+    console.error('Failed to fetch published posts:', error);
+    return [];
+  }
 }
 
 export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
-  const wpPosts = await wpFetch<WpPost[]>(
-    `/posts?per_page=${limit}&_embed&status=publish&orderby=date&order=desc`,
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
-  return wpPosts.map(mapWpPost);
+  try {
+    const wpPosts = await wpFetch<WpPost[]>(
+      `/posts?per_page=${limit}&_embed&status=publish&orderby=date&order=desc`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.map(mapWpPost);
+  } catch (error) {
+    console.error('Failed to fetch latest posts:', error);
+    return [];
+  }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const wpPosts = await wpFetch<WpPost[]>(
-    `/posts?slug=${encodeURIComponent(slug)}&_embed&status=any`,
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
-  return wpPosts.length > 0 ? mapWpPost(wpPosts[0]) : null;
+  try {
+    const wpPosts = await wpFetch<WpPost[]>(
+      `/posts?slug=${encodeURIComponent(slug)}&_embed&status=any`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.length > 0 ? mapWpPost(wpPosts[0]) : null;
+  } catch (error) {
+    console.error(`Failed to fetch post by slug "${slug}":`, error);
+    return null;
+  }
 }
 
 export async function getPostById(id: string): Promise<BlogPost | null> {
@@ -247,26 +267,41 @@ export async function deletePost(id: string): Promise<boolean> {
 }
 
 export async function getAllSlugs(): Promise<string[]> {
-  const wpPosts = await wpFetch<Array<{ slug: string }>>(
-    '/posts?per_page=100&status=publish&_fields=slug',
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
-  return wpPosts.map(p => p.slug);
+  try {
+    const wpPosts = await wpFetch<Array<{ slug: string }>>(
+      '/posts?per_page=100&status=publish&_fields=slug',
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.map(p => p.slug);
+  } catch (error) {
+    console.error('Failed to fetch all slugs:', error);
+    return [];
+  }
 }
 
 // ---------- Pages ----------
 
 export async function getAllPages(): Promise<WpPage[]> {
-  return wpFetch<WpPage[]>(
-    '/pages?per_page=100&status=publish',
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
+  try {
+    return await wpFetch<WpPage[]>(
+      '/pages?per_page=100&status=publish',
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+  } catch (error) {
+    console.error('Failed to fetch all pages:', error);
+    return [];
+  }
 }
 
 export async function getPageBySlug(slug: string): Promise<WpPage | null> {
-  const pages = await wpFetch<WpPage[]>(
-    `/pages?slug=${encodeURIComponent(slug)}&status=publish`,
-    { next: { revalidate: REVALIDATE_SECONDS } },
-  );
-  return pages.length > 0 ? pages[0] : null;
+  try {
+    const pages = await wpFetch<WpPage[]>(
+      `/pages?slug=${encodeURIComponent(slug)}&status=publish`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return pages.length > 0 ? pages[0] : null;
+  } catch (error) {
+    console.error(`Failed to fetch page by slug "${slug}":`, error);
+    return null;
+  }
 }
