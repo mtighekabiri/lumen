@@ -4,6 +4,7 @@ export {
   getLatestPosts,
   getPostBySlug,
   getPostById,
+  getRelatedPosts,
   createPost,
   updatePost,
   deletePost,

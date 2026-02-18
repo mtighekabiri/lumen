@@ -44,6 +44,7 @@ const WP_URL = process.env.WORDPRESS_URL || '';
 const WP_USER = process.env.WORDPRESS_USERNAME || '';
 const WP_APP_PASSWORD = process.env.WORDPRESS_APP_PASSWORD || '';
 const REVALIDATE_SECONDS = 60;
+const FETCH_TIMEOUT_MS = 15_000; // 15-second timeout for WordPress API calls
 
 // ---------- Helpers ----------
 
@@ -67,21 +68,29 @@ async function wpFetch<T>(
 
   const url = `${WP_URL}/wp-json/wp/v2${endpoint}`;
 
-  const res = await fetch(url, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders(),
-      ...(init?.headers as Record<string, string> | undefined),
-    },
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => '');
-    throw new Error(`WordPress API ${res.status}: ${res.statusText} – ${body}`);
+  try {
+    const res = await fetch(url, {
+      ...init,
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders(),
+        ...(init?.headers as Record<string, string> | undefined),
+      },
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      throw new Error(`WordPress API ${res.status}: ${res.statusText} – ${body}`);
+    }
+
+    return res.json() as Promise<T>;
+  } finally {
+    clearTimeout(timeout);
   }
-
-  return res.json() as Promise<T>;
 }
 
 function decodeHtmlEntities(html: string): string {
@@ -110,8 +119,9 @@ function mapWpPost(wp: WpPost): BlogPost {
     slug: wp.slug,
     title: decodeHtmlEntities(stripHtmlTags(wp.title.rendered)),
     excerpt: decodeHtmlEntities(stripHtmlTags(wp.excerpt.rendered)),
-    content: wp.content.rendered,
+    content: wp.content?.rendered ?? '',
     category: categories[0]?.name || 'Uncategorized',
+    categoryIds: wp.categories || [],
     author: author?.name || 'Unknown',
     publishedAt: wp.date,
     updatedAt: wp.modified,
@@ -121,6 +131,9 @@ function mapWpPost(wp: WpPost): BlogPost {
     status: wp.status === 'publish' ? 'published' : 'draft',
   };
 }
+
+// Fields needed for listing pages (excludes heavy content field)
+const LISTING_FIELDS = '_fields=id,slug,title,excerpt,date,modified,status,sticky,categories,tags,_links';
 
 // ---------- Read operations (posts) ----------
 
@@ -140,7 +153,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 export async function getPublishedPosts(): Promise<BlogPost[]> {
   try {
     const wpPosts = await wpFetch<WpPost[]>(
-      '/posts?per_page=100&_embed&status=publish&orderby=date&order=desc',
+      `/posts?per_page=100&_embed&status=publish&orderby=date&order=desc&${LISTING_FIELDS}`,
       { next: { revalidate: REVALIDATE_SECONDS } },
     );
     return wpPosts.map(mapWpPost);
@@ -153,7 +166,7 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
 export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
   try {
     const wpPosts = await wpFetch<WpPost[]>(
-      `/posts?per_page=${limit}&_embed&status=publish&orderby=date&order=desc`,
+      `/posts?per_page=${limit}&_embed&status=publish&orderby=date&order=desc&${LISTING_FIELDS}`,
       { next: { revalidate: REVALIDATE_SECONDS } },
     );
     return wpPosts.map(mapWpPost);
@@ -173,6 +186,25 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   } catch (error) {
     console.error(`Failed to fetch post by slug "${slug}":`, error);
     return null;
+  }
+}
+
+export async function getRelatedPosts(
+  excludeId: string,
+  categoryIds: number[],
+  limit: number = 3,
+): Promise<BlogPost[]> {
+  if (categoryIds.length === 0) return [];
+  try {
+    const cats = categoryIds.join(',');
+    const wpPosts = await wpFetch<WpPost[]>(
+      `/posts?per_page=${limit + 1}&_embed&status=publish&categories=${cats}&exclude=${excludeId}&orderby=date&order=desc&${LISTING_FIELDS}`,
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    return wpPosts.slice(0, limit).map(mapWpPost);
+  } catch (error) {
+    console.error('Failed to fetch related posts:', error);
+    return [];
   }
 }
 

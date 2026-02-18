@@ -5,6 +5,7 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   category: string;
+  categoryIds: number[];
   author: string;
   publishedAt: string;
   updatedAt: string;

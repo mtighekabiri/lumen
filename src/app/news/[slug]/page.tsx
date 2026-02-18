@@ -5,7 +5,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getPostBySlug, getPublishedPosts } from "@/lib/blog";
+import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
 
 export const dynamic = 'force-dynamic';
 
@@ -37,10 +37,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   // Get related posts (same category, excluding current)
-  const allPosts = await getPublishedPosts();
-  const relatedPosts = allPosts
-    .filter(p => p.id !== post.id && p.category === post.category)
-    .slice(0, 3);
+  const relatedPosts = await getRelatedPosts(post.id, post.categoryIds, 3);
 
   return (
     <div className="min-h-screen bg-white">
