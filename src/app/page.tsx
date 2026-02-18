@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BarChart3, Target, Zap, LineChart, Globe, ArrowRight, Check, Mail, ChevronDown, BookOpen, Heart, Lightbulb, Shield } from "lucide-react";
+import { ArrowRight, Check, Mail, ChevronDown, Heart, Lightbulb, Shield } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -71,35 +71,6 @@ export default async function Home() {
       {/* Lumen Media & Creative Strip */}
       <LumenMediaCreative />
 
-      {/* Case Studies Section */}
-      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-            {/* Carousel — left 60% */}
-            <div className="lg:col-span-3">
-              <CaseStudy3DCarousel posts={caseStudyPosts} />
-            </div>
-            {/* Text — right 40% */}
-            <div className="lg:col-span-2 text-center lg:text-left">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Case Studies
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                See how leading brands use Lumen&apos;s attention technology to transform their advertising performance.
-              </p>
-              <div className="mt-8">
-                <Link href="/news">
-                  <Button variant="outline" size="lg">
-                    View All Case Studies
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* About Section */}
       <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
@@ -168,6 +139,35 @@ export default async function Home() {
                     </div>
                   </CardHeader>
                 </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies Section */}
+      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+            {/* Carousel — left 60% */}
+            <div className="lg:col-span-3">
+              <CaseStudy3DCarousel posts={caseStudyPosts} />
+            </div>
+            {/* Text — right 40% */}
+            <div className="lg:col-span-2 text-center lg:text-left">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Case Studies
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                See how leading brands use Lumen&apos;s attention technology to transform their advertising performance.
+              </p>
+              <div className="mt-8">
+                <Link href="/news">
+                  <Button variant="outline" size="lg">
+                    View All Case Studies
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -296,94 +296,6 @@ export default async function Home() {
 
       {/* News Section */}
       <LatestNews />
-
-      {/* Learn Section */}
-      <section id="learn" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Learn
-            </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Resources to help you understand and leverage attention measurement
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <BookOpen className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>Getting Started Guide</CardTitle>
-                <CardDescription>
-                  Learn the basics of attention measurement and how to interpret your results.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>Understanding Metrics</CardTitle>
-                <CardDescription>
-                  Deep dive into attention metrics: view time, attention rate, and more.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <Target className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>Best Practices</CardTitle>
-                <CardDescription>
-                  Tips and strategies for optimizing your creative based on attention data.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <LineChart className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>ROI Calculator</CardTitle>
-                <CardDescription>
-                  Calculate the potential return on investment from attention optimization.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>Webinars</CardTitle>
-                <CardDescription>
-                  Watch recorded sessions from industry experts on attention-first advertising.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4">
-                  <Globe className="h-6 w-6 text-[#01b3d4]" />
-                </div>
-                <CardTitle>Industry Reports</CardTitle>
-                <CardDescription>
-                  Access our research reports on attention trends across industries.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       {/* FAQs Section */}
       <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
