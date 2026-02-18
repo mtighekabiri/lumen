@@ -71,6 +71,9 @@ export default async function Home() {
       {/* Lumen Media & Creative Strip */}
       <LumenMediaCreative />
 
+      {/* News Section */}
+      <LatestNews />
+
       {/* About Section */}
       <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
@@ -293,9 +296,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* News Section */}
-      <LatestNews />
 
       {/* FAQs Section */}
       <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
