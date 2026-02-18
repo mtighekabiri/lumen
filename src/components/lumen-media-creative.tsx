@@ -49,9 +49,9 @@ export function LumenMediaCreative() {
             <Image
               src="/logo.png"
               alt="Lumen"
-              width={180}
-              height={40}
-              className="h-9 w-auto"
+              width={140}
+              height={32}
+              className="h-7 w-auto"
             />
             <p className="text-2xl sm:text-3xl font-bold text-[#01b3d4] mt-2">
               Media
@@ -74,28 +74,28 @@ export function LumenMediaCreative() {
 
           {/* Right — Lumen Creative with heatmap background */}
           <div className="relative flex flex-col items-start text-left p-10 sm:p-14 border-t md:border-t-0 md:border-l border-gray-200 overflow-hidden bg-white">
-            {/* Heatmap background layer — red (high) → yellow → green → light blue → white (none) */}
+            {/* Heatmap background layer — shifted right & down so text stays legible */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0"
               style={{
                 background: [
                   // Hot-spot core: intense red
-                  "radial-gradient(ellipse 18% 20% at 50% 35%, rgba(220,0,0,0.55) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 18% 20% at 68% 58%, rgba(220,0,0,0.55) 0%, transparent 100%)",
                   // Warm ring: yellow
-                  "radial-gradient(ellipse 30% 34% at 50% 35%, rgba(255,220,0,0.40) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 30% 34% at 68% 58%, rgba(255,220,0,0.40) 0%, transparent 100%)",
                   // Mid ring: green
-                  "radial-gradient(ellipse 42% 46% at 50% 35%, rgba(50,205,50,0.28) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 42% 46% at 68% 58%, rgba(50,205,50,0.28) 0%, transparent 100%)",
                   // Cool ring: light blue
-                  "radial-gradient(ellipse 56% 60% at 50% 35%, rgba(100,200,255,0.20) 0%, transparent 100%)",
-                  // Secondary hot-spot (lower-left)
-                  "radial-gradient(ellipse 14% 16% at 28% 68%, rgba(220,0,0,0.35) 0%, transparent 100%)",
-                  "radial-gradient(ellipse 24% 26% at 28% 68%, rgba(255,220,0,0.25) 0%, transparent 100%)",
-                  "radial-gradient(ellipse 34% 38% at 28% 68%, rgba(50,205,50,0.16) 0%, transparent 100%)",
-                  // Tertiary spot (right side)
-                  "radial-gradient(ellipse 12% 14% at 75% 52%, rgba(255,100,0,0.22) 0%, transparent 100%)",
-                  "radial-gradient(ellipse 22% 24% at 75% 52%, rgba(255,220,0,0.15) 0%, transparent 100%)",
-                  "radial-gradient(ellipse 32% 34% at 75% 52%, rgba(100,200,255,0.10) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 56% 60% at 68% 58%, rgba(100,200,255,0.20) 0%, transparent 100%)",
+                  // Secondary hot-spot (bottom-center)
+                  "radial-gradient(ellipse 14% 16% at 48% 82%, rgba(220,0,0,0.35) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 24% 26% at 48% 82%, rgba(255,220,0,0.25) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 34% 38% at 48% 82%, rgba(50,205,50,0.16) 0%, transparent 100%)",
+                  // Tertiary spot (far right)
+                  "radial-gradient(ellipse 12% 14% at 85% 68%, rgba(255,100,0,0.22) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 22% 24% at 85% 68%, rgba(255,220,0,0.15) 0%, transparent 100%)",
+                  "radial-gradient(ellipse 32% 34% at 85% 68%, rgba(100,200,255,0.10) 0%, transparent 100%)",
                   // Base: white / no attention
                   "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)",
                 ].join(", "),
@@ -105,9 +105,9 @@ export function LumenMediaCreative() {
               <Image
                 src="/logo.png"
                 alt="Lumen"
-                width={180}
-                height={40}
-                className="h-9 w-auto"
+                width={140}
+                height={32}
+                className="h-7 w-auto"
               />
               <p className="text-2xl sm:text-3xl font-bold text-[#01b3d4] mt-2">
                 Creative
