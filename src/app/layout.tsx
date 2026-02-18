@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Lumen Research - Attention-First Advertising Platform",
   description: "Measure attention across all online and offline environments. Lumen's predictive eye-tracking technology helps you create more effective advertising campaigns.",
   keywords: ["attention measurement", "eye-tracking", "advertising analytics", "ad effectiveness", "attention metrics"],
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

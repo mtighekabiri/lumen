@@ -5,6 +5,7 @@ export {
   getPostBySlug,
   getPostById,
   getRelatedPosts,
+  getPostsByCategory,
   createPost,
   updatePost,
   deletePost,
