@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Menu, X, Search } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 
 const searchableContent = [
@@ -16,13 +16,6 @@ const searchableContent = [
   { title: "Out-of-Home", description: "Billboards, transit ads, and digital OOH", href: "/solutions#ooh", keywords: "out of home ooh billboards transit advertising digital screens posters" },
   { title: "Print & Packaging", description: "Print media and packaging design measurement", href: "/solutions#print", keywords: "print packaging magazine newspaper product shelf" },
   { title: "News", description: "Latest news and updates from Lumen", href: "/news", keywords: "news articles blog updates latest" },
-  { title: "Learn", description: "Resources for attention measurement", href: "/learn", keywords: "learn resources guides tutorials education" },
-  { title: "Getting Started Guide", description: "Learn the basics of attention measurement", href: "/learn#getting-started", keywords: "getting started guide basics beginner" },
-  { title: "Understanding Metrics", description: "View time, attention rate, and more", href: "/learn#metrics", keywords: "metrics view time attention rate data analytics" },
-  { title: "Best Practices", description: "Tips for optimizing creative with attention data", href: "/learn#best-practices", keywords: "best practices tips strategies optimization creative" },
-  { title: "ROI Calculator", description: "Calculate return on investment from attention optimization", href: "/learn#roi", keywords: "roi calculator return investment" },
-  { title: "Webinars", description: "Recorded sessions from industry experts", href: "/learn#webinars", keywords: "webinars video sessions experts presentations" },
-  { title: "Industry Reports", description: "Research reports on attention trends", href: "/learn#reports", keywords: "industry reports research trends whitepapers" },
   { title: "FAQs", description: "Frequently asked questions about Lumen", href: "/faqs", keywords: "faqs frequently asked questions help support" },
   { title: "Predictive Eye-Tracking", description: "AI models trained on millions of real data points", href: "/faqs", keywords: "predictive eye tracking ai models data" },
   { title: "Contact Us", description: "Get in touch with the Lumen team", href: "/#contact", keywords: "contact get in touch email message form" },
@@ -37,12 +30,13 @@ export function Header() {
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   const navigation = [
+    { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Solutions", href: "/solutions" },
     { name: "News", href: "/news" },
-    { name: "Learn", href: "/learn" },
     { name: "FAQs", href: "/faqs" },
   ];
 
@@ -128,15 +122,22 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:space-x-6">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-gray-600 hover:text-[#01b3d4] transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? "text-[#01b3d4] border-b-2 border-[#01b3d4] pb-0.5"
+                      : "text-gray-600 hover:text-[#01b3d4]"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Desktop Search + CTA */}
@@ -287,16 +288,21 @@ export function Header() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 space-y-4 border-t border-gray-100">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block text-sm font-medium text-gray-600 hover:text-[#01b3d4]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`block text-sm font-medium ${
+                    isActive ? "text-[#01b3d4]" : "text-gray-600 hover:text-[#01b3d4]"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
             <div className="pt-4 border-t border-gray-100">
               <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full">Get In Touch</Button>
