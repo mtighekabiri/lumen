@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Check, Mail, ChevronDown, Heart, Lightbulb, Shield } from "lucide-react";
+import { ArrowRight, Mail, ChevronDown } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RotatingText } from "@/components/rotating-text";
 import { BrandCarousel } from "@/components/brand-carousel";
 import { LatestNews } from "@/components/latest-news";
@@ -71,79 +70,8 @@ export default async function Home() {
       {/* Lumen Media & Creative Strip */}
       <LumenMediaCreative />
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                About Lumen Research
-              </h2>
-              <p className="mt-6 text-lg text-gray-600">
-                Founded in 2013, Lumen Research is The Attention Technology Company. We power attention-first advertising through our proprietary predictive eye-tracking technology.
-              </p>
-              <p className="mt-4 text-gray-600">
-                Our LAMP (Lumen Attention Measurement &amp; Planning) platform enables you to measure attention across all online and offline environments in a single dashboard. Compare your advertising investments to find out what works, what doesn&apos;t, and where you should spend future budget.
-              </p>
-              <p className="mt-4 text-gray-600">
-                With Attention Bidding, you can buy media based on predicted attention rather than just viewability. By actually knowing when an ad is seen and for how long, Lumen&apos;s clients create more effective and robust advertising campaigns.
-              </p>
-              <div className="mt-8 grid grid-cols-3 gap-8">
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">650K+</p>
-                  <p className="text-sm text-gray-600">Eye-Tracking Sessions</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">30B+</p>
-                  <p className="text-sm text-gray-600">Programmatic Impressions</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-[#01b3d4]">2013</p>
-                  <p className="text-sm text-gray-600">Founded</p>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900">Our Values</h3>
-              <div className="grid grid-cols-1 gap-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4 py-4">
-                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                      <Heart className="h-6 w-6 text-[#01b3d4]" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Kind</CardTitle>
-                      <CardDescription className="mt-1">We treat everyone with respect and empathy</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4 py-4">
-                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                      <Lightbulb className="h-6 w-6 text-[#01b3d4]" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Brilliant</CardTitle>
-                      <CardDescription className="mt-1">We bring innovative thinking to every challenge</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4 py-4">
-                    <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                      <Shield className="h-6 w-6 text-[#01b3d4]" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Honest</CardTitle>
-                      <CardDescription className="mt-1">We deliver transparent and truthful insights</CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* News Section */}
+      <LatestNews />
 
       {/* Case Studies Section */}
       <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -173,129 +101,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Solutions Section */}
-      <section id="solutions" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Our Solutions
-            </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Powered by LAMP (Lumen Attention Measurement &amp; Planning) and Attention Bidding technology.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-6">
-              <CardHeader>
-                <CardTitle className="text-xl">Digital Advertising</CardTitle>
-                <CardDescription className="text-base mt-2">
-                  Measure attention for display, video, social, and native ads. Understand which placements
-                  and creatives capture the most attention and drive results.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Display & banner ads
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Video pre-roll & mid-roll
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Social media ads
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6">
-              <CardHeader>
-                <CardTitle className="text-xl">TV & Connected TV</CardTitle>
-                <CardDescription className="text-base mt-2">
-                  Bring attention measurement to the big screen. Compare performance across linear TV
-                  and streaming platforms.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Linear TV commercials
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Streaming & CTV ads
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Cross-platform comparison
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6">
-              <CardHeader>
-                <CardTitle className="text-xl">Out-of-Home</CardTitle>
-                <CardDescription className="text-base mt-2">
-                  Measure attention for billboards, transit ads, and digital out-of-home placements
-                  to optimize your OOH investments.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Billboards & posters
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Transit advertising
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Digital OOH screens
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6">
-              <CardHeader>
-                <CardTitle className="text-xl">Print & Packaging</CardTitle>
-                <CardDescription className="text-base mt-2">
-                  Understand how consumers engage with print media and packaging designs to
-                  optimize shelf impact and ad placement.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Magazine & newspaper ads
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Product packaging
-                  </li>
-                  <li className="flex items-center text-gray-600">
-                    <Check className="h-5 w-5 text-[#01b3d4] mr-2" />
-                    Point-of-sale materials
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* News Section */}
-      <LatestNews />
 
       {/* FAQs Section */}
       <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">

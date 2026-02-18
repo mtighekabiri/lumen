@@ -31,11 +31,11 @@ export async function LatestNews() {
   return (
     <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="mx-auto max-w-7xl">
-        <div className="text-center mb-12">
+        <div className="mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Latest News
           </h2>
-          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-gray-600">
             Stay updated with the latest from Lumen Research
           </p>
         </div>
