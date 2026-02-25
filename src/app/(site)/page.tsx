@@ -76,9 +76,10 @@ export default function Home() {
       {/* News Section — streamed independently */}
       <Suspense fallback={
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="mx-auto max-w-7xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"><T id="home.latestNews" /></h2>
-            <p className="mt-4 text-lg text-gray-600"><T id="home.loadingNews" /></p>
+          <div className="mx-auto max-w-7xl">
+            <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]"><T id="home.latestNews" /></p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl max-w-2xl"><T id="news.stayUpdated" /></h2>
+            <p className="mt-6 text-gray-400"><T id="home.loadingNews" /></p>
           </div>
         </section>
       }>
