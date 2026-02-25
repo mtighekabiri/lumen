@@ -13,7 +13,7 @@ export const revalidate = 60;
 
 const HeroBanner = dynamic(
   () => import("@/components/hero-banner").then((m) => ({ default: m.HeroBanner })),
-  { loading: () => <div className="relative w-full pt-16"><div className="w-full aspect-[9/12] md:aspect-[16/6.75] bg-gray-900" /></div> },
+  { loading: () => <div className="relative w-full pt-16"><div className="w-full aspect-[9/12] md:aspect-[16/4.725] bg-gray-900" /></div> },
 );
 const BrandCarousel = dynamic(
   () => import("@/components/brand-carousel").then((m) => ({ default: m.BrandCarousel })),
