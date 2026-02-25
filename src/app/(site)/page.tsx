@@ -1,24 +1,40 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { ArrowRight, Mail, ChevronDown } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { RotatingText } from "@/components/rotating-text";
-import { BrandCarousel } from "@/components/brand-carousel";
-import { LatestNews } from "@/components/latest-news";
-import { HeroBanner } from "@/components/hero-banner";
-import { CaseStudy3DCarousel } from "@/components/case-study-3d-carousel";
-import { LumenMediaCreative } from "@/components/lumen-media-creative";
 import { getPostsByCategory } from "@/lib/blog";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
-export default async function Home() {
-  const caseStudyPosts = await getPostsByCategory('Case Study', 10);
+const HeroBanner = dynamic(
+  () => import("@/components/hero-banner").then((m) => ({ default: m.HeroBanner })),
+  { loading: () => <div className="relative w-full pt-16"><div className="w-full aspect-[9/12] md:aspect-[16/6.75] bg-gray-900" /></div> },
+);
+const BrandCarousel = dynamic(
+  () => import("@/components/brand-carousel").then((m) => ({ default: m.BrandCarousel })),
+);
+const LumenMediaCreative = dynamic(
+  () => import("@/components/lumen-media-creative").then((m) => ({ default: m.LumenMediaCreative })),
+);
+const CaseStudy3DCarousel = dynamic(
+  () => import("@/components/case-study-3d-carousel").then((m) => ({ default: m.CaseStudy3DCarousel })),
+);
+
+async function LatestNewsSection() {
+  const { LatestNews } = await import("@/components/latest-news");
+  return <LatestNews />;
+}
+
+async function CaseStudiesCarousel() {
+  const caseStudyPosts = await getPostsByCategory("Case Study", 10);
+  return <CaseStudy3DCarousel posts={caseStudyPosts} />;
+}
+
+export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-
+    <>
       {/* Hero Banner Video */}
       <HeroBanner>
         <div className="text-center px-4">
@@ -43,45 +59,42 @@ export default async function Home() {
 
       {/* Brand Logo Carousel */}
       <BrandCarousel id="brands" brands={[
-        "dentsu.png",
-        "adidas.png",
-        "amazon.png",
-        "anzu.png",
-        "bbc.png",
-        "carlsberg.png",
-        "condenast.png",
-        "criteo.png",
-        "facebook.png",
-        "google.png",
-        "heineken.png",
-        "ias.png",
-        "mastercard.png",
-        "pinterest.png",
-        "seedtag.png",
-        "snapchat.png",
-        "teads.png",
-        "thetradedesk.png",
-        "tiktok.png",
-        "tvision.png",
-        "workday.png",
+        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
+        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
+        "google.png", "heineken.png", "ias.png", "mastercard.png",
+        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
+        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
         "youtube.png",
       ]} />
 
       {/* Lumen Media & Creative Strip */}
       <LumenMediaCreative />
 
-      {/* News Section */}
-      <LatestNews />
+      {/* News Section — streamed independently */}
+      <Suspense fallback={
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="mx-auto max-w-7xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Latest News</h2>
+            <p className="mt-4 text-lg text-gray-600">Loading latest news&hellip;</p>
+          </div>
+        </section>
+      }>
+        <LatestNewsSection />
+      </Suspense>
 
-      {/* Case Studies Section */}
+      {/* Case Studies Section — streamed independently */}
       <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-            {/* Carousel — left 60% */}
             <div className="lg:col-span-3">
-              <CaseStudy3DCarousel posts={caseStudyPosts} />
+              <Suspense fallback={
+                <div className="flex items-center justify-center" style={{ height: "440px" }}>
+                  <p className="text-gray-400">Loading case studies&hellip;</p>
+                </div>
+              }>
+                <CaseStudiesCarousel />
+              </Suspense>
             </div>
-            {/* Text — right 40% */}
             <div className="lg:col-span-2 text-center lg:text-left">
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                 Case Studies
@@ -236,8 +249,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

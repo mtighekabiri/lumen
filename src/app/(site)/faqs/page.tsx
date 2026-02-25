@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown, HelpCircle } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 
 const faqs = [
@@ -94,8 +92,7 @@ const faqs = [
 
 export default function FAQsPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
+    <>
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -184,7 +181,6 @@ export default function FAQsPage() {
         </div>
       </section>
 
-      <Footer />
-    </div>
+    </>
   );
 }

@@ -141,7 +141,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   try {
     const wpPosts = await wpFetch<WpPost[]>(
       '/posts?per_page=100&_embed&status=any',
-      { cache: 'no-store' },
+      { next: { revalidate: REVALIDATE_SECONDS } },
     );
     return wpPosts.map(mapWpPost);
   } catch (error) {
@@ -212,7 +212,7 @@ export async function getPostById(id: string): Promise<BlogPost | null> {
   try {
     const wp = await wpFetch<WpPost>(
       `/posts/${id}?_embed`,
-      { cache: 'no-store' },
+      { next: { revalidate: REVALIDATE_SECONDS } },
     );
     return mapWpPost(wp);
   } catch {

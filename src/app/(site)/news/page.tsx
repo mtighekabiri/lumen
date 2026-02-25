@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { NewsFilter } from "@/components/news-filter";
 import { getPublishedPosts } from "@/lib/blog";
 import { CATEGORIES } from "@/types/blog";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function NewsPage() {
   const posts = await getPublishedPosts();
@@ -18,9 +16,7 @@ export default async function NewsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-
+    <>
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
@@ -54,8 +50,6 @@ export default async function NewsPage() {
           </Link>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

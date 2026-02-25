@@ -50,6 +50,7 @@ export function HeroBanner({ children }: HeroBannerProps) {
           loop
           muted
           playsInline
+          preload="metadata"
         >
           <source src="/hero-banner.mp4" type="video/mp4" />
         </video>

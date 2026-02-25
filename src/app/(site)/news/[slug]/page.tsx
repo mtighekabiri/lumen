@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, User, Tag, ArrowRight, Newspaper } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,13 +34,12 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  // Get related posts (same category, excluding current)
-  const relatedPosts = await getRelatedPosts(post.id, post.categoryIds, 3);
+  // Fetch related posts in parallel (non-blocking)
+  const relatedPostsPromise = getRelatedPosts(post.id, post.categoryIds, 3);
+  const relatedPosts = await relatedPostsPromise;
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-
+    <>
       {/* Article Header */}
       <section className="pt-32 pb-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-4xl">
@@ -154,8 +151,6 @@ export default async function BlogPostPage({ params }: PageProps) {
           </Link>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }
