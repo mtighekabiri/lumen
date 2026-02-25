@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { LanguageProvider } from "@/context/language-context";
 
 const geistSans = localFont({
   src: "../../node_modules/next/dist/next-devtools/server/font/geist-latin.woff2",
@@ -39,7 +40,9 @@ export default function RootLayout({
         )}
       </head>
       <body className="font-sans antialiased bg-white text-gray-900">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

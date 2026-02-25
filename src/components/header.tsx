@@ -6,6 +6,9 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "./ui/button";
+import { LanguageSwitcher } from "./language-switcher";
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
 
 const searchableContent = [
   { title: "Home", description: "Main landing page", href: "/", keywords: "home landing page attention technology" },
@@ -32,14 +35,15 @@ export function Header() {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { language } = useLanguage();
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Solutions", href: "/solutions" },
-    { name: "News", href: "/news" },
-    { name: "Learn", href: "/learn" },
-    { name: "FAQs", href: "/faqs" },
+    { name: t(language, "nav.home"), href: "/" },
+    { name: t(language, "nav.about"), href: "/about" },
+    { name: t(language, "nav.solutions"), href: "/solutions" },
+    { name: t(language, "nav.news"), href: "/news" },
+    { name: t(language, "nav.learn"), href: "/learn" },
+    { name: t(language, "nav.faqs"), href: "/faqs" },
   ];
 
   const searchResults = searchQuery.trim().length > 0
@@ -128,7 +132,7 @@ export function Header() {
               const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   className={`text-sm font-medium transition-colors ${
                     isActive
@@ -142,8 +146,8 @@ export function Header() {
             })}
           </div>
 
-          {/* Desktop Search + CTA */}
-          <div className="hidden lg:flex lg:items-center lg:gap-3" ref={searchContainerRef}>
+          {/* Desktop Search + Language + CTA */}
+          <div className="hidden lg:flex lg:items-center lg:gap-2" ref={searchContainerRef}>
             {/* Search area */}
             <div className="relative flex items-center">
               <button
@@ -170,7 +174,7 @@ export function Header() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search the site..."
+                  placeholder={t(language, "header.searchPlaceholder")}
                   className="w-full h-10 px-4 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
                 />
               </div>
@@ -191,17 +195,20 @@ export function Header() {
                     ))
                   ) : (
                     <div className="px-4 py-6 text-center">
-                      <p className="text-sm text-gray-500">No results found</p>
-                      <p className="text-xs text-gray-400 mt-1">Try a different search term</p>
+                      <p className="text-sm text-gray-500">{t(language, "header.noResults")}</p>
+                      <p className="text-xs text-gray-400 mt-1">{t(language, "header.tryDifferent")}</p>
                     </div>
                   )}
                 </div>
               )}
             </div>
 
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
             {/* Get In Touch button */}
             <Link href="/#contact">
-              <Button>Get In Touch</Button>
+              <Button>{t(language, "header.getInTouch")}</Button>
             </Link>
           </div>
 
@@ -209,9 +216,10 @@ export function Header() {
           <div className="flex lg:hidden items-center gap-1">
             <Link href="/#contact">
               <Button size="sm" className="text-xs px-3 h-8">
-                Get In Touch
+                {t(language, "header.getInTouch")}
               </Button>
             </Link>
+            <LanguageSwitcher />
             <button
               type="button"
               className="p-2 text-gray-600 hover:text-[#01b3d4] transition-colors"
@@ -250,7 +258,7 @@ export function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search the site..."
+                placeholder={t(language, "header.searchPlaceholder")}
                 className="w-full h-10 px-4 pr-10 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
               />
               <button
@@ -279,7 +287,7 @@ export function Header() {
                   ))
                 ) : (
                   <div className="px-4 py-4 text-center">
-                    <p className="text-sm text-gray-500">No results found</p>
+                    <p className="text-sm text-gray-500">{t(language, "header.noResults")}</p>
                   </div>
                 )}
               </div>
@@ -294,7 +302,7 @@ export function Header() {
               const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   className={`block text-sm font-medium ${
                     isActive ? "text-[#01b3d4]" : "text-gray-600 hover:text-[#01b3d4]"
@@ -307,7 +315,7 @@ export function Header() {
             })}
             <div className="pt-4 border-t border-gray-100">
               <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full">Get In Touch</Button>
+                <Button className="w-full">{t(language, "header.getInTouch")}</Button>
               </Link>
             </div>
           </div>

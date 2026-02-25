@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Newspaper, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLatestPosts } from "@/lib/blog";
+import { T } from "@/components/t";
 
 export async function LatestNews() {
   const posts = await getLatestPosts(4);
@@ -12,14 +13,14 @@ export async function LatestNews() {
       <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Latest News
+            <T id="home.latestNews" />
           </h2>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Stay updated with the latest from Lumen Research
+            <T id="news.stayUpdated" />
           </p>
           <div className="py-12">
             <Newspaper className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">Check back soon for news and updates.</p>
+            <p className="text-gray-600"><T id="news.checkBack" /></p>
           </div>
         </div>
       </section>
@@ -33,10 +34,10 @@ export async function LatestNews() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Latest News
+            <T id="home.latestNews" />
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Stay updated with the latest from Lumen Research
+            <T id="news.stayUpdated" />
           </p>
         </div>
 
@@ -131,7 +132,7 @@ export async function LatestNews() {
         <div className="text-center mt-12">
           <Link href="/news">
             <Button variant="outline" size="lg">
-              View All News
+              <T id="news.viewAll" />
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
