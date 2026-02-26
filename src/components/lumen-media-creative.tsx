@@ -5,12 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
 
 export function LumenMediaCreative() {
   const mediaRef = useRef<HTMLDivElement>(null);
   const [seconds, setSeconds] = useState(0);
   const isVisibleRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const el = mediaRef.current;
@@ -57,12 +60,11 @@ export function LumenMediaCreative() {
               Media
             </p>
             <p className="mt-4 text-gray-600 max-w-sm">
-              Optimise your media investments with attention data. Buy smarter,
-              measure better, and maximise every impression.
+              {t(language, "lmc.mediaDesc")}
             </p>
             <Link href="/news">
               <Button variant="outline" className="mt-6">
-                Learn More
+                {t(language, "home.learnMore")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -113,12 +115,11 @@ export function LumenMediaCreative() {
                 Creative
               </p>
               <p className="mt-4 text-gray-600 max-w-sm">
-                Design creatives that capture and hold attention. Test, iterate,
-                and validate with real eye-tracking insights.
+                {t(language, "lmc.creativeDesc")}
               </p>
               <Link href="/news">
                 <Button variant="outline" className="mt-6">
-                  Learn More
+                  {t(language, "home.learnMore")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>

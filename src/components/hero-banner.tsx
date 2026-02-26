@@ -39,10 +39,10 @@ export function HeroBanner({ children }: HeroBannerProps) {
 
   return (
     <div className="relative w-full pt-16">
-      {/* Video container: 75% of original height, content centred */}
+      {/* Video container: ~52.5% of original 16:9 height on desktop, 9:12 on mobile */}
       <div
         ref={bannerRef}
-        className="relative w-full aspect-[9/12] md:aspect-[16/6.75] overflow-hidden"
+        className="relative w-full aspect-[9/12] md:aspect-[16/4.725] overflow-hidden"
       >
         <video
           className="absolute inset-0 w-full h-full object-cover"
@@ -50,6 +50,7 @@ export function HeroBanner({ children }: HeroBannerProps) {
           loop
           muted
           playsInline
+          preload="metadata"
         >
           <source src="/hero-banner.mp4" type="video/mp4" />
         </video>

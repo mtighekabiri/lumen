@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Check, Monitor, Tv, MapPin, FileText, BarChart3, Zap } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function SolutionsPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
+    <>
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -286,7 +283,6 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      <Footer />
-    </div>
+    </>
   );
 }
