@@ -42,6 +42,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
     if (saved && languages.some((l) => l.code === saved)) {
       setLanguageState(saved);
+    } else {
+      // Detect browser language and auto-switch if we support it
+      const browserLang = navigator.language;
+      if (browserLang) {
+        const code = browserLang.split("-")[0].toLowerCase();
+        if (languages.some((l) => l.code === code)) {
+          setLanguageState(code as LanguageCode);
+        }
+      }
     }
     setMounted(true);
   }, []);
