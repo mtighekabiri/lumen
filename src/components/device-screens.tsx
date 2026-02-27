@@ -1,50 +1,239 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
 /* ───────────────────────────────────────────────────────────
-   AttentionTrail – canvas overlay that draws a speed-coloured
-   line as the user moves their mouse over a device screen.
+   HeatmapOverlay – canvas overlay that renders an autonomous
+   animated attention-heatmap when the parent is hovered.
 
-   Speed → colour mapping (slow to fast):
-     red → yellow → green → blue → white
-
-   The trail is cleared when the mouse leaves and restarts
-   on re-entry.
+   Hotspots drift, pulse, and fade using radial gradients in
+   classic heatmap colours (red / orange / yellow / green).
    ─────────────────────────────────────────────────────────── */
 
-function speedToColor(speed: number): string {
-  // speed is in px/ms.  Typical range: 0 (dwelling) … ~2+ (fast flick)
-  // We clamp to [0, 1] then map through 4 colour stops.
-  const n = Math.min(speed / 1.6, 1);
-
-  if (n < 0.25) {
-    // red → yellow
-    const p = n / 0.25;
-    return `rgba(220,${Math.round(60 + 180 * p)},20,${0.95 - p * 0.1})`;
-  }
-  if (n < 0.5) {
-    // yellow → green
-    const p = (n - 0.25) / 0.25;
-    return `rgba(${Math.round(220 - 180 * p)},${Math.round(240 - 20 * p)},${Math.round(20 + 20 * p)},${0.85 - p * 0.05})`;
-  }
-  if (n < 0.75) {
-    // green → blue
-    const p = (n - 0.5) / 0.25;
-    return `rgba(${Math.round(40 - 30 * p)},${Math.round(220 - 140 * p)},${Math.round(40 + 215 * p)},${0.8 - p * 0.1})`;
-  }
-  // blue → white
-  const p = (n - 0.75) / 0.25;
-  return `rgba(${Math.round(10 + 245 * p)},${Math.round(80 + 175 * p)},${Math.round(255)},${0.7 - p * 0.25})`;
+interface HotSpot {
+  x: number;       // 0–1 normalised position
+  y: number;
+  r: number;       // base radius (fraction of canvas width)
+  intensity: number; // 0–1
+  phase: number;   // animation phase offset
+  dx: number;      // drift speed x
+  dy: number;      // drift speed y
 }
 
-function AttentionTrail() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const lastRef = useRef<{ x: number; y: number; t: number } | null>(null);
+function generateHotspots(count: number): HotSpot[] {
+  return Array.from({ length: count }, () => ({
+    x: 0.15 + Math.random() * 0.7,
+    y: 0.1 + Math.random() * 0.8,
+    r: 0.08 + Math.random() * 0.14,
+    intensity: 0.4 + Math.random() * 0.6,
+    phase: Math.random() * Math.PI * 2,
+    dx: (Math.random() - 0.5) * 0.0003,
+    dy: (Math.random() - 0.5) * 0.0003,
+  }));
+}
 
-  // Keep canvas pixel-size in sync with its layout size
+function heatColor(intensity: number): [number, number, number] {
+  // 0→green, 0.35→yellow, 0.7→orange, 1→red
+  const n = Math.max(0, Math.min(1, intensity));
+  if (n < 0.35) {
+    const p = n / 0.35;
+    return [Math.round(p * 255), Math.round(200 + p * 55), Math.round(50 * (1 - p))];
+  }
+  if (n < 0.7) {
+    const p = (n - 0.35) / 0.35;
+    return [255, Math.round(255 - p * 100), 0];
+  }
+  const p = (n - 0.7) / 0.3;
+  return [Math.round(255 - p * 30), Math.round(155 - p * 100), 0];
+}
+
+/* ───────────────────────────────────────────────────────────
+   ScrollingContent – fake webpage content that auto-scrolls
+   vertically when the parent InteractiveScreen is hovered.
+   ─────────────────────────────────────────────────────────── */
+
+function ScrollingContent({ variant }: { variant: "desktop" | "tablet" | "mobile" }) {
+  const innerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<number>(0);
+  const dirRef = useRef<1 | -1>(1);
+  const animRef = useRef<number>(0);
+  const activeRef = useRef(false);
+
+  const speed = variant === "mobile" ? 0.3 : variant === "tablet" ? 0.4 : 0.5;
+
+  useEffect(() => {
+    let running = true;
+    const tick = () => {
+      if (!running) return;
+      const el = innerRef.current;
+      if (el && activeRef.current) {
+        scrollRef.current += speed * dirRef.current;
+        const maxScroll = el.scrollHeight - el.clientHeight;
+        if (scrollRef.current >= maxScroll) { scrollRef.current = maxScroll; dirRef.current = -1; }
+        if (scrollRef.current <= 0) { scrollRef.current = 0; dirRef.current = 1; }
+        el.scrollTop = scrollRef.current;
+      }
+      animRef.current = requestAnimationFrame(tick);
+    };
+    animRef.current = requestAnimationFrame(tick);
+    return () => { running = false; cancelAnimationFrame(animRef.current); };
+  }, [speed]);
+
+  // Expose activation via data attribute read by parent
+  useEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+    const parent = el.closest("[data-interactive-screen]");
+    if (!parent) return;
+    const onEnter = () => { activeRef.current = true; };
+    const onLeave = () => { activeRef.current = false; };
+    parent.addEventListener("mouseenter", onEnter);
+    parent.addEventListener("mouseleave", onLeave);
+    return () => { parent.removeEventListener("mouseenter", onEnter); parent.removeEventListener("mouseleave", onLeave); };
+  }, []);
+
+  const navHeight = variant === "mobile" ? "h-[8%]" : "h-[6%]";
+  const heroHeight = variant === "mobile" ? "h-28" : variant === "tablet" ? "h-32" : "h-36";
+
+  return (
+    <div ref={innerRef} className="w-full h-full overflow-hidden">
+      <div className="min-h-[250%] bg-white">
+        {/* Nav bar */}
+        <div className={`${navHeight} w-full bg-gray-800 flex items-center px-[5%] gap-[3%]`}>
+          <div className="w-[12%] h-[40%] bg-[#01b3d4] rounded-sm" />
+          <div className="flex-1" />
+          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
+          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
+          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
+        </div>
+        {/* Hero */}
+        <div className={`${heroHeight} w-full bg-gradient-to-r from-[#01b3d4]/20 to-blue-100 flex flex-col justify-center px-[6%] gap-[6%]`}>
+          <div className="h-[14%] w-[60%] bg-gray-800/80 rounded-sm" />
+          <div className="h-[8%] w-[40%] bg-gray-400/70 rounded-sm" />
+          <div className="h-[10%] w-[22%] bg-[#01b3d4] rounded-sm mt-1" />
+        </div>
+        {/* Content blocks */}
+        <div className="p-[5%] space-y-[4%]">
+          <div className="h-3 w-[75%] bg-gray-300/70 rounded-sm" />
+          <div className="h-3 w-[90%] bg-gray-200/70 rounded-sm" />
+          <div className="h-3 w-[60%] bg-gray-200/70 rounded-sm" />
+          <div className="flex gap-[3%] mt-2">
+            <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />
+            <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />
+            {variant !== "mobile" && <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />}
+          </div>
+          <div className="h-3 w-[80%] bg-gray-300/70 rounded-sm" />
+          <div className="h-3 w-[65%] bg-gray-200/70 rounded-sm" />
+          <div className="h-3 w-[85%] bg-gray-200/70 rounded-sm" />
+          <div className="h-3 w-[50%] bg-gray-200/70 rounded-sm" />
+          {/* Cards section */}
+          <div className="flex gap-[3%] mt-3">
+            <div className="flex-1 bg-gray-100 rounded p-[4%] space-y-2">
+              <div className="w-full aspect-[3/2] bg-gray-200/70 rounded" />
+              <div className="h-2 w-[70%] bg-gray-300/60 rounded-sm" />
+              <div className="h-2 w-[90%] bg-gray-200/60 rounded-sm" />
+            </div>
+            <div className="flex-1 bg-gray-100 rounded p-[4%] space-y-2">
+              <div className="w-full aspect-[3/2] bg-gray-200/70 rounded" />
+              <div className="h-2 w-[60%] bg-gray-300/60 rounded-sm" />
+              <div className="h-2 w-[85%] bg-gray-200/60 rounded-sm" />
+            </div>
+          </div>
+          <div className="h-3 w-[70%] bg-gray-300/70 rounded-sm mt-3" />
+          <div className="h-3 w-[88%] bg-gray-200/70 rounded-sm" />
+          <div className="h-3 w-[55%] bg-gray-200/70 rounded-sm" />
+          {/* CTA section */}
+          <div className="w-full bg-[#01b3d4]/10 rounded p-[5%] flex flex-col items-center gap-2 mt-3">
+            <div className="h-3 w-[50%] bg-gray-700/60 rounded-sm" />
+            <div className="h-2 w-[65%] bg-gray-400/50 rounded-sm" />
+            <div className="h-5 w-[25%] bg-[#01b3d4] rounded-sm mt-1" />
+          </div>
+          {/* Footer */}
+          <div className="w-full bg-gray-800 rounded p-[5%] mt-4 space-y-2">
+            <div className="h-2 w-[30%] bg-gray-500/60 rounded-sm" />
+            <div className="h-2 w-[45%] bg-gray-600/40 rounded-sm" />
+            <div className="h-2 w-[35%] bg-gray-600/40 rounded-sm" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Wrapper: hovering triggers the heatmap + optional scrolling */
+function InteractiveScreen({
+  children,
+  className,
+  scrollable,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  scrollable?: "desktop" | "tablet" | "mobile";
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const heatmapActive = useRef(false);
+
+  // Expose hover to HeatmapOverlay
+  const onEnter = () => {
+    heatmapActive.current = true;
+    const canvas = ref.current?.querySelector("canvas");
+    if (canvas) (canvas as HTMLCanvasElement).dataset.active = "true";
+  };
+  const onLeave = () => {
+    heatmapActive.current = false;
+    const canvas = ref.current?.querySelector("canvas");
+    if (canvas) (canvas as HTMLCanvasElement).dataset.active = "false";
+  };
+
+  // Bridge hover state into the HeatmapOverlay's activeRef via a simple MutationObserver-free approach:
+  // We set a ref on the wrapper and the overlay reads from the wrapper's dataset.
+  return (
+    <div
+      ref={ref}
+      data-interactive-screen
+      className={`relative ${className ?? ""}`}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      {scrollable ? <ScrollingContent variant={scrollable} /> : children}
+      <HeatmapOverlayBridge parentRef={ref} />
+    </div>
+  );
+}
+
+/**
+ * Bridge component that connects the parent hover state to the
+ * HeatmapOverlay's internal activeRef.
+ */
+function HeatmapOverlayBridge({ parentRef }: { parentRef: React.RefObject<HTMLDivElement | null> }) {
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    const parent = parentRef.current;
+    if (!parent) return;
+
+    // We use pointer events on the parent to toggle heatmap
+    const enter = () => setTick((t) => t + 1);
+    const leave = () => setTick((t) => t + 1);
+    parent.addEventListener("mouseenter", enter);
+    parent.addEventListener("mouseleave", leave);
+    return () => {
+      parent.removeEventListener("mouseenter", enter);
+      parent.removeEventListener("mouseleave", leave);
+    };
+  }, [parentRef]);
+
+  return <HeatmapOverlayWithParent parentRef={parentRef} />;
+}
+
+function HeatmapOverlayWithParent({ parentRef }: { parentRef: React.RefObject<HTMLDivElement | null> }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const spotsRef = useRef<HotSpot[]>(generateHotspots(6));
+  const animRef = useRef<number>(0);
+  const opacityRef = useRef(0);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,82 +242,68 @@ function AttentionTrail() {
 
     const sync = () => {
       const { width, height } = parent.getBoundingClientRect();
-      if (canvas.width !== Math.round(width) || canvas.height !== Math.round(height)) {
-        canvas.width = Math.round(width);
-        canvas.height = Math.round(height);
+      const w = Math.round(width);
+      const h = Math.round(height);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
       }
     };
     sync();
-
     const ro = new ResizeObserver(sync);
     ro.observe(parent);
-    return () => ro.disconnect();
-  }, []);
 
-  const handleMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    let running = true;
+    const draw = (time: number) => {
+      if (!running) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { animRef.current = requestAnimationFrame(draw); return; }
 
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    const now = performance.now();
+      const isHovered = parentRef.current?.matches(":hover") ?? false;
+      const target = isHovered ? 1 : 0;
+      opacityRef.current += (target - opacityRef.current) * 0.04;
 
-    const prev = lastRef.current;
-    if (prev) {
-      const dx = x - prev.x;
-      const dy = y - prev.y;
-      const dt = now - prev.t;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const speed = dt > 0 ? dist / dt : 0; // px/ms
+      if (opacityRef.current < 0.005 && !isHovered) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
 
-      ctx.beginPath();
-      ctx.moveTo(prev.x, prev.y);
-      ctx.lineTo(x, y);
-      ctx.strokeStyle = speedToColor(speed);
-      // Thicker when slow (more "attention"), thinner when fast
-      ctx.lineWidth = Math.max(1.5, 4 - speed * 2);
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.stroke();
-    }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const globalAlpha = opacityRef.current * 0.55;
 
-    lastRef.current = { x, y, t: now };
-  }, []);
+      for (const spot of spotsRef.current) {
+        spot.x += spot.dx;
+        spot.y += spot.dy;
+        if (spot.x < 0.05 || spot.x > 0.95) spot.dx *= -1;
+        if (spot.y < 0.05 || spot.y > 0.95) spot.dy *= -1;
 
-  const handleLeave = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-    lastRef.current = null;
-  }, []);
+        const pulse = 0.7 + 0.3 * Math.sin(time * 0.0015 + spot.phase);
+        const cx = spot.x * canvas.width;
+        const cy = spot.y * canvas.height;
+        const radius = spot.r * canvas.width * pulse;
+        const [r, g, b] = heatColor(spot.intensity * pulse);
 
-  const handleEnter = useCallback(() => {
-    lastRef.current = null;
-  }, []);
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0, `rgba(${r},${g},${b},${globalAlpha * spot.intensity * pulse})`);
+        grad.addColorStop(0.5, `rgba(${r},${g},${b},${globalAlpha * spot.intensity * pulse * 0.4})`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+      }
+
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    animRef.current = requestAnimationFrame(draw);
+    return () => { running = false; cancelAnimationFrame(animRef.current); ro.disconnect(); };
+  }, [parentRef]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full z-10"
-      style={{ cursor: "crosshair" }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      onMouseEnter={handleEnter}
+      className="absolute inset-0 w-full h-full z-10 pointer-events-none"
     />
-  );
-}
-
-/** Wrapper that makes a screen area interactive (relative + canvas overlay) */
-function InteractiveScreen({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`relative ${className ?? ""}`}>
-      {children}
-      <AttentionTrail />
-    </div>
   );
 }
 
@@ -179,7 +354,7 @@ function Laptop() {
       {/* Screen with thicker bezel at bottom */}
       <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[4px] sm:rounded-t-[6px] overflow-hidden shadow-xl ring-1 ring-black/10"
         style={{ padding: "2.5% 3% 4% 3%" }}>
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" scrollable="desktop">
           <Skeleton />
         </InteractiveScreen>
       </div>
@@ -194,7 +369,7 @@ function Laptop() {
 function Tablet() {
   return (
     <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[6%] p-[4.5%] shadow-xl ring-1 ring-black/10">
-      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white">
+      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white" scrollable="tablet">
         <Skeleton />
       </InteractiveScreen>
     </div>
@@ -211,7 +386,7 @@ function MobilePhone() {
       {/* Volume buttons — left */}
       <div className="absolute top-[18%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
       <div className="absolute top-[25%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
-      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white">
+      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white" scrollable="mobile">
         <Skeleton />
       </InteractiveScreen>
       {/* Home indicator bar */}
