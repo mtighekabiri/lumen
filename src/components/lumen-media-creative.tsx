@@ -94,7 +94,7 @@ export function LumenMediaCreative() {
   const { language } = useLanguage();
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8">
+    <section className="px-4 sm:px-6 lg:px-8" style={{ fontFamily: "'Poppins', sans-serif" }}>
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left — For Advertisers */}
@@ -102,7 +102,7 @@ export function LumenMediaCreative() {
             <div className="flex-1">
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900">
                 <span>{t(language, "lmc.forAdvertisersPrefix")}</span>{" "}
-                <span className="italic" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+                <span className="italic">
                   {t(language, "lmc.forAdvertisersSuffix")}
                 </span>
               </h3>
@@ -126,7 +126,7 @@ export function LumenMediaCreative() {
             <div className="flex-1">
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900">
                 <span>{t(language, "lmc.forAgenciesPrefix")}</span>{" "}
-                <span className="italic" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+                <span className="italic">
                   {t(language, "lmc.forAgenciesSuffix")}
                 </span>
               </h3>
