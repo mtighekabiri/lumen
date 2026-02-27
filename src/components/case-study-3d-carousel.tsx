@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BlogPost } from "@/types/blog";
+import { TranslatedText } from "@/components/translated-text";
 
 export function CaseStudy3DCarousel({
   posts,
@@ -93,7 +94,7 @@ export function CaseStudy3DCarousel({
                     style={{ height: "190px" }}
                   >
                     <h3 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-3">
-                      {post.title}
+                      <TranslatedText text={post.title} />
                     </h3>
                     <Link href={`/news/${post.slug}`}>
                       <Button

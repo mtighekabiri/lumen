@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Newspaper, Calendar, User, Tag, Search } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import type { BlogPost } from "@/types/blog";
+import { TranslatedText } from "@/components/translated-text";
 
 interface NewsFilterProps {
   posts: BlogPost[];
@@ -81,7 +82,7 @@ export function NewsFilter({ posts, categories }: NewsFilterProps) {
                     </div>
                     <CardHeader>
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-sm text-[#01b3d4] font-medium">{post.category}</span>
+                        <TranslatedText text={post.category} className="text-sm text-[#01b3d4] font-medium" />
                         {post.featured && (
                           <span className="text-xs bg-[#01b3d4]/10 text-[#01b3d4] px-2 py-0.5 rounded-full">
                             Featured
@@ -89,10 +90,10 @@ export function NewsFilter({ posts, categories }: NewsFilterProps) {
                         )}
                       </div>
                       <CardTitle className="text-lg group-hover:text-[#01b3d4] transition-colors line-clamp-2">
-                        {post.title}
+                        <TranslatedText text={post.title} />
                       </CardTitle>
                       <CardDescription className="line-clamp-2">
-                        {post.excerpt}
+                        <TranslatedText text={post.excerpt} />
                       </CardDescription>
                       <div className="flex items-center gap-4 mt-4 text-xs text-gray-500">
                         <span className="flex items-center gap-1">

@@ -4,6 +4,8 @@ import { ArrowLeft, Calendar, User, Tag, ArrowRight, Newspaper } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
+import { TranslatedText } from "@/components/translated-text";
+import { TranslatedHTML } from "@/components/translated-html";
 
 export const revalidate = 60;
 
@@ -53,7 +55,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           <div className="flex items-center gap-2 mb-4">
             <span className="text-sm text-[#01b3d4] font-medium bg-[#01b3d4]/10 px-3 py-1 rounded-full">
-              {post.category}
+              <TranslatedText text={post.category} />
             </span>
             {post.featured && (
               <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">
@@ -63,11 +65,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-4">
-            {post.title}
+            <TranslatedText text={post.title} />
           </h1>
 
           <p className="text-xl text-gray-600 mb-6">
-            {post.excerpt}
+            <TranslatedText text={post.excerpt} />
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 pb-8 border-b border-gray-200">
@@ -99,9 +101,9 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       {/* Article Content */}
       <article className="py-12 px-4 sm:px-6 lg:px-8">
-        <div
+        <TranslatedHTML
+          html={post.content}
           className="mx-auto max-w-4xl prose-custom"
-          dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
 
@@ -118,12 +120,12 @@ export default async function BlogPostPage({ params }: PageProps) {
                       <Newspaper className="h-10 w-10 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
                     </div>
                     <CardHeader>
-                      <span className="text-sm text-[#01b3d4] font-medium">{relatedPost.category}</span>
+                      <TranslatedText text={relatedPost.category} className="text-sm text-[#01b3d4] font-medium" />
                       <CardTitle className="text-base group-hover:text-[#01b3d4] transition-colors line-clamp-2">
-                        {relatedPost.title}
+                        <TranslatedText text={relatedPost.title} />
                       </CardTitle>
                       <CardDescription className="line-clamp-2 text-sm">
-                        {relatedPost.excerpt}
+                        <TranslatedText text={relatedPost.excerpt} />
                       </CardDescription>
                     </CardHeader>
                   </Card>
