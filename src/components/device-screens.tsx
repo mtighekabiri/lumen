@@ -160,12 +160,20 @@ export function DeviceScreens() {
     <section className="py-16 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
-          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-12">
+          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6">
             <span>{t(language, "devices.headingPrefix")}</span>{" "}
             <span className="italic text-[#01b3d4]">
               {t(language, "devices.headingSuffix")}
             </span>
           </h3>
+
+          <ul className="mb-12 space-y-2 text-gray-600 leading-relaxed">
+            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletPlanning")}</span> {t(language, "devices.bulletPlanningDesc")}</li>
+            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletBuying")}</span> {t(language, "devices.bulletBuyingDesc")}</li>
+            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletActivation")}</span> {t(language, "devices.bulletActivationDesc")}</li>
+            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletMeasure")}</span> {t(language, "devices.bulletMeasureDesc")}</li>
+            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletEconometrics")}</span> {t(language, "devices.bulletEconometricsDesc")}</li>
+          </ul>
 
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
