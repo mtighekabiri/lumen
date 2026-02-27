@@ -9,7 +9,7 @@ export function LumenMediaCreative() {
   const { language } = useLanguage();
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8" style={{ fontFamily: "'Poppins', sans-serif" }}>
+    <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ fontFamily: "'Poppins', sans-serif" }}>
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left — For Advertisers */}

@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Mail, ChevronDown } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { RotatingText } from "@/components/rotating-text";
 import { getPostsByCategory } from "@/lib/blog";
 import { T } from "@/components/t";
 import { HomeFaqSection } from "@/components/home-faq-section";
@@ -13,7 +13,7 @@ export const revalidate = 60;
 
 const HeroBanner = dynamic(
   () => import("@/components/hero-banner").then((m) => ({ default: m.HeroBanner })),
-  { loading: () => <div className="relative w-full pt-16"><div className="w-full aspect-[9/12] md:aspect-[16/4.725] bg-gray-900" /></div> },
+  { loading: () => <div className="relative w-full pt-16"><div className="w-full aspect-[9/12] md:aspect-[16/3.78] bg-gray-900" /></div> },
 );
 const BrandCarousel = dynamic(
   () => import("@/components/brand-carousel").then((m) => ({ default: m.BrandCarousel })),
@@ -43,41 +43,25 @@ export default function Home() {
     <>
       {/* Hero Banner Video */}
       <HeroBanner>
-        <div className="text-center px-4">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
-            <T id="home.heroTitle" /> <RotatingText />
-          </h1>
-          <div className="mt-8 flex items-center justify-center gap-x-4">
-            <Link href="/#contact">
-              <Button size="lg">
-                <T id="header.getInTouch" />
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/#brands">
-              <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
-                <T id="home.learnMore" />
-              </Button>
-            </Link>
+        <div className="absolute inset-0 flex items-center justify-end px-6 sm:px-10 lg:px-16">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
+            <Image
+              src="/logo.png"
+              alt="Lumen"
+              width={80}
+              height={27}
+              className="h-5 sm:h-6 w-auto mb-5"
+            />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight text-gray-900">
+              <span className="italic text-[#01b3d4] font-normal">Attention</span>{" "}
+              into action, sales, memory, choice, opinion, profit, trust, awareness, clicks…
+            </h1>
+            <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
+              Since 2013, we&apos;ve been powering attention-first advertising with eye-tracking technology.
+            </p>
           </div>
         </div>
       </HeroBanner>
-
-      {/* Brand Logo Carousel */}
-      <BrandCarousel id="brands" brands={[
-        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
-        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
-        "google.png", "heineken.png", "ias.png", "mastercard.png",
-        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
-        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
-        "youtube.png",
-      ]} />
-
-      {/* Device Screens — Cross-Channel */}
-      <DeviceScreens />
-
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
 
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
@@ -102,6 +86,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Device Screens — Cross-Channel */}
+      <DeviceScreens />
+
+      {/* Brand Logo Carousel */}
+      <BrandCarousel id="brands" brands={[
+        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
+        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
+        "google.png", "heineken.png", "ias.png", "mastercard.png",
+        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
+        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
+        "youtube.png",
+      ]} />
+
+      {/* For Advertisers & For Agencies */}
+      <LumenMediaCreative />
 
       {/* News Section — streamed independently */}
       <Suspense fallback={

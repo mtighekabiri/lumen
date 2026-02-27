@@ -186,9 +186,9 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="relative flex h-16 items-center">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 src="/logo.png"
@@ -201,8 +201,8 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-6">
+          {/* Desktop Navigation — absolutely centered so it never shifts */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-6 absolute left-1/2 -translate-x-1/2">
             {navigation.map((item) => {
               const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
               const hasChildren = item.children && item.children.length > 0;
@@ -297,8 +297,8 @@ export function Header() {
             })}
           </div>
 
-          {/* Desktop Search + Language + CTA */}
-          <div className="hidden lg:flex lg:items-center lg:gap-2" ref={searchContainerRef}>
+          {/* Desktop Search + Language + CTA — pinned right */}
+          <div className="hidden lg:flex lg:items-center lg:gap-2 ml-auto" ref={searchContainerRef}>
             {/* Search area */}
             <div className="relative flex items-center">
               <button

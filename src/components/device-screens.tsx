@@ -2,50 +2,20 @@
 
 function Skeleton() {
   return (
-    <div className="w-full h-full bg-gray-100 p-[8%] flex flex-col gap-[6%]">
-      <div className="h-[10%] w-[60%] bg-gray-300/80 rounded animate-pulse" />
-      <div className="h-[6%] w-[90%] bg-gray-200/80 rounded animate-pulse" />
-      <div className="h-[6%] w-[75%] bg-gray-200/80 rounded animate-pulse" />
-      <div className="flex-1 w-full bg-gray-300/60 rounded animate-pulse" />
-      <div className="h-[6%] w-[40%] bg-gray-200/80 rounded animate-pulse" />
+    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[8%] flex flex-col gap-[5%]">
+      <div className="h-[8%] w-[55%] bg-gray-300/70 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[85%] bg-gray-200/70 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[70%] bg-gray-200/70 rounded-sm animate-pulse" />
+      <div className="flex-1 w-full bg-gray-200/50 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[35%] bg-gray-200/70 rounded-sm animate-pulse" />
     </div>
   );
 }
 
-function Laptop() {
+function DOOHSkeleton() {
   return (
-    <div className="flex flex-col items-center">
-      {/* Screen */}
-      <div className="w-full aspect-[16/10] bg-gray-800 rounded-t-lg p-[3%] shadow-lg">
-        <div className="w-full h-full rounded-sm overflow-hidden bg-white">
-          <Skeleton />
-        </div>
-      </div>
-      {/* Base */}
-      <div className="w-[110%] h-[5%] bg-gradient-to-b from-gray-400 to-gray-300 rounded-b-lg" />
-      <div className="w-[35%] h-[2%] bg-gray-300 rounded-b" />
-    </div>
-  );
-}
-
-function MobilePhone() {
-  return (
-    <div className="w-full aspect-[9/18] bg-gray-800 rounded-[14%] p-[6%] shadow-lg">
-      {/* Notch */}
-      <div className="absolute top-[3%] left-1/2 -translate-x-1/2 w-[30%] h-[2.5%] bg-gray-900 rounded-full" />
-      <div className="w-full h-full rounded-[8%] overflow-hidden bg-white relative">
-        <Skeleton />
-      </div>
-    </div>
-  );
-}
-
-function Tablet() {
-  return (
-    <div className="w-full aspect-[4/3] bg-gray-800 rounded-[6%] p-[4%] shadow-lg">
-      <div className="w-full h-full rounded-[2%] overflow-hidden bg-white">
-        <Skeleton />
-      </div>
+    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[6%]">
+      <div className="w-full h-full bg-gray-200/60 rounded-sm animate-pulse" />
     </div>
   );
 }
@@ -53,15 +23,56 @@ function Tablet() {
 function TVScreen() {
   return (
     <div className="flex flex-col items-center">
-      {/* Screen */}
-      <div className="w-full aspect-[16/9] bg-gray-900 rounded-lg p-[2.5%] shadow-lg">
-        <div className="w-full h-full rounded-sm overflow-hidden bg-white">
+      {/* Thin-bezel panel */}
+      <div className="w-full aspect-[16/9] bg-[#1a1a1a] rounded-[3px] sm:rounded-[4px] p-[1.8%] shadow-xl ring-1 ring-black/10">
+        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
           <Skeleton />
         </div>
       </div>
-      {/* Stand */}
-      <div className="w-[20%] h-3 bg-gray-400" />
-      <div className="w-[35%] h-1.5 bg-gray-400 rounded-b" />
+      {/* Slim neck */}
+      <div className="w-[12%] h-2.5 sm:h-3.5 bg-gradient-to-b from-[#2a2a2a] to-[#3a3a3a]" />
+      {/* Wide base */}
+      <div className="w-[40%] h-1 sm:h-1.5 bg-gradient-to-b from-[#3a3a3a] to-[#4a4a4a] rounded-b-sm" />
+    </div>
+  );
+}
+
+function Laptop() {
+  return (
+    <div className="flex flex-col items-center">
+      {/* Screen with thicker bezel at bottom */}
+      <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[4px] sm:rounded-t-[6px] overflow-hidden shadow-xl ring-1 ring-black/10"
+        style={{ padding: "2.5% 3% 4% 3%" }}>
+        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+          <Skeleton />
+        </div>
+      </div>
+      {/* Hinge */}
+      <div className="w-[104%] h-[3px] sm:h-[4px] bg-gradient-to-b from-[#c0c0c0] to-[#a0a0a0] rounded-[1px]" />
+      {/* Keyboard deck */}
+      <div className="w-[104%] h-[6px] sm:h-[8px] bg-gradient-to-b from-[#d4d4d4] to-[#bbb] rounded-b-[3px] sm:rounded-b-[4px] shadow-sm" />
+    </div>
+  );
+}
+
+function Tablet() {
+  return (
+    <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[6%] p-[4.5%] shadow-xl ring-1 ring-black/10">
+      <div className="w-full h-full rounded-[3%] overflow-hidden bg-white">
+        <Skeleton />
+      </div>
+    </div>
+  );
+}
+
+function MobilePhone() {
+  return (
+    <div className="w-full aspect-[9/19] bg-[#1a1a1a] rounded-[16%] p-[5%] shadow-xl ring-1 ring-black/10 relative">
+      {/* Dynamic Island */}
+      <div className="absolute top-[4%] left-1/2 -translate-x-1/2 w-[26%] h-[2.2%] bg-black rounded-full z-10" />
+      <div className="w-full h-full rounded-[12%] overflow-hidden bg-white">
+        <Skeleton />
+      </div>
     </div>
   );
 }
@@ -69,16 +80,16 @@ function TVScreen() {
 function DOOHScreen() {
   return (
     <div className="flex flex-col items-center">
-      {/* Portrait screen */}
-      <div className="w-full aspect-[9/16] bg-gray-800 rounded-lg p-[3%] shadow-lg">
-        <div className="w-full h-full rounded-sm overflow-hidden bg-white">
-          <Skeleton />
+      {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
+      <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
+        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+          <DOOHSkeleton />
         </div>
       </div>
       {/* Pole */}
-      <div className="w-[8%] h-10 sm:h-14 bg-gray-500" />
+      <div className="w-[6%] h-8 sm:h-12 bg-gradient-to-b from-[#666] to-[#888]" />
       {/* Base plate */}
-      <div className="w-[40%] h-2 bg-gray-500 rounded" />
+      <div className="w-[30%] h-1.5 sm:h-2 bg-[#777] rounded-sm" />
     </div>
   );
 }
@@ -96,34 +107,34 @@ export function DeviceScreens() {
           </h2>
         </div>
 
-        {/* Devices row */}
-        <div className="flex items-end justify-center gap-4 sm:gap-6 lg:gap-8">
-          {/* TV */}
-          <div className="w-[28%] max-w-[260px]">
+        {/* Devices row — sizes approximate real-world proportions */}
+        <div className="flex items-end justify-center gap-3 sm:gap-5 lg:gap-7">
+          {/* TV ~55" → largest */}
+          <div className="w-[30%] max-w-[280px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">TV / CTV</p>
             <TVScreen />
           </div>
 
-          {/* Laptop */}
-          <div className="w-[26%] max-w-[240px]">
+          {/* Laptop ~15" → second largest */}
+          <div className="w-[22%] max-w-[200px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Desktop</p>
             <Laptop />
           </div>
 
-          {/* Tablet */}
-          <div className="w-[16%] max-w-[150px]">
+          {/* Tablet ~11" portrait */}
+          <div className="w-[11%] max-w-[100px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Tablet</p>
             <Tablet />
           </div>
 
-          {/* Mobile */}
-          <div className="w-[8%] max-w-[80px] relative">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Mobile</p>
+          {/* Mobile ~6.5" */}
+          <div className="w-[6.5%] max-w-[60px]">
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">Mobile</p>
             <MobilePhone />
           </div>
 
-          {/* DOOH */}
-          <div className="w-[10%] max-w-[100px]">
+          {/* DOOH D6 — tall standalone panel */}
+          <div className="w-[12%] max-w-[110px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">DOOH</p>
             <DOOHScreen />
           </div>
