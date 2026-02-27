@@ -7,6 +7,7 @@ const translations: Record<string, Record<LanguageCode, string>> = {
   "nav.solutions":  { en: "Solutions", zh: "解决方案",  hi: "समाधान",    es: "Soluciones", fr: "Solutions",  ar: "الحلول",     bn: "সমাধান",     pt: "Soluções",   ru: "Решения",    ja: "ソリューション" },
   "nav.news":       { en: "News",      zh: "新闻",     hi: "समाचार",    es: "Noticias",   fr: "Actualités", ar: "الأخبار",    bn: "সংবাদ",      pt: "Notícias",   ru: "Новости",    ja: "ニュース" },
   "nav.learn":      { en: "Learn",     zh: "学习",     hi: "सीखें",     es: "Aprender",   fr: "Apprendre",  ar: "تعلّم",       bn: "শিখুন",      pt: "Aprender",   ru: "Обучение",   ja: "ラーニング" },
+  "nav.insights":   { en: "Insights",  zh: "洞察",      hi: "अंतर्दृष्टि", es: "Perspectivas", fr: "Perspectives", ar: "رؤى",         bn: "অন্তর্দৃষ্টি",  pt: "Insights",    ru: "Аналитика",   ja: "インサイト" },
   "nav.faqs":       { en: "FAQs",      zh: "常见问题",  hi: "अक्सर पूछे जाने वाले प्रश्न", es: "Preguntas frecuentes", fr: "FAQ", ar: "الأسئلة الشائعة", bn: "প্রায়শই জিজ্ঞাসিত প্রশ্ন", pt: "Perguntas frequentes", ru: "Вопросы", ja: "よくある質問" },
 
   // ── Header ──────────────────────────────────────────────────
