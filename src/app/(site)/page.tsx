@@ -6,6 +6,7 @@ import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getPostsByCategory } from "@/lib/blog";
 import { T } from "@/components/t";
+import { TranslatedText } from "@/components/translated-text";
 import { HomeFaqSection } from "@/components/home-faq-section";
 import { HomeContactForm } from "@/components/home-contact-form";
 
@@ -43,21 +44,21 @@ export default function Home() {
     <>
       {/* Hero Banner Video */}
       <HeroBanner>
-        <div className="absolute inset-0 flex items-center justify-center md:justify-start px-6 sm:px-10 lg:px-16">
+        <div className="absolute inset-0 flex items-center justify-center md:justify-end px-6 sm:px-10 lg:px-16">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
             <Image
               src="/logo.png"
               alt="Lumen"
-              width={80}
-              height={27}
-              className="h-5 sm:h-6 w-auto mb-5"
+              width={70}
+              height={24}
+              className="h-4 sm:h-5 w-auto mb-5"
             />
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight text-gray-900">
-              <span className="italic text-[#01b3d4] font-normal">Attention</span>{" "}
-              into action, sales, memory, choice, opinion, profit, trust, awareness, clicks…
+              <span className="italic text-[#01b3d4] font-normal"><T id="home.heroAttention" /></span>{" "}
+              <T id="home.heroSubtext" />
             </h1>
             <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
-              Since 2013, we&apos;ve been powering attention-first advertising with eye-tracking technology.
+              <T id="home.heroDesc" />
             </p>
           </div>
         </div>
@@ -69,19 +70,19 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">1B+</p>
-              <p className="mt-1 text-sm text-gray-600">impressions power machine learning attention models</p>
+              <p className="mt-1 text-sm text-gray-600"><T id="home.stat1Label" /></p>
             </div>
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">750K+</p>
-              <p className="mt-1 text-sm text-gray-600">real-world eye-tracking sessions</p>
+              <p className="mt-1 text-sm text-gray-600"><T id="home.stat2Label" /></p>
             </div>
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">50+</p>
-              <p className="mt-1 text-sm text-gray-600">countries coverage</p>
+              <p className="mt-1 text-sm text-gray-600"><T id="home.stat3Label" /></p>
             </div>
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">13</p>
-              <p className="mt-1 text-sm text-gray-600">years in the attention space</p>
+              <p className="mt-1 text-sm text-gray-600"><T id="home.stat4Label" /></p>
             </div>
           </div>
         </div>

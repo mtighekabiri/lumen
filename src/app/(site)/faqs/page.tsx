@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TranslatedText } from "@/components/translated-text";
 
 const faqs = [
   {
@@ -99,10 +100,10 @@ export default function FAQsPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Frequently Asked Questions
+              <TranslatedText text="Frequently Asked Questions" />
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-              Everything you need to know about Lumen&apos;s attention measurement platform. Can&apos;t find what you&apos;re looking for? Contact our team.
+              <TranslatedText text="Everything you need to know about Lumen's attention measurement platform. Can't find what you're looking for? Contact our team." />
             </p>
           </div>
         </div>
@@ -115,7 +116,7 @@ export default function FAQsPage() {
             <div key={categoryIndex} className="mb-12">
               <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <HelpCircle className="h-5 w-5 text-[#01b3d4]" />
-                {category.category}
+                <TranslatedText text={category.category} />
               </h2>
               <div className="space-y-4">
                 {category.questions.map((faq, index) => (
@@ -124,11 +125,11 @@ export default function FAQsPage() {
                     className="group bg-white rounded-lg shadow-sm border border-gray-200"
                   >
                     <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                      <span className="font-medium text-gray-900 pr-4">{faq.question}</span>
+                      <span className="font-medium text-gray-900 pr-4"><TranslatedText text={faq.question} /></span>
                       <ChevronDown className="h-5 w-5 text-gray-500 group-open:rotate-180 transition-transform shrink-0" />
                     </summary>
                     <div className="px-6 pb-6 text-gray-600">
-                      {faq.answer}
+                      <TranslatedText text={faq.answer} />
                     </div>
                   </details>
                 ))}
@@ -142,21 +143,21 @@ export default function FAQsPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Still have questions?
+            <TranslatedText text="Still have questions?" />
           </h2>
           <p className="text-gray-600 mb-8">
-            Our team is happy to answer any questions you have about attention measurement, our platform, or how we can help your specific use case.
+            <TranslatedText text="Our team is happy to answer any questions you have about attention measurement, our platform, or how we can help your specific use case." />
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/#contact">
               <Button size="lg">
-                Contact Us
+                <TranslatedText text="Contact Us" />
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/learn">
               <Button size="lg" variant="outline">
-                Browse Resources
+                <TranslatedText text="Browse Resources" />
               </Button>
             </Link>
           </div>
@@ -167,14 +168,14 @@ export default function FAQsPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#01b3d4]">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to get started?
+            <TranslatedText text="Ready to get started?" />
           </h2>
           <p className="text-white/90 text-lg mb-8">
-            Schedule a demo to see how Lumen can help you measure and optimize attention across all your advertising.
+            <TranslatedText text="Schedule a demo to see how Lumen can help you measure and optimize attention across all your advertising." />
           </p>
           <Link href="/#contact">
             <Button size="lg" variant="outline" className="bg-white text-[#01b3d4] border-white hover:bg-white/90">
-              Request a Demo
+              <TranslatedText text="Request a Demo" />
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

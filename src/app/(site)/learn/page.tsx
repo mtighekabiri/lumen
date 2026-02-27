@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, BarChart3, Target, LineChart, Zap, Globe, FileText, Video, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { TranslatedText } from "@/components/translated-text";
 
 export default function LearnPage() {
   return (
@@ -12,10 +13,10 @@ export default function LearnPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Learn
+              <TranslatedText text="Learn" />
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-              Resources to help you understand and leverage attention measurement. From getting started guides to advanced optimization strategies.
+              <TranslatedText text="Resources to help you understand and leverage attention measurement. From getting started guides to advanced optimization strategies." />
             </p>
           </div>
         </div>
@@ -24,16 +25,16 @@ export default function LearnPage() {
       {/* Getting Started Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Getting Started</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8"><TranslatedText text="Getting Started" /></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <BookOpen className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Getting Started Guide</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Getting Started Guide" /></CardTitle>
                 <CardDescription>
-                  Learn the basics of attention measurement and how to interpret your results. Perfect for teams new to attention metrics.
+                  <TranslatedText text="Learn the basics of attention measurement and how to interpret your results. Perfect for teams new to attention metrics." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -43,9 +44,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <BarChart3 className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Understanding Metrics</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Understanding Metrics" /></CardTitle>
                 <CardDescription>
-                  Deep dive into attention metrics: % Viewed, View Time, APM (attentive seconds per 1,000 impressions), and aCPM (cost per 1,000 attentive seconds).
+                  <TranslatedText text="Deep dive into attention metrics: % Viewed, View Time, APM (attentive seconds per 1,000 impressions), and aCPM (cost per 1,000 attentive seconds)." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -55,9 +56,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <Target className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Best Practices</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Best Practices" /></CardTitle>
                 <CardDescription>
-                  Tips and strategies for optimizing your creative based on attention data. Learn what drives higher attention.
+                  <TranslatedText text="Tips and strategies for optimizing your creative based on attention data. Learn what drives higher attention." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -68,16 +69,16 @@ export default function LearnPage() {
       {/* Tools & Resources */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Tools &amp; Resources</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8"><TranslatedText text="Tools & Resources" /></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <LineChart className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">ROI Calculator</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="ROI Calculator" /></CardTitle>
                 <CardDescription>
-                  Calculate the potential return on investment from attention optimization. See how much you could save.
+                  <TranslatedText text="Calculate the potential return on investment from attention optimization. See how much you could save." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -87,9 +88,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <FileText className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Benchmarks Database</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Benchmarks Database" /></CardTitle>
                 <CardDescription>
-                  Access comprehensive attention benchmarks across industries, channels, and ad formats.
+                  <TranslatedText text="Access comprehensive attention benchmarks across industries, channels, and ad formats." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -99,9 +100,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <Download className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Templates &amp; Frameworks</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Templates & Frameworks" /></CardTitle>
                 <CardDescription>
-                  Download planning templates, reporting frameworks, and presentation decks for your team.
+                  <TranslatedText text="Download planning templates, reporting frameworks, and presentation decks for your team." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -112,16 +113,16 @@ export default function LearnPage() {
       {/* Educational Content */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Educational Content</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8"><TranslatedText text="Educational Content" /></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <Zap className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Webinars</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Webinars" /></CardTitle>
                 <CardDescription>
-                  Watch recorded sessions from industry experts on attention-first advertising and measurement best practices.
+                  <TranslatedText text="Watch recorded sessions from industry experts on attention-first advertising and measurement best practices." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -131,9 +132,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <Globe className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Industry Reports</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Industry Reports" /></CardTitle>
                 <CardDescription>
-                  Access our research reports on attention trends across industries. Stay ahead of the curve.
+                  <TranslatedText text="Access our research reports on attention trends across industries. Stay ahead of the curve." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -143,9 +144,9 @@ export default function LearnPage() {
                 <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center mb-4 group-hover:bg-[#01b3d4]/20 transition-colors">
                   <Video className="h-6 w-6 text-[#01b3d4]" />
                 </div>
-                <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Video Tutorials</CardTitle>
+                <CardTitle className="group-hover:text-[#01b3d4] transition-colors"><TranslatedText text="Video Tutorials" /></CardTitle>
                 <CardDescription>
-                  Step-by-step video guides for using the LAMP platform and implementing attention bidding.
+                  <TranslatedText text="Step-by-step video guides for using the LAMP platform and implementing attention bidding." />
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -160,35 +161,35 @@ export default function LearnPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <span className="inline-flex items-center rounded-full bg-[#01b3d4]/10 px-3 py-1 text-sm font-medium text-[#01b3d4] mb-4">
-                  Featured Resource
+                  <TranslatedText text="Featured Resource" />
                 </span>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  2026 Attention Benchmarks Report
+                  <TranslatedText text="2026 Attention Benchmarks Report" />
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Our comprehensive annual report analysing attention data from over 400 billion attentive impressions across 50+ countries. Discover benchmarks across channels, industries, and ad formats.
+                  <TranslatedText text="Our comprehensive annual report analysing attention data from over 400 billion attentive impressions across 50+ countries. Discover benchmarks across channels, industries, and ad formats." />
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center text-gray-600">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#01b3d4] mr-2"></span>
-                    Channel-by-channel benchmarks
+                    <TranslatedText text="Channel-by-channel benchmarks" />
                   </li>
                   <li className="flex items-center text-gray-600">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#01b3d4] mr-2"></span>
-                    Industry vertical comparisons
+                    <TranslatedText text="Industry vertical comparisons" />
                   </li>
                   <li className="flex items-center text-gray-600">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#01b3d4] mr-2"></span>
-                    Creative optimization insights
+                    <TranslatedText text="Creative optimization insights" />
                   </li>
                   <li className="flex items-center text-gray-600">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#01b3d4] mr-2"></span>
-                    Year-over-year trends
+                    <TranslatedText text="Year-over-year trends" />
                   </li>
                 </ul>
                 <Link href="/#contact">
                   <Button>
-                    Request the Report
+                    <TranslatedText text="Request the Report" />
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
@@ -197,7 +198,7 @@ export default function LearnPage() {
                 <div className="text-center">
                   <Globe className="h-24 w-24 text-[#01b3d4]/60 mx-auto mb-4" />
                   <p className="text-2xl font-bold text-gray-900">400B+</p>
-                  <p className="text-gray-600">Attentive Impressions Analysed</p>
+                  <p className="text-gray-600"><TranslatedText text="Attentive Impressions Analysed" /></p>
                 </div>
               </div>
             </div>
@@ -209,14 +210,14 @@ export default function LearnPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#01b3d4]">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Need personalized guidance?
+            <TranslatedText text="Need personalized guidance?" />
           </h2>
           <p className="text-white/90 text-lg mb-8">
-            Our team is here to help you get the most out of attention measurement. Schedule a consultation today.
+            <TranslatedText text="Our team is here to help you get the most out of attention measurement. Schedule a consultation today." />
           </p>
           <Link href="/#contact">
             <Button size="lg" variant="outline" className="bg-white text-[#01b3d4] border-white hover:bg-white/90">
-              Contact Our Team
+              <TranslatedText text="Contact Our Team" />
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

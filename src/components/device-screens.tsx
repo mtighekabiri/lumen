@@ -1,5 +1,8 @@
 "use client";
 
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
+
 function Skeleton() {
   return (
     <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[8%] flex flex-col gap-[5%]">
@@ -67,12 +70,19 @@ function Tablet() {
 
 function MobilePhone() {
   return (
-    <div className="w-full aspect-[9/19] bg-[#1a1a1a] rounded-[16%] p-[5%] shadow-xl ring-1 ring-black/10 relative">
+    <div className="w-full aspect-[9/19.5] bg-[#1a1a1a] rounded-[18%] p-[4.5%] shadow-xl ring-1 ring-black/10 relative">
       {/* Dynamic Island */}
-      <div className="absolute top-[4%] left-1/2 -translate-x-1/2 w-[26%] h-[2.2%] bg-black rounded-full z-10" />
-      <div className="w-full h-full rounded-[12%] overflow-hidden bg-white">
+      <div className="absolute top-[3.5%] left-1/2 -translate-x-1/2 w-[30%] h-[2%] bg-black rounded-full z-10" />
+      {/* Side button — right */}
+      <div className="absolute top-[22%] -right-[3%] w-[2.5%] h-[8%] bg-[#2a2a2a] rounded-r-sm" />
+      {/* Volume buttons — left */}
+      <div className="absolute top-[18%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
+      <div className="absolute top-[25%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
+      <div className="w-full h-full rounded-[14%] overflow-hidden bg-white">
         <Skeleton />
       </div>
+      {/* Home indicator bar */}
+      <div className="absolute bottom-[2.5%] left-1/2 -translate-x-1/2 w-[35%] h-[1%] bg-gray-600 rounded-full" />
     </div>
   );
 }
@@ -124,13 +134,22 @@ function PrintMedia() {
 function AudioDevice() {
   return (
     <div className="flex flex-col items-center justify-end h-full">
-      {/* Speaker / smart speaker */}
-      <div className="w-full aspect-square bg-[#1a1a1a] rounded-full shadow-xl ring-1 ring-black/10 p-[12%] flex items-center justify-center">
-        {/* Speaker grille rings */}
-        <div className="w-full h-full rounded-full border-[3px] border-gray-600 flex items-center justify-center">
-          <div className="w-[60%] h-[60%] rounded-full border-[2px] border-gray-500 flex items-center justify-center">
-            <div className="w-[45%] h-[45%] rounded-full bg-gray-600" />
+      <div className="flex gap-[12%] w-full justify-center">
+        {/* Left earbud */}
+        <div className="w-[38%] flex flex-col items-center">
+          <div className="w-full aspect-square bg-[#e8e8e8] rounded-full shadow-lg ring-1 ring-gray-300 flex items-center justify-center">
+            <div className="w-[45%] h-[45%] rounded-full bg-[#d0d0d0]" />
           </div>
+          {/* Stem */}
+          <div className="w-[28%] h-6 sm:h-8 bg-gradient-to-b from-[#e8e8e8] to-[#ddd] rounded-b-full" />
+        </div>
+        {/* Right earbud */}
+        <div className="w-[38%] flex flex-col items-center">
+          <div className="w-full aspect-square bg-[#e8e8e8] rounded-full shadow-lg ring-1 ring-gray-300 flex items-center justify-center">
+            <div className="w-[45%] h-[45%] rounded-full bg-[#d0d0d0]" />
+          </div>
+          {/* Stem */}
+          <div className="w-[28%] h-6 sm:h-8 bg-gradient-to-b from-[#e8e8e8] to-[#ddd] rounded-b-full" />
         </div>
       </div>
     </div>
@@ -138,66 +157,70 @@ function AudioDevice() {
 }
 
 export function DeviceScreens() {
+  const { language } = useLanguage();
+
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-16 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="text-center mb-12">
-          <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]">
-            Cross-Channel Attention
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Measure Attention Everywhere
-          </h2>
-        </div>
-
-        {/* Devices row — sizes approximate real-world proportions */}
-        <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
-          {/* Cinema — ultra-wide, far left */}
-          <div className="w-[18%] max-w-[180px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Cinema</p>
-            <CinemaScreen />
+        <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]">
+              {t(language, "devices.sectionLabel")}
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              {t(language, "devices.sectionTitle")}
+            </h2>
           </div>
 
-          {/* TV ~55" */}
-          <div className="w-[20%] max-w-[200px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">TV / CTV</p>
-            <TVScreen />
-          </div>
+          {/* Devices row — sizes approximate real-world proportions */}
+          <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
+            {/* Cinema — ultra-wide, far left, much larger */}
+            <div className="w-[24%] max-w-[260px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.cinema")}</p>
+              <CinemaScreen />
+            </div>
 
-          {/* Laptop ~15" */}
-          <div className="w-[15%] max-w-[150px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Desktop</p>
-            <Laptop />
-          </div>
+            {/* TV ~55" — bigger */}
+            <div className="w-[22%] max-w-[240px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tv")}</p>
+              <TVScreen />
+            </div>
 
-          {/* Tablet ~11" portrait */}
-          <div className="w-[8%] max-w-[80px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Tablet</p>
-            <Tablet />
-          </div>
+            {/* Laptop ~15" */}
+            <div className="w-[14%] max-w-[150px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.desktop")}</p>
+              <Laptop />
+            </div>
 
-          {/* Mobile ~6.5" */}
-          <div className="w-[5%] max-w-[50px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">Mobile</p>
-            <MobilePhone />
-          </div>
+            {/* Tablet ~11" portrait */}
+            <div className="w-[7%] max-w-[75px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tablet")}</p>
+              <Tablet />
+            </div>
 
-          {/* DOOH D6 — tall standalone panel */}
-          <div className="w-[9%] max-w-[90px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">DOOH</p>
-            <DOOHScreen />
-          </div>
+            {/* Mobile ~6.5" — smaller */}
+            <div className="w-[3.5%] max-w-[38px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">{t(language, "devices.mobile")}</p>
+              <MobilePhone />
+            </div>
 
-          {/* Print — magazine/newspaper, far right */}
-          <div className="w-[7%] max-w-[70px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Print</p>
-            <PrintMedia />
-          </div>
+            {/* DOOH D6 — tall standalone panel */}
+            <div className="w-[8%] max-w-[85px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.dooh")}</p>
+              <DOOHScreen />
+            </div>
 
-          {/* Audio — speaker, far right */}
-          <div className="w-[6%] max-w-[60px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Audio</p>
-            <AudioDevice />
+            {/* Print — magazine/newspaper, far right */}
+            <div className="w-[6%] max-w-[65px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.print")}</p>
+              <PrintMedia />
+            </div>
+
+            {/* Audio — AirPods, far right */}
+            <div className="w-[5%] max-w-[55px]">
+              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.audio")}</p>
+              <AudioDevice />
+            </div>
           </div>
         </div>
       </div>

@@ -100,6 +100,46 @@ const translations: Record<string, Record<LanguageCode, string>> = {
 
   // ── Language Switcher ───────────────────────────────────────
   "lang.switchLanguage":   { en: "Switch language",  zh: "切换语言",       hi: "भाषा बदलें",     es: "Cambiar idioma",  fr: "Changer de langue", ar: "تغيير اللغة",   bn: "ভাষা পরিবর্তন",   pt: "Mudar idioma",   ru: "Сменить язык",   ja: "言語を切り替え" },
+
+  // ── Homepage: Hero Overlay ─────────────────────────────────
+  "home.heroAttention":    { en: "Attention", zh: "注意力", hi: "ध्यान", es: "Atención", fr: "L'attention", ar: "الانتباه", bn: "মনোযোগ", pt: "Atenção", ru: "Внимание", ja: "アテンション" },
+  "home.heroSubtext":      { en: "into action, sales, memory, choice, opinion, clicks, trust, awareness, profit…", zh: "转化为行动、销售、记忆、选择、观点、点击、信任、认知、利润……", hi: "को कार्रवाई, बिक्री, स्मृति, चयन, राय, क्लिक, विश्वास, जागरूकता, लाभ में बदलें…", es: "en acción, ventas, recuerdo, elección, opinión, clics, confianza, conocimiento, ganancia…", fr: "en action, ventes, mémoire, choix, opinion, clics, confiance, notoriété, profit…", ar: "إلى عمل، مبيعات، ذاكرة، اختيار، رأي، نقرات، ثقة، وعي، ربح…", bn: "কর্ম, বিক্রয়, স্মৃতি, পছন্দ, মতামত, ক্লিক, বিশ্বাস, সচেতনতা, মুনাফায় রূপান্তর…", pt: "em ação, vendas, memória, escolha, opinião, cliques, confiança, conhecimento, lucro…", ru: "в действие, продажи, память, выбор, мнение, клики, доверие, осведомлённость, прибыль…", ja: "をアクション、売上、記憶、選択、意見、クリック、信頼、認知、利益に…" },
+  "home.heroDesc":         { en: "Since 2013, we've been powering attention-first advertising with eye-tracking technology.", zh: "自2013年以来，我们一直通过眼动追踪技术推动注意力优先的广告。", hi: "2013 से, हम आई-ट्रैकिंग तकनीक के साथ ध्यान-प्रथम विज्ञापन को शक्ति प्रदान कर रहे हैं।", es: "Desde 2013, impulsamos la publicidad basada en atención con tecnología de seguimiento ocular.", fr: "Depuis 2013, nous alimentons la publicité axée sur l'attention grâce à la technologie de suivi oculaire.", ar: "منذ 2013، نقدم إعلانات قائمة على الانتباه باستخدام تقنية تتبع العين.", bn: "২০১৩ সাল থেকে, আমরা আই-ট্র্যাকিং প্রযুক্তি দিয়ে মনোযোগ-ভিত্তিক বিজ্ঞাপনকে শক্তিশালী করছি।", pt: "Desde 2013, impulsionamos publicidade baseada em atenção com tecnologia de rastreamento ocular.", ru: "С 2013 года мы развиваем рекламу, ориентированную на внимание, с помощью технологии отслеживания взгляда.", ja: "2013年以来、アイトラッキング技術でアテンション・ファースト広告を推進しています。" },
+
+  // ── Homepage: Stats Strip ──────────────────────────────────
+  "home.stat1Label":       { en: "impressions power machine learning attention models", zh: "展示次数驱动机器学习注意力模型", hi: "इंप्रेशन मशीन लर्निंग अटेंशन मॉडल को शक्ति देते हैं", es: "impresiones impulsan modelos de atención con aprendizaje automático", fr: "impressions alimentent les modèles d'attention par apprentissage automatique", ar: "ظهور يغذي نماذج الانتباه بالتعلم الآلي", bn: "ইম্প্রেশন মেশিন লার্নিং অ্যাটেনশন মডেলকে শক্তি দেয়", pt: "impressões alimentam modelos de atenção com aprendizado de máquina", ru: "показов питают модели внимания на машинном обучении", ja: "インプレッションが機械学習アテンションモデルを支えています" },
+  "home.stat2Label":       { en: "real-world eye-tracking sessions", zh: "真实世界眼动追踪会话", hi: "वास्तविक दुनिया की आई-ट्रैकिंग सत्र", es: "sesiones reales de seguimiento ocular", fr: "sessions réelles de suivi oculaire", ar: "جلسات تتبع عين حقيقية", bn: "বাস্তব-বিশ্বের আই-ট্র্যাকিং সেশন", pt: "sessões reais de rastreamento ocular", ru: "реальных сессий отслеживания взгляда", ja: "実世界アイトラッキングセッション" },
+  "home.stat3Label":       { en: "countries coverage", zh: "国家覆盖", hi: "देशों की कवरेज", es: "cobertura de países", fr: "couverture pays", ar: "تغطية دول", bn: "দেশ কভারেজ", pt: "cobertura de países", ru: "стран охвата", ja: "カ国をカバー" },
+  "home.stat4Label":       { en: "years in the attention space", zh: "年注意力领域经验", hi: "वर्ष अटेंशन स्पेस में", es: "años en el espacio de la atención", fr: "ans dans l'espace de l'attention", ar: "سنوات في مجال الانتباه", bn: "বছর অ্যাটেনশন স্পেসে", pt: "anos no espaço de atenção", ru: "лет в области внимания", ja: "年間アテンション分野で" },
+
+  // ── Device Screens Section ─────────────────────────────────
+  "devices.sectionLabel":  { en: "Cross-Channel Attention", zh: "跨渠道注意力", hi: "क्रॉस-चैनल अटेंशन", es: "Atención Multicanal", fr: "Attention Cross-Canal", ar: "الانتباه عبر القنوات", bn: "ক্রস-চ্যানেল অ্যাটেনশন", pt: "Atenção Cross-Channel", ru: "Кросс-канальное внимание", ja: "クロスチャネルアテンション" },
+  "devices.sectionTitle":  { en: "Measure Attention Everywhere", zh: "全渠道测量注意力", hi: "हर जगह ध्यान मापें", es: "Mida la Atención en Todas Partes", fr: "Mesurez l'Attention Partout", ar: "قياس الانتباه في كل مكان", bn: "সর্বত্র মনোযোগ পরিমাপ করুন", pt: "Meça a Atenção em Todo Lugar", ru: "Измеряйте внимание повсюду", ja: "あらゆる場所でアテンションを測定" },
+  "devices.cinema":        { en: "Cinema", zh: "影院", hi: "सिनेमा", es: "Cine", fr: "Cinéma", ar: "السينما", bn: "সিনেমা", pt: "Cinema", ru: "Кино", ja: "シネマ" },
+  "devices.tv":            { en: "TV / CTV", zh: "电视 / CTV", hi: "टीवी / CTV", es: "TV / CTV", fr: "TV / CTV", ar: "التلفزيون / CTV", bn: "টিভি / CTV", pt: "TV / CTV", ru: "ТВ / CTV", ja: "TV / CTV" },
+  "devices.desktop":       { en: "Desktop", zh: "桌面端", hi: "डेस्कटॉप", es: "Escritorio", fr: "Bureau", ar: "سطح المكتب", bn: "ডেস্কটপ", pt: "Desktop", ru: "Десктоп", ja: "デスクトップ" },
+  "devices.tablet":        { en: "Tablet", zh: "平板", hi: "टैबलेट", es: "Tableta", fr: "Tablette", ar: "الجهاز اللوحي", bn: "ট্যাবলেট", pt: "Tablet", ru: "Планшет", ja: "タブレット" },
+  "devices.mobile":        { en: "Mobile", zh: "移动端", hi: "मोबाइल", es: "Móvil", fr: "Mobile", ar: "الجوال", bn: "মোবাইল", pt: "Mobile", ru: "Мобильный", ja: "モバイル" },
+  "devices.dooh":          { en: "DOOH", zh: "DOOH", hi: "DOOH", es: "DOOH", fr: "DOOH", ar: "DOOH", bn: "DOOH", pt: "DOOH", ru: "DOOH", ja: "DOOH" },
+  "devices.print":         { en: "Print", zh: "印刷", hi: "प्रिंट", es: "Impreso", fr: "Imprimé", ar: "مطبوع", bn: "প্রিন্ট", pt: "Impresso", ru: "Печать", ja: "プリント" },
+  "devices.audio":         { en: "Audio", zh: "音频", hi: "ऑडियो", es: "Audio", fr: "Audio", ar: "صوتي", bn: "অডিও", pt: "Áudio", ru: "Аудио", ja: "オーディオ" },
+
+  // ── Header: Navigation Sub-menus ──────────────────────────
+  "nav.company":           { en: "Company", zh: "公司", hi: "कंपनी", es: "Empresa", fr: "Entreprise", ar: "الشركة", bn: "কোম্পানি", pt: "Empresa", ru: "Компания", ja: "会社情報" },
+  "nav.team":              { en: "Team", zh: "团队", hi: "टीम", es: "Equipo", fr: "Équipe", ar: "الفريق", bn: "টিম", pt: "Equipe", ru: "Команда", ja: "チーム" },
+  "nav.careers":           { en: "Careers", zh: "职业", hi: "करियर", es: "Carreras", fr: "Carrières", ar: "وظائف", bn: "ক্যারিয়ার", pt: "Carreiras", ru: "Карьера", ja: "採用情報" },
+  "nav.liveMeasurement":   { en: "Live Measurement", zh: "实时测量", hi: "लाइव मेजरमेंट", es: "Medición en Vivo", fr: "Mesure en Direct", ar: "القياس المباشر", bn: "লাইভ মেজারমেন্ট", pt: "Medição ao Vivo", ru: "Измерение в реальном времени", ja: "ライブ計測" },
+  "nav.audits":            { en: "Audits", zh: "审计", hi: "ऑडिट", es: "Auditorías", fr: "Audits", ar: "التدقيق", bn: "অডিট", pt: "Auditorias", ru: "Аудит", ja: "監査" },
+  "nav.programmatic":      { en: "Programmatic", zh: "程序化", hi: "प्रोग्रामैटिक", es: "Programática", fr: "Programmatique", ar: "البرمجية", bn: "প্রোগ্রামাটিক", pt: "Programática", ru: "Программатик", ja: "プログラマティック" },
+  "nav.planning":          { en: "Planning", zh: "规划", hi: "प्लानिंग", es: "Planificación", fr: "Planification", ar: "التخطيط", bn: "পরিকল্পনা", pt: "Planejamento", ru: "Планирование", ja: "プランニング" },
+  "nav.buying":            { en: "Buying", zh: "购买", hi: "बाइंग", es: "Compra", fr: "Achat", ar: "الشراء", bn: "ক্রয়", pt: "Compra", ru: "Закупка", ja: "バイイング" },
+  "nav.activation":        { en: "Activation", zh: "激活", hi: "एक्टिवेशन", es: "Activación", fr: "Activation", ar: "التفعيل", bn: "অ্যাক্টিভেশন", pt: "Ativação", ru: "Активация", ja: "アクティベーション" },
+  "nav.attentionStrategy": { en: "Attention Strategy Consulting", zh: "注意力策略咨询", hi: "अटेंशन स्ट्रैटेजी कंसल्टिंग", es: "Consultoría de Estrategia de Atención", fr: "Conseil en Stratégie d'Attention", ar: "استشارات استراتيجية الانتباه", bn: "অ্যাটেনশন স্ট্র্যাটেজি কনসাল্টিং", pt: "Consultoria em Estratégia de Atenção", ru: "Консалтинг по стратегии внимания", ja: "アテンション戦略コンサルティング" },
+  "nav.creativeTesting":   { en: "Creative Testing", zh: "创意测试", hi: "क्रिएटिव टेस्टिंग", es: "Pruebas Creativas", fr: "Test Créatif", ar: "اختبار الإبداع", bn: "ক্রিয়েটিভ টেস্টিং", pt: "Teste de Criativos", ru: "Тестирование креативов", ja: "クリエイティブテスト" },
+  "nav.research":          { en: "Research", zh: "研究", hi: "अनुसंधान", es: "Investigación", fr: "Recherche", ar: "البحث", bn: "গবেষণা", pt: "Pesquisa", ru: "Исследования", ja: "リサーチ" },
+  "nav.newsSubmenu":       { en: "News", zh: "新闻", hi: "समाचार", es: "Noticias", fr: "Actualités", ar: "الأخبار", bn: "সংবাদ", pt: "Notícias", ru: "Новости", ja: "ニュース" },
+  "nav.reports":           { en: "Reports", zh: "报告", hi: "रिपोर्ट", es: "Informes", fr: "Rapports", ar: "التقارير", bn: "রিপোর্ট", pt: "Relatórios", ru: "Отчёты", ja: "レポート" },
+  "nav.caseStudies":       { en: "Case Studies", zh: "案例研究", hi: "केस स्टडी", es: "Casos de Estudio", fr: "Études de Cas", ar: "دراسات الحالة", bn: "কেস স্টাডি", pt: "Estudos de Caso", ru: "Кейсы", ja: "事例紹介" },
 };
 
 export function t(language: LanguageCode, key: string): string {
