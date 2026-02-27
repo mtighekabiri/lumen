@@ -28,6 +28,11 @@ const translations: Record<string, Record<LanguageCode, string>> = {
 
   // ── Homepage: Hero ──────────────────────────────────────────
   "home.heroTitle":        { en: "Attention into",    zh: "注意力转化为",   hi: "ध्यान को बदलें",   es: "Atención en",     fr: "L'attention en",  ar: "الانتباه إلى",   bn: "মনোযোগকে রূপান্তর", pt: "Atenção em",     ru: "Внимание в",     ja: "アテンションを" },
+  "home.rotatingWord.profit": { en: "profit",          zh: "利润",          hi: "लाभ",             es: "ganancias",       fr: "profit",          ar: "ربح",            bn: "মুনাফা",          pt: "lucro",          ru: "прибыль",        ja: "利益" },
+  "home.rotatingWord.sales":  { en: "sales",           zh: "销售",          hi: "बिक्री",           es: "ventas",          fr: "ventes",          ar: "مبيعات",          bn: "বিক্রয়",          pt: "vendas",         ru: "продажи",        ja: "売上" },
+  "home.rotatingWord.action": { en: "action",          zh: "行动",          hi: "कार्रवाई",         es: "acción",          fr: "action",          ar: "عمل",            bn: "কর্ম",            pt: "ação",           ru: "действие",       ja: "アクション" },
+  "home.rotatingWord.memory": { en: "memory",          zh: "记忆",          hi: "स्मृति",           es: "recuerdo",        fr: "mémoire",         ar: "ذاكرة",           bn: "স্মৃতি",           pt: "memória",        ru: "память",         ja: "記憶" },
+  "home.rotatingWord.choice": { en: "choice",          zh: "选择",          hi: "चयन",             es: "elección",        fr: "choix",           ar: "اختيار",          bn: "পছন্দ",           pt: "escolha",        ru: "выбор",          ja: "選択" },
   "home.learnMore":        { en: "Learn More",       zh: "了解更多",      hi: "और जानें",        es: "Más información", fr: "En savoir plus",  ar: "اعرف المزيد",    bn: "আরও জানুন",      pt: "Saiba mais",     ru: "Узнать больше",  ja: "詳しく見る" },
 
   // ── Homepage: Latest News ───────────────────────────────────
