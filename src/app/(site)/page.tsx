@@ -32,8 +32,8 @@ export default function Home() {
     <>
       {/* Hero Banner Video */}
       <HeroBanner>
-        <div className="absolute inset-0 flex items-center justify-center md:justify-center px-6 sm:px-10 lg:px-16">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
+        <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-5 items-center px-6 sm:px-10 lg:px-16">
+          <div className="md:col-start-4 bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
             <Image
               src="/logo.png"
               alt="Lumen"
