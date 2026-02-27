@@ -63,6 +63,9 @@ export default function Home() {
         </div>
       </HeroBanner>
 
+      {/* Device Screens — Cross-Channel */}
+      <DeviceScreens />
+
       {/* Brand Logo Carousel */}
       <BrandCarousel id="brands" brands={[
         "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
@@ -72,9 +75,6 @@ export default function Home() {
         "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
         "youtube.png",
       ]} />
-
-      {/* Device Screens — Cross-Channel */}
-      <DeviceScreens />
 
       {/* For Advertisers & For Agencies */}
       <LumenMediaCreative />
