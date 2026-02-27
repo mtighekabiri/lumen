@@ -44,7 +44,7 @@ export default function Home() {
     <>
       {/* Hero Banner Video */}
       <HeroBanner>
-        <div className="absolute inset-0 flex items-center justify-center md:justify-end px-6 sm:px-10 lg:px-16">
+        <div className="absolute inset-0 flex items-center justify-center md:justify-center px-6 sm:px-10 lg:px-16">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
             <Image
               src="/logo.png"
@@ -69,12 +69,12 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">1B+</p>
-              <p className="mt-1 text-sm text-gray-600"><T id="home.stat1Label" /></p>
-            </div>
-            <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">750K+</p>
               <p className="mt-1 text-sm text-gray-600"><T id="home.stat2Label" /></p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">1B+</p>
+              <p className="mt-1 text-sm text-gray-600"><T id="home.stat1LabelLine1" /><br /><T id="home.stat1LabelLine2" /></p>
             </div>
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">50+</p>
