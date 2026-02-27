@@ -70,13 +70,16 @@ export default function Home() {
         "youtube.png",
       ]} />
 
+      {/* For Advertisers & For Agencies */}
+      <LumenMediaCreative />
+
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">70%</p>
-              <p className="mt-1 text-sm text-gray-600">of viewable ads are not viewed</p>
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">1B+</p>
+              <p className="mt-1 text-sm text-gray-600">impressions power machine learning attention models</p>
             </div>
             <div className="text-center">
               <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">750K+</p>
@@ -93,9 +96,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
 
       {/* News Section — streamed independently */}
       <Suspense fallback={
