@@ -36,7 +36,7 @@ const translations: Record<string, Record<LanguageCode, string>> = {
   "home.learnMore":        { en: "Learn More",       zh: "了解更多",      hi: "और जानें",        es: "Más información", fr: "En savoir plus",  ar: "اعرف المزيد",    bn: "আরও জানুন",      pt: "Saiba mais",     ru: "Узнать больше",  ja: "詳しく見る" },
 
   // ── Homepage: Latest News ───────────────────────────────────
-  "home.latestNews":       { en: "Latest News",      zh: "最新新闻",      hi: "ताज़ा समाचार",     es: "Últimas noticias", fr: "Dernières nouvelles", ar: "آخر الأخبار", bn: "সর্বশেষ সংবাদ",  pt: "Últimas notícias", ru: "Последние новости", ja: "最新ニュース" },
+  "home.latestNews":       { en: "Latest Insights",  zh: "最新洞察",      hi: "नवीनतम अंतर्दृष्टि", es: "Últimas perspectivas", fr: "Dernières perspectives", ar: "أحدث الرؤى", bn: "সর্বশেষ অন্তর্দৃষ্টি", pt: "Últimas perspectivas", ru: "Последние аналитические материалы", ja: "最新インサイト" },
   "home.loadingNews":      { en: "Loading latest news…", zh: "正在加载最新新闻…", hi: "नवीनतम समाचार लोड हो रहे हैं…", es: "Cargando últimas noticias…", fr: "Chargement des dernières nouvelles…", ar: "جارٍ تحميل آخر الأخبار…", bn: "সর্বশেষ সংবাদ লোড হচ্ছে…", pt: "Carregando últimas notícias…", ru: "Загрузка последних новостей…", ja: "最新ニュースを読み込み中…" },
 
   // ── Homepage: Case Studies ──────────────────────────────────
