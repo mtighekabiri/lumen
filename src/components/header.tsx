@@ -363,13 +363,8 @@ export function Header() {
             <LanguageSwitcher />
           </div>
 
-          {/* Mobile menu + search + CTA */}
+          {/* Mobile menu + search */}
           <div className="flex lg:hidden items-center gap-1">
-            <Link href="/#contact">
-              <Button size="sm" className="text-xs px-3 h-8">
-                {t(language, "header.getInTouch")}
-              </Button>
-            </Link>
             <LanguageSwitcher />
             <button
               type="button"
