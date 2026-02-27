@@ -4,6 +4,7 @@ import { ArrowRight, Newspaper, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLatestPosts } from "@/lib/blog";
 import { T } from "@/components/t";
+import { TranslatedText } from "@/components/translated-text";
 
 export async function LatestNews() {
   const posts = await getLatestPosts(4);
@@ -62,11 +63,9 @@ export async function LatestNews() {
                 </div>
                 {/* Card body */}
                 <div className="p-4">
-                  <span className="text-xs font-medium text-[#01b3d4]">
-                    {post.category}
-                  </span>
+                  <TranslatedText text={post.category} className="text-xs font-medium text-[#01b3d4]" />
                   <h3 className="mt-1 text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-[#01b3d4] transition-colors">
-                    {post.title}
+                    <TranslatedText text={post.title} />
                   </h3>
                   <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
                     <Calendar className="h-3 w-3" />

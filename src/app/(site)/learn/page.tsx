@@ -45,7 +45,7 @@ export default function LearnPage() {
                 </div>
                 <CardTitle className="group-hover:text-[#01b3d4] transition-colors">Understanding Metrics</CardTitle>
                 <CardDescription>
-                  Deep dive into attention metrics: view time, attention rate, attention quality score, and more.
+                  Deep dive into attention metrics: % Viewed, View Time, APM (attentive seconds per 1,000 impressions), and aCPM (cost per 1,000 attentive seconds).
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -163,10 +163,10 @@ export default function LearnPage() {
                   Featured Resource
                 </span>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  2025 Attention Benchmarks Report
+                  2026 Attention Benchmarks Report
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Our comprehensive annual report analyzing attention data from over 10 billion impressions. Discover benchmarks across channels, industries, and ad formats.
+                  Our comprehensive annual report analysing attention data from over 400 billion attentive impressions across 50+ countries. Discover benchmarks across channels, industries, and ad formats.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center text-gray-600">
@@ -196,8 +196,8 @@ export default function LearnPage() {
               <div className="bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30 rounded-xl p-8 flex items-center justify-center">
                 <div className="text-center">
                   <Globe className="h-24 w-24 text-[#01b3d4]/60 mx-auto mb-4" />
-                  <p className="text-2xl font-bold text-gray-900">10B+</p>
-                  <p className="text-gray-600">Impressions Analyzed</p>
+                  <p className="text-2xl font-bold text-gray-900">400B+</p>
+                  <p className="text-gray-600">Attentive Impressions Analysed</p>
                 </div>
               </div>
             </div>
