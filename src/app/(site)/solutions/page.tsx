@@ -335,9 +335,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <MapPin className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">OOH &amp; DOOH</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="OOH & DOOH" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Billboards, transit, digital OOH using first-person POV video eye-tracking with creative insertion.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Billboards, transit, digital OOH using first-person POV video eye-tracking with creative insertion." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -347,9 +347,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <FileText className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Print &amp; Packaging</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Print & Packaging" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Newspapers, magazines, product packaging, and point-of-sale tested via e-editions with eye-tracking.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Newspapers, magazines, product packaging, and point-of-sale tested via e-editions with eye-tracking." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -359,9 +359,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Monitor className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Cinema</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Cinema" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Cinema advertising attention measurement via in-person and remote eye-tracking studies.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Cinema advertising attention measurement via in-person and remote eye-tracking studies." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -371,9 +371,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Radio className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Audio</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Audio" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Podcasts, radio, and music streaming with audibility measurement and inferred attention modelling.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Podcasts, radio, and music streaming with audibility measurement and inferred attention modelling." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -383,9 +383,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Gamepad2 className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Gaming</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Gaming" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">In-game advertising (billboards, banners, reward videos, sponsorships) using POV video eye-tracking.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="In-game advertising (billboards, banners, reward videos, sponsorships) using POV video eye-tracking." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -395,9 +395,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <ShoppingCart className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Retail Media</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Retail Media" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">In-store and online retail media attention measurement, creating a common currency across all media.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="In-store and online retail media attention measurement, creating a common currency across all media." /></CardDescription>
               </CardHeader>
             </Card>
           </div>
@@ -409,27 +409,27 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Proven Results
+              <TranslatedText text="Proven Results" />
             </h2>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Attention drives outcomes across digital performance, brand lift, and profit
+              <TranslatedText text="Attention drives outcomes across digital performance, brand lift, and profit" />
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
               <p className="text-5xl font-bold text-[#01b3d4]">25%</p>
-              <p className="mt-2 text-gray-900 font-medium">Reduction in Ad Wastage</p>
-              <p className="mt-1 text-sm text-gray-500">Via Lumen attention segments</p>
+              <p className="mt-2 text-gray-900 font-medium"><TranslatedText text="Reduction in Ad Wastage" /></p>
+              <p className="mt-1 text-sm text-gray-500"><TranslatedText text="Via Lumen attention segments" /></p>
             </div>
             <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
               <p className="text-5xl font-bold text-[#01b3d4]">124%</p>
-              <p className="mt-2 text-gray-900 font-medium">Avg Increase in Conversions</p>
-              <p className="mt-1 text-sm text-gray-500">Per attention-optimised campaign</p>
+              <p className="mt-2 text-gray-900 font-medium"><TranslatedText text="Avg Increase in Conversions" /></p>
+              <p className="mt-1 text-sm text-gray-500"><TranslatedText text="Per attention-optimised campaign" /></p>
             </div>
             <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
               <p className="text-5xl font-bold text-[#01b3d4]">88%</p>
-              <p className="mt-2 text-gray-900 font-medium">Profit Explained by APM</p>
-              <p className="mt-1 text-sm text-gray-500">Every +100 APM = +&pound;1 profit / 1,000 impressions</p>
+              <p className="mt-2 text-gray-900 font-medium"><TranslatedText text="Profit Explained by APM" /></p>
+              <p className="mt-1 text-sm text-gray-500"><TranslatedText text="Every +100 APM = +£1 profit / 1,000 impressions" /></p>
             </div>
           </div>
         </div>
@@ -439,14 +439,14 @@ export default function SolutionsPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#01b3d4]">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to optimise your advertising?
+            <TranslatedText text="Ready to optimise your advertising?" />
           </h2>
           <p className="text-white/90 text-lg mb-8">
-            Schedule a demo to see how Lumen can help you measure and improve attention across all your campaigns.
+            <TranslatedText text="Schedule a demo to see how Lumen can help you measure and improve attention across all your campaigns." />
           </p>
           <Link href="/#contact">
             <Button size="lg" variant="outline" className="bg-white text-[#01b3d4] border-white hover:bg-white/90">
-              Request a Demo
+              <TranslatedText text="Request a Demo" />
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
