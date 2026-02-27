@@ -21,6 +21,9 @@ const BrandCarousel = dynamic(
 const LumenMediaCreative = dynamic(
   () => import("@/components/lumen-media-creative").then((m) => ({ default: m.LumenMediaCreative })),
 );
+const DeviceScreens = dynamic(
+  () => import("@/components/device-screens").then((m) => ({ default: m.DeviceScreens })),
+);
 const CaseStudy3DCarousel = dynamic(
   () => import("@/components/case-study-3d-carousel").then((m) => ({ default: m.CaseStudy3DCarousel })),
 );
@@ -69,6 +72,9 @@ export default function Home() {
         "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
         "youtube.png",
       ]} />
+
+      {/* Device Screens — Cross-Channel */}
+      <DeviceScreens />
 
       {/* For Advertisers & For Agencies */}
       <LumenMediaCreative />
