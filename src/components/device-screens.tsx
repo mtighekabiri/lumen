@@ -94,6 +94,49 @@ function DOOHScreen() {
   );
 }
 
+function CinemaScreen() {
+  return (
+    <div className="flex flex-col items-center">
+      {/* Ultra-wide cinema screen — 2.39:1 scope ratio */}
+      <div className="w-full aspect-[2.39/1] bg-[#111] rounded-[2px] sm:rounded-[3px] p-[2%] shadow-xl ring-1 ring-black/20">
+        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+          <DOOHSkeleton />
+        </div>
+      </div>
+      {/* Stand / wall bracket */}
+      <div className="w-[8%] h-3 sm:h-5 bg-gradient-to-b from-[#555] to-[#777]" />
+      <div className="w-[25%] h-1 sm:h-1.5 bg-[#666] rounded-sm" />
+    </div>
+  );
+}
+
+function PrintMedia() {
+  return (
+    <div className="flex flex-col items-center">
+      {/* Magazine / newspaper page */}
+      <div className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden">
+        <Skeleton />
+      </div>
+    </div>
+  );
+}
+
+function AudioDevice() {
+  return (
+    <div className="flex flex-col items-center justify-end h-full">
+      {/* Speaker / smart speaker */}
+      <div className="w-full aspect-square bg-[#1a1a1a] rounded-full shadow-xl ring-1 ring-black/10 p-[12%] flex items-center justify-center">
+        {/* Speaker grille rings */}
+        <div className="w-full h-full rounded-full border-[3px] border-gray-600 flex items-center justify-center">
+          <div className="w-[60%] h-[60%] rounded-full border-[2px] border-gray-500 flex items-center justify-center">
+            <div className="w-[45%] h-[45%] rounded-full bg-gray-600" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function DeviceScreens() {
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -108,35 +151,53 @@ export function DeviceScreens() {
         </div>
 
         {/* Devices row — sizes approximate real-world proportions */}
-        <div className="flex items-end justify-center gap-3 sm:gap-5 lg:gap-7">
-          {/* TV ~55" → largest */}
-          <div className="w-[30%] max-w-[280px]">
+        <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
+          {/* Cinema — ultra-wide, far left */}
+          <div className="w-[18%] max-w-[180px]">
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Cinema</p>
+            <CinemaScreen />
+          </div>
+
+          {/* TV ~55" */}
+          <div className="w-[20%] max-w-[200px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">TV / CTV</p>
             <TVScreen />
           </div>
 
-          {/* Laptop ~15" → second largest */}
-          <div className="w-[22%] max-w-[200px]">
+          {/* Laptop ~15" */}
+          <div className="w-[15%] max-w-[150px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Desktop</p>
             <Laptop />
           </div>
 
           {/* Tablet ~11" portrait */}
-          <div className="w-[11%] max-w-[100px]">
+          <div className="w-[8%] max-w-[80px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Tablet</p>
             <Tablet />
           </div>
 
           {/* Mobile ~6.5" */}
-          <div className="w-[6.5%] max-w-[60px]">
+          <div className="w-[5%] max-w-[50px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">Mobile</p>
             <MobilePhone />
           </div>
 
           {/* DOOH D6 — tall standalone panel */}
-          <div className="w-[12%] max-w-[110px]">
+          <div className="w-[9%] max-w-[90px]">
             <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">DOOH</p>
             <DOOHScreen />
+          </div>
+
+          {/* Print — magazine/newspaper, far right */}
+          <div className="w-[7%] max-w-[70px]">
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Print</p>
+            <PrintMedia />
+          </div>
+
+          {/* Audio — speaker, far right */}
+          <div className="w-[6%] max-w-[60px]">
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Audio</p>
+            <AudioDevice />
           </div>
         </div>
       </div>
