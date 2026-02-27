@@ -11,7 +11,7 @@ export async function LatestNews() {
 
   if (posts.length === 0) {
     return (
-      <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-[#01b3d4]/[0.04] to-gray-50 animate-gradient-drift">
         <div className="mx-auto max-w-7xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]">
             <T id="home.latestNews" />
@@ -29,7 +29,7 @@ export async function LatestNews() {
   }
 
   return (
-    <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section id="news" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-[#01b3d4]/[0.04] to-gray-50 animate-gradient-drift">
       <div className="mx-auto max-w-7xl">
         {/* Header: small eyebrow label + large heading */}
         <div className="mb-10">

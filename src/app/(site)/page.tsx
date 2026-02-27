@@ -33,7 +33,7 @@ export default function Home() {
       {/* Hero Banner Video */}
       <HeroBanner>
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-5 items-center px-6 sm:px-10 lg:px-16">
-          <div className="md:col-start-4 md:col-span-2 bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-lg lg:max-w-xl w-full">
+          <div className="md:col-start-4 md:col-span-2 bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
             <Image
               src="/logo.png"
               alt="Lumen"
@@ -53,7 +53,7 @@ export default function Home() {
       </HeroBanner>
 
       {/* Key Stats Strip */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
@@ -94,7 +94,7 @@ export default function Home() {
 
       {/* News Section — streamed independently */}
       <Suspense fallback={
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-[#01b3d4]/[0.04] to-gray-50 animate-gradient-drift">
           <div className="mx-auto max-w-7xl">
             <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]"><T id="home.latestNews" /></p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl max-w-2xl"><T id="news.stayUpdated" /></h2>

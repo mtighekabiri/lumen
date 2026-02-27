@@ -65,6 +65,24 @@ html {
   background: #64748b;
 }
 
+/* Subtle moving blue gradient for section backgrounds */
+@keyframes gradient-drift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-drift {
+  background-size: 200% 200%;
+  animation: gradient-drift 12s ease infinite;
+}
+
 /* Brand carousel animation */
 @keyframes scroll {
   0% {
