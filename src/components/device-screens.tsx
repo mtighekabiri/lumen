@@ -160,14 +160,12 @@ export function DeviceScreens() {
     <section className="py-16 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]">
-              {t(language, "devices.sectionLabel")}
-            </p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              {t(language, "devices.sectionTitle")}
-            </h2>
-          </div>
+          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-12">
+            <span>{t(language, "devices.headingPrefix")}</span>{" "}
+            <span className="italic text-[#01b3d4]">
+              {t(language, "devices.headingSuffix")}
+            </span>
+          </h3>
 
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
