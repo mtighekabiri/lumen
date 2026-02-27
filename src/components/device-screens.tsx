@@ -113,9 +113,6 @@ function CinemaScreen() {
           <DOOHSkeleton />
         </div>
       </div>
-      {/* Stand / wall bracket */}
-      <div className="w-[8%] h-3 sm:h-5 bg-gradient-to-b from-[#555] to-[#777]" />
-      <div className="w-[25%] h-1 sm:h-1.5 bg-[#666] rounded-sm" />
     </div>
   );
 }
@@ -175,7 +172,7 @@ export function DeviceScreens() {
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
             {/* Cinema — ultra-wide, far left, much larger */}
-            <div className="w-[24%] max-w-[260px]">
+            <div className="w-[30%] max-w-[320px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.cinema")}</p>
               <CinemaScreen />
             </div>
