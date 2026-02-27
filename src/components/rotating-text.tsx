@@ -1,16 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
 
-const words = [
-  "profit",
-  "sales",
-  "action",
-  "memory",
-  "choice",
+const wordKeys = [
+  "home.rotatingWord.profit",
+  "home.rotatingWord.sales",
+  "home.rotatingWord.action",
+  "home.rotatingWord.memory",
+  "home.rotatingWord.choice",
 ];
 
 export function RotatingText() {
+  const { language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -18,7 +21,7 @@ export function RotatingText() {
     const interval = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % words.length);
+        setCurrentIndex((prev) => (prev + 1) % wordKeys.length);
         setIsAnimating(false);
       }, 500);
     }, 2500);
@@ -33,7 +36,7 @@ export function RotatingText() {
           isAnimating ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
         }`}
       >
-        {words[currentIndex]}
+        {t(language, wordKeys[currentIndex])}
       </span>
     </span>
   );

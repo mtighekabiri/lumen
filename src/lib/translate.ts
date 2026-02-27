@@ -1,5 +1,3 @@
-import translate from "google-translate-api-x";
-
 // In-memory translation cache: key = "lang:hash" → translated text
 const cache = new Map<string, string>();
 
@@ -14,8 +12,32 @@ function hashText(text: string): string {
 }
 
 /**
+ * Translate plain text using the free Google Translate endpoint.
+ * No API key or npm package required.
+ */
+async function googleTranslate(text: string, targetLang: string): Promise<string> {
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${encodeURIComponent(targetLang)}&dt=t&q=${encodeURIComponent(text)}`;
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Translation request failed: ${res.status}`);
+
+  const data = await res.json();
+
+  // Response format: [[["translated text","original text",null,null,10]],null,"en",...]
+  // Concatenate all translated segments
+  if (Array.isArray(data) && Array.isArray(data[0])) {
+    return data[0]
+      .filter((segment: unknown) => Array.isArray(segment) && segment[0])
+      .map((segment: string[]) => segment[0])
+      .join("");
+  }
+
+  throw new Error("Unexpected response format");
+}
+
+/**
  * Translate plain text to the target language.
- * Results are cached in memory to avoid repeated API calls.
+ * Results are cached in memory to avoid repeated requests.
  */
 export async function translateText(
   text: string,
@@ -28,8 +50,7 @@ export async function translateText(
   if (cached) return cached;
 
   try {
-    const result = await translate(text, { to: targetLang });
-    const translated = result.text;
+    const translated = await googleTranslate(text, targetLang);
     cache.set(key, translated);
     return translated;
   } catch {
