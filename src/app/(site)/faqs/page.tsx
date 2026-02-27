@@ -8,15 +8,15 @@ const faqs = [
     questions: [
       {
         question: "What is predictive eye-tracking?",
-        answer: "Predictive eye-tracking uses AI models trained on millions of real eye-tracking data points to predict where people will look on any piece of content. This allows us to measure attention at scale without requiring hardware or panels."
+        answer: "Eye-tracking technology is enabled via front-facing camera and browser extension for mobile and desktop to record what people could see and what they do see. Gaze data is captured from opt-in panels to generate AI attention models at scale. No images are stored — just gaze points (x, y, z) and viewing behaviour to protect people's privacy. Our models are powered by 750K+ real-world eye-tracking sessions and 3K continuous panellists."
       },
       {
         question: "How do I get started with Lumen?",
-        answer: "Simply contact our team to schedule a demo. We'll walk you through the platform and help you set up your first attention measurement study. Most clients are up and running within a week."
+        answer: "Simply contact our team to schedule a demo. We'll walk you through the platform and help you set up your first attention measurement study. For LAMP measurement, you'll need a tag sheet and Lumen tag for Open Web, or we can handle data ingestion for social and streaming platforms."
       },
       {
         question: "What do I need to provide to measure my ads?",
-        answer: "For digital ads, you can either provide creative files or we can measure live campaigns via our pixel integration. For TV and OOH, we typically need the creative assets and media plan details."
+        answer: "For standard online display and video: a tag sheet and Lumen tag. For CTV (Hulu, LG TV, Disney+, NBC, Netflix, Prime): a Lumen pixel or data ingestion. For social media (Facebook, Instagram, TikTok, YouTube, etc.): data ingestion. For offline channels (OOH, Cinema, Print): your media plan with costs, formats, and reach."
       },
     ]
   },
@@ -25,15 +25,15 @@ const faqs = [
     questions: [
       {
         question: "How accurate is Lumen's attention measurement?",
-        answer: "Our predictive models achieve over 90% correlation with actual eye-tracking studies. We continuously validate and improve our models against real-world eye-tracking data from our panel of over 650,000 participants."
+        answer: "Our predictive models achieve over 90% correlation with actual eye-tracking studies (R² of 92.85%). There is very little variation in attention by market (1% difference), meaning Lumen predicts attention with high accuracy at a global scale. We validate data quality rigorously, retaining around 50-60% of eye-tracking data to ensure high-quality results."
       },
       {
         question: "What's the difference between viewability and attention?",
-        answer: "Viewability measures whether an ad had the opportunity to be seen (e.g., 50% of pixels in view for 1 second). Attention measures whether someone actually looked at and processed the ad. Our research shows that only 35% of viewable ads receive any human attention."
+        answer: "Viewability measures whether an ad achieved MRC minimum standards (50% of pixels on screen for 1 second, or 100% of pixels for 2 seconds of video). Attention measures whether someone actually looked at the ad and for how long. Our analysis of 400B+ attentive impressions shows that 70% of viewable ads are not viewed — meaning viewability alone is not enough."
       },
       {
-        question: "How does Attention Bidding work?",
-        answer: "Attention Bidding uses our predictive models to score each impression opportunity in real-time. Instead of bidding based on viewability alone, you can optimize for predicted attention, ensuring your budget goes to placements more likely to be actually seen."
+        question: "How does the Lumen attention model work?",
+        answer: "Our model combines eye-tracking data from 750K+ real-world sessions with tagged impressions measured in real-time, plus contextual signals (device, format, ad size, domain, behaviour). Because of these variables, each channel and format has elasticity — our model goes beyond channel and format norms to predict the attention your specific ads get."
       },
     ]
   },
@@ -42,15 +42,15 @@ const faqs = [
     questions: [
       {
         question: "What channels can you measure?",
-        answer: "We measure attention across all major advertising channels including digital display, video, social media, CTV, linear TV, out-of-home, print, and packaging. Our LAMP platform provides a unified view across all channels."
+        answer: "We measure attention across all major channels: digital display and video (desktop and mobile), linear TV, VoD/CTV, social media (Facebook, Instagram, TikTok, YouTube, Pinterest, LinkedIn, X, Snapchat, Twitch), OOH/DOOH, cinema, print, packaging, audio (podcasts, radio, streaming), gaming, email, and retail media. Our LAMP platform provides a unified cross-channel view."
       },
       {
         question: "Do you support social media platforms?",
-        answer: "Yes, we measure attention across all major social platforms including Facebook, Instagram, TikTok, Twitter/X, LinkedIn, Snapchat, and YouTube. Each platform has specific benchmarks and optimization recommendations."
+        answer: "Yes, we have a social attention measurement solution across all major Walled Garden platforms including Facebook, Instagram, TikTok, YouTube, Pinterest, LinkedIn, X, and Snapchat. Social measurement is powered via data ingestion with Lumen models trained across 50+ real-time signals cross-device."
       },
       {
         question: "Can you measure attention for CTV/streaming ads?",
-        answer: "Absolutely. CTV is one of our fastest-growing measurement areas. We can measure attention for ads on all major streaming platforms and compare performance to linear TV."
+        answer: "Yes. We support CTV measurement via Lumen pixel for platforms including Hulu, LG TV, Disney+, NBC, Peacock, Netflix, Prime, and Twitch. This includes both live measurement and benchmark comparisons, enabling cross-platform performance analysis against linear TV."
       },
     ]
   },
@@ -59,15 +59,15 @@ const faqs = [
     questions: [
       {
         question: "How long does it take to get results?",
-        answer: "Results are typically available within 24-48 hours of uploading your creative for testing. For ongoing campaign measurement with our pixel, data is updated in real-time in the LAMP dashboard."
+        answer: "For LAMP campaign measurement, Lumen will share a snapshot report within 48 hours of campaign reports being supplied. For ongoing measurement, data is updated in the LAMP dashboard across cross-channel, Open Web, Walled Garden, and custom report builders."
       },
       {
         question: "Can I compare my results to industry benchmarks?",
-        answer: "Yes! Our platform includes comprehensive benchmarks across industries, channels, and ad formats so you can see how your campaigns perform relative to others. We publish annual benchmark reports with detailed breakdowns."
+        answer: "Yes! Our normative dataset covers Social, Open Web, Print, OOH/DOOH, Cinema, Audio, Gaming, Linear TV, CTV, Retail Media and more. Each insights report includes a bespoke set of normative data selected by a Lumen consultant on a project-by-project basis."
       },
       {
         question: "What metrics do you provide?",
-        answer: "Key metrics include Attention Rate (% of impressions that receive attention), Attention Time (average seconds of attention), Attention Quality Score (composite metric), and Brand Attention (time on brand elements). We also provide creative heatmaps and element-level analysis."
+        answer: "Core metrics include: % Viewable (MRC standard), % Viewed (likelihood of being seen, AI-powered), View Time (expected duration if viewed), APM (attentive seconds per 1,000 impressions: % Viewed × View Time × 1,000), and aCPM (cost per 1,000 attentive seconds). For Spotlight studies, we also provide heatmaps, feature analyses, view orders, decay curves, and optimal attention thresholds."
       },
     ]
   },
@@ -76,15 +76,15 @@ const faqs = [
     questions: [
       {
         question: "Does Lumen integrate with my existing tools?",
-        answer: "Yes, we integrate with major DSPs (DV360, The Trade Desk, Amazon DSP), ad servers, and analytics platforms. We also offer API access for custom integrations with your existing marketing stack."
+        answer: "Yes. For activation, we integrate with Index Exchange, The Trade Desk (Kokai), DV360, PubMatic, BidSwitch, and IAS for pre-bid targeting and attention segments. For measurement, we partner with DoubleVerify and IAS for impression-level attention measurement. Lumen's data is also incorporated within agency planning tools and econometric models."
       },
       {
         question: "How is Lumen priced?",
-        answer: "We offer flexible pricing based on your needs, including per-study pricing for creative testing and subscription models for ongoing measurement. Contact our team for a customized quote based on your volume and requirements."
+        answer: "We offer flexible pricing including managed and self-service options. Activation via attention PMP segments is available immediately with no contract and no commitment through Index Exchange, The Trade Desk, or DV360. Contact our team for customized pricing based on your measurement and activation needs."
       },
       {
         question: "Do you offer enterprise solutions?",
-        answer: "Yes, we work with many of the world's largest advertisers and agencies. Enterprise solutions include dedicated support, custom integrations, exclusive benchmarking data, and strategic consulting services."
+        answer: "Yes, we work with many of the world's largest advertisers and agencies. Enterprise solutions include dedicated account teams, custom attention algorithms, brand-specific models, exclusive benchmarking data, strategic consulting, PCA (post-campaign analysis) reports, and Omnibus research studies."
       },
     ]
   },

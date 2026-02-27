@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Heart, Lightbulb, Shield, Users, Award, TrendingUp } from "lucide-react";
+import { ArrowRight, Heart, Lightbulb, Shield, Users, Award, TrendingUp, Globe, Eye, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
@@ -15,7 +15,7 @@ export default function AboutPage() {
               About Lumen Research
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-              Founded in 2013, Lumen Research is The Attention Technology Company. We power attention-first advertising through our proprietary predictive eye-tracking technology.
+              A global team with 13 years of experience in the attention economy. We use cutting-edge eye-tracking data across 50+ countries to create actionable attention predictions and brand-specific models of attention.
             </p>
           </div>
         </div>
@@ -24,82 +24,130 @@ export default function AboutPage() {
       {/* Stats Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
-              <p className="text-5xl font-bold text-[#01b3d4]">650K+</p>
-              <p className="mt-2 text-gray-600">Eye-Tracking Sessions</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center p-6 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
+              <p className="text-4xl sm:text-5xl font-bold text-[#01b3d4]">13</p>
+              <p className="mt-2 text-sm text-gray-600">Years in the Attention Space</p>
             </div>
-            <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
-              <p className="text-5xl font-bold text-[#01b3d4]">30B+</p>
-              <p className="mt-2 text-gray-600">Programmatic Impressions</p>
+            <div className="text-center p-6 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
+              <p className="text-4xl sm:text-5xl font-bold text-[#01b3d4]">750K+</p>
+              <p className="mt-2 text-sm text-gray-600">Real-World Eye-Tracking Sessions</p>
             </div>
-            <div className="text-center p-8 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
-              <p className="text-5xl font-bold text-[#01b3d4]">2013</p>
-              <p className="mt-2 text-gray-600">Founded</p>
+            <div className="text-center p-6 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
+              <p className="text-4xl sm:text-5xl font-bold text-[#01b3d4]">50+</p>
+              <p className="mt-2 text-sm text-gray-600">Countries Coverage</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl bg-[#01b3d4]/5 border border-[#01b3d4]/10">
+              <p className="text-4xl sm:text-5xl font-bold text-[#01b3d4]">1B+</p>
+              <p className="mt-2 text-sm text-gray-600">Impressions Powering ML Models</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission Section */}
+      {/* Who / What / Why / How */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Our Mission
-              </h2>
-              <p className="mt-6 text-lg text-gray-600">
-                Our LAMP (Lumen Attention Measurement &amp; Planning) platform enables you to measure attention across all online and offline environments in a single dashboard.
-              </p>
-              <p className="mt-4 text-gray-600">
-                Compare your advertising investments to find out what works, what doesn&apos;t, and where you should spend future budget.
-              </p>
-              <p className="mt-4 text-gray-600">
-                With Attention Bidding, you can buy media based on predicted attention rather than just viewability. By actually knowing when an ad is seen and for how long, Lumen&apos;s clients create more effective and robust advertising campaigns.
-              </p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Lumen Turns Attention into Action
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="border-l-4 border-l-[#01b3d4]">
+              <CardHeader className="flex flex-row items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                  <Users className="h-6 w-6 text-[#01b3d4]" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Who</CardTitle>
+                  <CardDescription className="mt-1">A global team with 13 years of experience in the attention economy.</CardDescription>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="border-l-4 border-l-[#01b3d4]">
+              <CardHeader className="flex flex-row items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-6 w-6 text-[#01b3d4]" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">What</CardTitle>
+                  <CardDescription className="mt-1">The Lumen Attention Technology toolkit reduces costs and increases the impact of advertising.</CardDescription>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="border-l-4 border-l-[#01b3d4]">
+              <CardHeader className="flex flex-row items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                  <Eye className="h-6 w-6 text-[#01b3d4]" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Why</CardTitle>
+                  <CardDescription className="mt-1">We help data-driven advertisers to minimise ad waste and maximise return.</CardDescription>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="border-l-4 border-l-[#01b3d4]">
+              <CardHeader className="flex flex-row items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
+                  <Globe className="h-6 w-6 text-[#01b3d4]" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">How</CardTitle>
+                  <CardDescription className="mt-1">We use cutting-edge eye-tracking data across 50+ countries to create actionable attention predictions and brand-specific models of attention.</CardDescription>
+                </div>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Awards Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Award-Winning Technology
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Recognised by the industry for our innovation and impact
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center p-6 rounded-2xl border border-gray-200 bg-white">
+              <div className="h-12 w-12 rounded-full bg-[#01b3d4]/10 flex items-center justify-center mx-auto mb-3">
+                <Trophy className="h-6 w-6 text-[#01b3d4]" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-1">Winner</p>
+              <p className="text-sm font-medium text-gray-900">Best Custom Research Project</p>
             </div>
-            <div className="grid grid-cols-1 gap-6">
-              <Card className="border-l-4 border-l-[#01b3d4]">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                    <TrendingUp className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">Data-Driven Decisions</CardTitle>
-                    <CardDescription className="mt-1">Make smarter advertising investments based on real attention data</CardDescription>
-                  </div>
-                </CardHeader>
-              </Card>
-              <Card className="border-l-4 border-l-[#01b3d4]">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                    <Award className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">Industry Leading</CardTitle>
-                    <CardDescription className="mt-1">Pioneering attention measurement since 2013</CardDescription>
-                  </div>
-                </CardHeader>
-              </Card>
-              <Card className="border-l-4 border-l-[#01b3d4]">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="h-12 w-12 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
-                    <Users className="h-6 w-6 text-[#01b3d4]" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">Global Reach</CardTitle>
-                    <CardDescription className="mt-1">Trusted by leading brands and agencies worldwide</CardDescription>
-                  </div>
-                </CardHeader>
-              </Card>
+            <div className="text-center p-6 rounded-2xl border border-gray-200 bg-white">
+              <div className="h-12 w-12 rounded-full bg-[#01b3d4]/10 flex items-center justify-center mx-auto mb-3">
+                <Trophy className="h-6 w-6 text-[#01b3d4]" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-1">Winner</p>
+              <p className="text-sm font-medium text-gray-900">Best Use of Emerging Technology</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl border border-gray-200 bg-white">
+              <div className="h-12 w-12 rounded-full bg-[#01b3d4]/10 flex items-center justify-center mx-auto mb-3">
+                <Trophy className="h-6 w-6 text-[#01b3d4]" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-1">Winner</p>
+              <p className="text-sm font-medium text-gray-900">Tech Team of the Year</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl border border-gray-200 bg-white">
+              <div className="h-12 w-12 rounded-full bg-[#01b3d4]/10 flex items-center justify-center mx-auto mb-3">
+                <Trophy className="h-6 w-6 text-[#01b3d4]" />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-1">Winner</p>
+              <p className="text-sm font-medium text-gray-900">Research Insights Award</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

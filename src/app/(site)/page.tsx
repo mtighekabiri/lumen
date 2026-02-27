@@ -70,7 +70,31 @@ export default function Home() {
         "youtube.png",
       ]} />
 
-      {/* Lumen Media & Creative Strip */}
+      {/* Key Stats Strip */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">70%</p>
+              <p className="mt-1 text-sm text-gray-600">of viewable ads are not viewed</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">750K+</p>
+              <p className="mt-1 text-sm text-gray-600">real-world eye-tracking sessions</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">50+</p>
+              <p className="mt-1 text-sm text-gray-600">countries coverage</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">13</p>
+              <p className="mt-1 text-sm text-gray-600">years in the attention space</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* For Advertisers & For Agencies */}
       <LumenMediaCreative />
 
       {/* News Section — streamed independently */}
