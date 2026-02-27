@@ -49,9 +49,9 @@ export default function Home() {
             <Image
               src="/logo.png"
               alt="Lumen"
-              width={80}
-              height={27}
-              className="h-5 sm:h-6 w-auto mb-5"
+              width={70}
+              height={24}
+              className="h-4 sm:h-5 w-auto mb-5"
             />
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight text-gray-900">
               <span className="italic text-[#01b3d4] font-normal"><T id="home.heroAttention" /></span>{" "}
