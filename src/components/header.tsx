@@ -354,13 +354,13 @@ export function Header() {
               )}
             </div>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
-
             {/* Get In Touch button */}
             <Link href="/#contact">
               <Button>{t(language, "header.getInTouch")}</Button>
             </Link>
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile menu + search + CTA */}
