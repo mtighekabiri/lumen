@@ -55,8 +55,8 @@ export function HeroBanner({ children }: HeroBannerProps) {
           <source src="/hero-banner.mp4" type="video/mp4" />
         </video>
 
-        {/* Attention timer — top right */}
-        <span className="absolute top-4 right-4 sm:top-6 sm:right-6 font-mono text-3xl sm:text-4xl font-bold text-[#01b3d4] tabular-nums drop-shadow-lg z-10">
+        {/* Attention timer — top left */}
+        <span className="absolute top-4 left-4 sm:top-6 sm:left-6 font-mono text-3xl sm:text-4xl font-bold text-[#01b3d4] tabular-nums drop-shadow-lg z-10">
           {seconds.toFixed(1)}s
         </span>
 
