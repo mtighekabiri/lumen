@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Mail, ChevronDown } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { RotatingText } from "@/components/rotating-text";
 import { getPostsByCategory } from "@/lib/blog";
 import { T } from "@/components/t";
 import { HomeFaqSection } from "@/components/home-faq-section";
@@ -42,42 +41,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Banner Video */}
-      <HeroBanner>
-        <div className="text-center px-4">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
-            <T id="home.heroTitle" /> <RotatingText />
-          </h1>
-          <div className="mt-8 flex items-center justify-center gap-x-4">
-            <Link href="/#contact">
-              <Button size="lg">
-                <T id="header.getInTouch" />
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/#brands">
-              <Button variant="outline" size="lg" className="bg-white/90 hover:bg-white">
-                <T id="home.learnMore" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </HeroBanner>
-
-      {/* Device Screens — Cross-Channel */}
-      <DeviceScreens />
-
-      {/* Brand Logo Carousel */}
-      <BrandCarousel id="brands" brands={[
-        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
-        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
-        "google.png", "heineken.png", "ias.png", "mastercard.png",
-        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
-        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
-        "youtube.png",
-      ]} />
-
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
+      <HeroBanner />
 
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
@@ -102,6 +66,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Device Screens — Cross-Channel */}
+      <DeviceScreens />
+
+      {/* Brand Logo Carousel */}
+      <BrandCarousel id="brands" brands={[
+        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
+        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
+        "google.png", "heineken.png", "ias.png", "mastercard.png",
+        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
+        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
+        "youtube.png",
+      ]} />
+
+      {/* For Advertisers & For Agencies */}
+      <LumenMediaCreative />
 
       {/* News Section — streamed independently */}
       <Suspense fallback={
