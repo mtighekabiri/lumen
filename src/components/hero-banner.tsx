@@ -42,7 +42,7 @@ export function HeroBanner({ children }: HeroBannerProps) {
       {/* Video container: ~52.5% of original 16:9 height on desktop, 9:12 on mobile */}
       <div
         ref={bannerRef}
-        className="relative w-full aspect-[9/12] md:aspect-[16/4.725] overflow-hidden"
+        className="relative w-full aspect-[9/12] md:aspect-[16/3.78] overflow-hidden"
       >
         <video
           className="absolute inset-0 w-full h-full object-cover"
