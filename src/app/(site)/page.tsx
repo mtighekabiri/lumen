@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight, Mail } from "lucide-react";
@@ -41,7 +42,26 @@ export default function Home() {
   return (
     <>
       {/* Hero Banner Video */}
-      <HeroBanner />
+      <HeroBanner>
+        <div className="absolute inset-0 flex items-center justify-end px-6 sm:px-10 lg:px-16">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl max-w-md lg:max-w-lg w-full">
+            <Image
+              src="/logo.png"
+              alt="Lumen"
+              width={80}
+              height={27}
+              className="h-5 sm:h-6 w-auto mb-5"
+            />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight text-gray-900">
+              <span className="italic text-[#01b3d4] font-normal">Attention</span>{" "}
+              into action, sales, memory, choice, opinion, profit, trust, awareness, clicks…
+            </h1>
+            <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
+              Since 2013, we&apos;ve been powering attention-first advertising with eye-tracking technology.
+            </p>
+          </div>
+        </div>
+      </HeroBanner>
 
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
