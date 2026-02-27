@@ -66,6 +66,17 @@ export function HeroBanner({ children }: HeroBannerProps) {
             {children}
           </div>
         )}
+
+        {/* White tab with Lumen logo — overlaps bottom of video */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10">
+          <div className="bg-white px-8 pt-4 pb-0 rounded-t-2xl flex items-center justify-center">
+            <img
+              src="/logo.png"
+              alt="Lumen"
+              className="h-8 sm:h-10 w-auto"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
