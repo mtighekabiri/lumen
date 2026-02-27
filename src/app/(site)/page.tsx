@@ -1,10 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getPostsByCategory } from "@/lib/blog";
+import { Mail } from "lucide-react";
 import { T } from "@/components/t";
 import { TranslatedText } from "@/components/translated-text";
 import { HomeFaqSection } from "@/components/home-faq-section";
@@ -25,18 +22,9 @@ const LumenMediaCreative = dynamic(
 const DeviceScreens = dynamic(
   () => import("@/components/device-screens").then((m) => ({ default: m.DeviceScreens })),
 );
-const CaseStudy3DCarousel = dynamic(
-  () => import("@/components/case-study-3d-carousel").then((m) => ({ default: m.CaseStudy3DCarousel })),
-);
-
 async function LatestNewsSection() {
   const { LatestNews } = await import("@/components/latest-news");
   return <LatestNews />;
-}
-
-async function CaseStudiesCarousel() {
-  const caseStudyPosts = await getPostsByCategory("Case Study", 10);
-  return <CaseStudy3DCarousel posts={caseStudyPosts} />;
 }
 
 export default function Home() {
@@ -116,39 +104,6 @@ export default function Home() {
       }>
         <LatestNewsSection />
       </Suspense>
-
-      {/* Case Studies Section — streamed independently */}
-      <section id="case-studies" className="py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-            <div className="lg:col-span-3">
-              <Suspense fallback={
-                <div className="flex items-center justify-center" style={{ height: "440px" }}>
-                  <p className="text-gray-400"><T id="home.loadingCaseStudies" /></p>
-                </div>
-              }>
-                <CaseStudiesCarousel />
-              </Suspense>
-            </div>
-            <div className="lg:col-span-2 text-center lg:text-left">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                <T id="home.caseStudies" />
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                <T id="home.caseStudiesDesc" />
-              </p>
-              <div className="mt-8">
-                <Link href="/news">
-                  <Button variant="outline" size="lg">
-                    <T id="home.viewAllCaseStudies" />
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQs Section */}
       <HomeFaqSection />
