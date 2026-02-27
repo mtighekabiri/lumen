@@ -268,13 +268,13 @@ export default function SolutionsPage() {
             </div>
             <div className="bg-[#01b3d4]/5 p-6 rounded-xl border border-[#01b3d4]/10 text-center">
               <Eye className="h-8 w-8 text-[#01b3d4] mx-auto mb-3" />
-              <p className="font-semibold text-gray-900 text-sm">Measure + Impact</p>
-              <p className="mt-2 text-xs text-gray-600">Lumen&apos;s models used as ingredient within major viewability attention solutions</p>
+              <p className="font-semibold text-gray-900 text-sm"><TranslatedText text="Measure + Impact" /></p>
+              <p className="mt-2 text-xs text-gray-600"><TranslatedText text="Lumen's models used as ingredient within major viewability attention solutions" /></p>
             </div>
             <div className="bg-[#01b3d4]/5 p-6 rounded-xl border border-[#01b3d4]/10 text-center">
               <TrendingDown className="h-8 w-8 text-[#01b3d4] mx-auto mb-3" />
-              <p className="font-semibold text-gray-900 text-sm">Econometrics</p>
-              <p className="mt-2 text-xs text-gray-600">Lumen&apos;s data is incorporated within econometric models to prove ROI</p>
+              <p className="font-semibold text-gray-900 text-sm"><TranslatedText text="Econometrics" /></p>
+              <p className="mt-2 text-xs text-gray-600"><TranslatedText text="Lumen's data is incorporated within econometric models to prove ROI" /></p>
             </div>
           </div>
         </div>
@@ -285,10 +285,10 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Multi-Channel Attention Measurement
+              <TranslatedText text="Multi-Channel Attention Measurement" />
             </h2>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Comprehensive coverage across every advertising touchpoint
+              <TranslatedText text="Comprehensive coverage across every advertising touchpoint" />
             </p>
           </div>
 
@@ -299,9 +299,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Monitor className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Digital Media</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Digital Media" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Standard display, video, rich media, outstream, pre-roll, interscrollers, skins, and full-screen takeovers.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Standard display, video, rich media, outstream, pre-roll, interscrollers, skins, and full-screen takeovers." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -311,9 +311,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Tv className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Linear TV &amp; CTV</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Linear TV & CTV" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Linear TV, VoD, Hulu, LG TV, Disney+, NBC, Peacock, Netflix, Prime, and Twitch via tagging, pixel, and data ingestion.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Linear TV, VoD, Hulu, LG TV, Disney+, NBC, Peacock, Netflix, Prime, and Twitch via tagging, pixel, and data ingestion." /></CardDescription>
               </CardHeader>
             </Card>
 
@@ -323,9 +323,9 @@ export default function SolutionsPage() {
                   <div className="h-10 w-10 rounded-lg bg-[#01b3d4]/10 flex items-center justify-center shrink-0">
                     <Layers className="h-5 w-5 text-[#01b3d4]" />
                   </div>
-                  <CardTitle className="text-base">Social Media</CardTitle>
+                  <CardTitle className="text-base"><TranslatedText text="Social Media" /></CardTitle>
                 </div>
-                <CardDescription className="text-sm">Facebook, Instagram, TikTok, YouTube, Pinterest, LinkedIn, X, Snapchat, and Twitch via data ingestion.</CardDescription>
+                <CardDescription className="text-sm"><TranslatedText text="Facebook, Instagram, TikTok, YouTube, Pinterest, LinkedIn, X, Snapchat, and Twitch via data ingestion." /></CardDescription>
               </CardHeader>
             </Card>
 
