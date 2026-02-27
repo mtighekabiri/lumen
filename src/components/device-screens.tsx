@@ -1,7 +1,138 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
+
+/* ───────────────────────────────────────────────────────────
+   AttentionTrail – canvas overlay that draws a speed-coloured
+   line as the user moves their mouse over a device screen.
+
+   Speed → colour mapping (slow to fast):
+     red → yellow → green → blue → white
+
+   The trail is cleared when the mouse leaves and restarts
+   on re-entry.
+   ─────────────────────────────────────────────────────────── */
+
+function speedToColor(speed: number): string {
+  // speed is in px/ms.  Typical range: 0 (dwelling) … ~2+ (fast flick)
+  // We clamp to [0, 1] then map through 4 colour stops.
+  const n = Math.min(speed / 1.6, 1);
+
+  if (n < 0.25) {
+    // red → yellow
+    const p = n / 0.25;
+    return `rgba(220,${Math.round(60 + 180 * p)},20,${0.95 - p * 0.1})`;
+  }
+  if (n < 0.5) {
+    // yellow → green
+    const p = (n - 0.25) / 0.25;
+    return `rgba(${Math.round(220 - 180 * p)},${Math.round(240 - 20 * p)},${Math.round(20 + 20 * p)},${0.85 - p * 0.05})`;
+  }
+  if (n < 0.75) {
+    // green → blue
+    const p = (n - 0.5) / 0.25;
+    return `rgba(${Math.round(40 - 30 * p)},${Math.round(220 - 140 * p)},${Math.round(40 + 215 * p)},${0.8 - p * 0.1})`;
+  }
+  // blue → white
+  const p = (n - 0.75) / 0.25;
+  return `rgba(${Math.round(10 + 245 * p)},${Math.round(80 + 175 * p)},${Math.round(255)},${0.7 - p * 0.25})`;
+}
+
+function AttentionTrail() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const lastRef = useRef<{ x: number; y: number; t: number } | null>(null);
+
+  // Keep canvas pixel-size in sync with its layout size
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    const sync = () => {
+      const { width, height } = parent.getBoundingClientRect();
+      if (canvas.width !== Math.round(width) || canvas.height !== Math.round(height)) {
+        canvas.width = Math.round(width);
+        canvas.height = Math.round(height);
+      }
+    };
+    sync();
+
+    const ro = new ResizeObserver(sync);
+    ro.observe(parent);
+    return () => ro.disconnect();
+  }, []);
+
+  const handleMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const now = performance.now();
+
+    const prev = lastRef.current;
+    if (prev) {
+      const dx = x - prev.x;
+      const dy = y - prev.y;
+      const dt = now - prev.t;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const speed = dt > 0 ? dist / dt : 0; // px/ms
+
+      ctx.beginPath();
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = speedToColor(speed);
+      // Thicker when slow (more "attention"), thinner when fast
+      ctx.lineWidth = Math.max(1.5, 4 - speed * 2);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.stroke();
+    }
+
+    lastRef.current = { x, y, t: now };
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    lastRef.current = null;
+  }, []);
+
+  const handleEnter = useCallback(() => {
+    lastRef.current = null;
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full z-10"
+      style={{ cursor: "crosshair" }}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onMouseEnter={handleEnter}
+    />
+  );
+}
+
+/** Wrapper that makes a screen area interactive (relative + canvas overlay) */
+function InteractiveScreen({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`relative ${className ?? ""}`}>
+      {children}
+      <AttentionTrail />
+    </div>
+  );
+}
+
+/* ─── Skeleton placeholders ─────────────────────────────── */
 
 function Skeleton() {
   return (
@@ -23,14 +154,16 @@ function DOOHSkeleton() {
   );
 }
 
+/* ─── Device components ─────────────────────────────────── */
+
 function TVScreen() {
   return (
     <div className="flex flex-col items-center">
       {/* Thin-bezel panel */}
       <div className="w-full aspect-[16/9] bg-[#1a1a1a] rounded-[3px] sm:rounded-[4px] p-[1.8%] shadow-xl ring-1 ring-black/10">
-        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white">
           <Skeleton />
-        </div>
+        </InteractiveScreen>
       </div>
       {/* Slim neck */}
       <div className="w-[12%] h-2.5 sm:h-3.5 bg-gradient-to-b from-[#2a2a2a] to-[#3a3a3a]" />
@@ -46,9 +179,9 @@ function Laptop() {
       {/* Screen with thicker bezel at bottom */}
       <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[4px] sm:rounded-t-[6px] overflow-hidden shadow-xl ring-1 ring-black/10"
         style={{ padding: "2.5% 3% 4% 3%" }}>
-        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white">
           <Skeleton />
-        </div>
+        </InteractiveScreen>
       </div>
       {/* Hinge */}
       <div className="w-[104%] h-[3px] sm:h-[4px] bg-gradient-to-b from-[#c0c0c0] to-[#a0a0a0] rounded-[1px]" />
@@ -61,9 +194,9 @@ function Laptop() {
 function Tablet() {
   return (
     <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[6%] p-[4.5%] shadow-xl ring-1 ring-black/10">
-      <div className="w-full h-full rounded-[3%] overflow-hidden bg-white">
+      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white">
         <Skeleton />
-      </div>
+      </InteractiveScreen>
     </div>
   );
 }
@@ -78,9 +211,9 @@ function MobilePhone() {
       {/* Volume buttons — left */}
       <div className="absolute top-[18%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
       <div className="absolute top-[25%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
-      <div className="w-full h-full rounded-[14%] overflow-hidden bg-white">
+      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white">
         <Skeleton />
-      </div>
+      </InteractiveScreen>
       {/* Home indicator bar */}
       <div className="absolute bottom-[2.5%] left-1/2 -translate-x-1/2 w-[35%] h-[1%] bg-gray-600 rounded-full" />
     </div>
@@ -92,9 +225,9 @@ function DOOHScreen() {
     <div className="flex flex-col items-center">
       {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
       <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
-        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white">
           <DOOHSkeleton />
-        </div>
+        </InteractiveScreen>
       </div>
       {/* Pole */}
       <div className="w-[6%] h-8 sm:h-12 bg-gradient-to-b from-[#666] to-[#888]" />
@@ -109,9 +242,9 @@ function CinemaScreen() {
     <div className="flex flex-col items-center">
       {/* Ultra-wide cinema screen — 2.39:1 scope ratio */}
       <div className="w-full aspect-[2.39/1] bg-[#111] rounded-[2px] sm:rounded-[3px] p-[2%] shadow-xl ring-1 ring-black/20">
-        <div className="w-full h-full rounded-[1px] overflow-hidden bg-white">
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white">
           <DOOHSkeleton />
-        </div>
+        </InteractiveScreen>
       </div>
     </div>
   );
@@ -121,9 +254,9 @@ function PrintMedia() {
   return (
     <div className="flex flex-col items-center">
       {/* Magazine / newspaper page */}
-      <div className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden">
+      <InteractiveScreen className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden">
         <Skeleton />
-      </div>
+      </InteractiveScreen>
     </div>
   );
 }
@@ -152,6 +285,8 @@ function AudioDevice() {
     </div>
   );
 }
+
+/* ─── Main export ────────────────────────────────────────── */
 
 export function DeviceScreens() {
   const { language } = useLanguage();
