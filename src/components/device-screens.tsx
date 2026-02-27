@@ -1,5 +1,8 @@
 "use client";
 
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
+
 function Skeleton() {
   return (
     <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[8%] flex flex-col gap-[5%]">
@@ -154,15 +157,17 @@ function AudioDevice() {
 }
 
 export function DeviceScreens() {
+  const { language } = useLanguage();
+
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="mx-auto max-w-7xl">
         <div className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]">
-            Cross-Channel Attention
+            {t(language, "devices.sectionLabel")}
           </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Measure Attention Everywhere
+            {t(language, "devices.sectionTitle")}
           </h2>
         </div>
 
@@ -170,49 +175,49 @@ export function DeviceScreens() {
         <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
           {/* Cinema — ultra-wide, far left, much larger */}
           <div className="w-[24%] max-w-[260px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Cinema</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.cinema")}</p>
             <CinemaScreen />
           </div>
 
           {/* TV ~55" — bigger */}
           <div className="w-[22%] max-w-[240px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">TV / CTV</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tv")}</p>
             <TVScreen />
           </div>
 
           {/* Laptop ~15" */}
           <div className="w-[14%] max-w-[150px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Desktop</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.desktop")}</p>
             <Laptop />
           </div>
 
           {/* Tablet ~11" portrait */}
           <div className="w-[7%] max-w-[75px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Tablet</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tablet")}</p>
             <Tablet />
           </div>
 
           {/* Mobile ~6.5" — smaller */}
           <div className="w-[3.5%] max-w-[38px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">Mobile</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">{t(language, "devices.mobile")}</p>
             <MobilePhone />
           </div>
 
           {/* DOOH D6 — tall standalone panel */}
           <div className="w-[8%] max-w-[85px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">DOOH</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.dooh")}</p>
             <DOOHScreen />
           </div>
 
           {/* Print — magazine/newspaper, far right */}
           <div className="w-[6%] max-w-[65px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Print</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.print")}</p>
             <PrintMedia />
           </div>
 
           {/* Audio — AirPods, far right */}
           <div className="w-[5%] max-w-[55px]">
-            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">Audio</p>
+            <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.audio")}</p>
             <AudioDevice />
           </div>
         </div>
