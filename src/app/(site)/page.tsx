@@ -60,6 +60,9 @@ export default function Home() {
         </div>
       </HeroBanner>
 
+      {/* For Advertisers & For Agencies */}
+      <LumenMediaCreative />
+
       {/* Brand Logo Carousel */}
       <BrandCarousel id="brands" brands={[
         "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
@@ -69,9 +72,6 @@ export default function Home() {
         "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
         "youtube.png",
       ]} />
-
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
 
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
