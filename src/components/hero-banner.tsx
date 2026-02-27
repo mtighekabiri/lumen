@@ -78,6 +78,19 @@ export function HeroBanner({ children }: HeroBannerProps) {
           </div>
         </div>
       </div>
+
+      {/* Headline + description below logo tab */}
+      <div className="bg-white text-center px-4 sm:px-6 lg:px-8 pt-8 pb-10">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+          The Attention Technology Company
+        </h2>
+        <p className="mt-4 mx-auto max-w-2xl text-lg text-gray-600 leading-relaxed">
+          Lumen uses predictive eye-tracking and machine learning to measure
+          what people actually look at — not just what&apos;s on screen. We help
+          brands, agencies, and platforms understand and optimise attention
+          across every channel, turning visibility into real business outcomes.
+        </p>
+      </div>
     </div>
   );
 }
