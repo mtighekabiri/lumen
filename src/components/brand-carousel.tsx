@@ -16,7 +16,7 @@ export function BrandCarousel({ id, brands }: BrandCarouselProps) {
   const duplicatedBrands = [...brands, ...brands, ...brands];
 
   return (
-    <div id={id} className="w-full overflow-hidden py-10 bg-white scroll-mt-16">
+    <div id={id} className="w-full overflow-hidden py-10 bg-gradient-to-br from-white via-[#01b3d4]/[0.03] to-white animate-gradient-drift scroll-mt-16">
       <div className="relative">
         {/* Gradient overlays for fade effect */}
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10" />
