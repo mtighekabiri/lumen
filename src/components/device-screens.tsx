@@ -59,7 +59,7 @@ type StatConfig = {
   decimals: number;
 };
 
-/** Per-device hover stats. Audio is intentionally excluded. */
+/** Per-device hover stats. */
 const DEVICE_STATS: Record<string, { stat1: StatConfig; stat2: StatConfig }> = {
   cinema: {
     stat1: { value: 90, suffix: "%", label: "viewed", decimals: 0 },
@@ -88,6 +88,10 @@ const DEVICE_STATS: Record<string, { stat1: StatConfig; stat2: StatConfig }> = {
   print: {
     stat1: { value: 65, suffix: "%", label: "viewed", decimals: 0 },
     stat2: { value: 1.6, suffix: "", label: "seconds", decimals: 1 },
+  },
+  audio: {
+    stat1: { value: 73, suffix: "%", label: "listened", decimals: 0 },
+    stat2: { value: 2.1, suffix: "", label: "seconds", decimals: 1 },
   },
 };
 
