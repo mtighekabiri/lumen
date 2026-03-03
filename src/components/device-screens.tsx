@@ -1,9 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
+
+/* ─── useDeviceImage ────────────────────────────────────── */
+
+/** Resolves the actual image path for a device name (png/jpg/jpeg). */
+function useDeviceImage(name: string): string | null {
+  const [src, setSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/device-image?name=${encodeURIComponent(name)}`)
+      .then((r) => r.json())
+      .then((data) => setSrc(data.src ?? null))
+      .catch(() => setSrc(null));
+  }, [name]);
+
+  return src;
+}
 
 /* ─── InteractiveScreen ─────────────────────────────────── */
 
@@ -11,13 +27,14 @@ import { t } from "@/lib/translations";
 function InteractiveScreen({
   children,
   className,
-  hoverImage,
+  deviceName,
 }: {
   children?: React.ReactNode;
   className?: string;
-  hoverImage?: string;
+  deviceName?: string;
 }) {
   const [hovered, setHovered] = useState(false);
+  const hoverImage = useDeviceImage(deviceName ?? "");
 
   return (
     <div
@@ -28,21 +45,45 @@ function InteractiveScreen({
       {children}
       {hoverImage && (
         <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
-          <Image src={hoverImage} alt="" fill className="object-cover" sizes="320px" />
+          <Image src={hoverImage} alt="" fill className="object-contain" sizes="320px" />
         </div>
       )}
     </div>
   );
 }
 
+/* ─── Skeleton placeholders ─────────────────────────────── */
+
+function Skeleton() {
+  return (
+    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[8%] flex flex-col gap-[5%]">
+      <div className="h-[8%] w-[55%] bg-gray-300/70 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[85%] bg-gray-200/70 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[70%] bg-gray-200/70 rounded-sm animate-pulse" />
+      <div className="flex-1 w-full bg-gray-200/50 rounded-sm animate-pulse" />
+      <div className="h-[5%] w-[35%] bg-gray-200/70 rounded-sm animate-pulse" />
+    </div>
+  );
+}
+
+function DOOHSkeleton() {
+  return (
+    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[6%]">
+      <div className="w-full h-full bg-gray-200/60 rounded-sm animate-pulse" />
+    </div>
+  );
+}
+
 /* ─── Device components ─────────────────────────────────── */
 
-function TVScreen({ hoverImage }: { hoverImage?: string }) {
+function TVScreen({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Thin-bezel panel */}
       <div className="w-full aspect-[16/9] bg-[#1a1a1a] rounded-[3px] sm:rounded-[4px] p-[1.8%] shadow-xl ring-1 ring-black/10">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
+          <Skeleton />
+        </InteractiveScreen>
       </div>
       {/* Slim neck */}
       <div className="w-[12%] h-2.5 sm:h-3.5 bg-gradient-to-b from-[#2a2a2a] to-[#3a3a3a]" />
@@ -52,13 +93,15 @@ function TVScreen({ hoverImage }: { hoverImage?: string }) {
   );
 }
 
-function Laptop({ hoverImage }: { hoverImage?: string }) {
+function Laptop({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Screen with thicker bezel at bottom */}
       <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[4px] sm:rounded-t-[6px] overflow-hidden shadow-xl ring-1 ring-black/10"
         style={{ padding: "2.5% 3% 4% 3%" }}>
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
+          <Skeleton />
+        </InteractiveScreen>
       </div>
       {/* Hinge */}
       <div className="w-[104%] h-[3px] sm:h-[4px] bg-gradient-to-b from-[#c0c0c0] to-[#a0a0a0] rounded-[1px]" />
@@ -68,15 +111,17 @@ function Laptop({ hoverImage }: { hoverImage?: string }) {
   );
 }
 
-function Tablet({ hoverImage }: { hoverImage?: string }) {
+function Tablet({ deviceName }: { deviceName: string }) {
   return (
     <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[6%] p-[4.5%] shadow-xl ring-1 ring-black/10">
-      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white" hoverImage={hoverImage} />
+      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white" deviceName={deviceName}>
+        <Skeleton />
+      </InteractiveScreen>
     </div>
   );
 }
 
-function MobilePhone({ hoverImage }: { hoverImage?: string }) {
+function MobilePhone({ deviceName }: { deviceName: string }) {
   return (
     <div className="w-full aspect-[9/19.5] bg-[#1a1a1a] rounded-[18%] p-[4.5%] shadow-xl ring-1 ring-black/10 relative">
       {/* Dynamic Island */}
@@ -86,19 +131,23 @@ function MobilePhone({ hoverImage }: { hoverImage?: string }) {
       {/* Volume buttons — left */}
       <div className="absolute top-[18%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
       <div className="absolute top-[25%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
-      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white" hoverImage={hoverImage} />
+      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white" deviceName={deviceName}>
+        <Skeleton />
+      </InteractiveScreen>
       {/* Home indicator bar */}
       <div className="absolute bottom-[2.5%] left-1/2 -translate-x-1/2 w-[35%] h-[1%] bg-gray-600 rounded-full" />
     </div>
   );
 }
 
-function DOOHScreen({ hoverImage }: { hoverImage?: string }) {
+function DOOHScreen({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
       <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
+          <DOOHSkeleton />
+        </InteractiveScreen>
       </div>
       {/* Pole */}
       <div className="w-[6%] h-8 sm:h-12 bg-gradient-to-b from-[#666] to-[#888]" />
@@ -108,28 +157,33 @@ function DOOHScreen({ hoverImage }: { hoverImage?: string }) {
   );
 }
 
-function CinemaScreen({ hoverImage }: { hoverImage?: string }) {
+function CinemaScreen({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Ultra-wide cinema screen — 2.39:1 scope ratio */}
       <div className="w-full aspect-[2.39/1] bg-[#111] rounded-[2px] sm:rounded-[3px] p-[2%] shadow-xl ring-1 ring-black/20">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
+          <DOOHSkeleton />
+        </InteractiveScreen>
       </div>
     </div>
   );
 }
 
-function PrintMedia({ hoverImage }: { hoverImage?: string }) {
+function PrintMedia({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Magazine / newspaper page */}
-      <InteractiveScreen className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden" hoverImage={hoverImage} />
+      <InteractiveScreen className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden" deviceName={deviceName}>
+        <Skeleton />
+      </InteractiveScreen>
     </div>
   );
 }
 
-function AudioDevice({ hoverImage }: { hoverImage?: string }) {
+function AudioDevice({ deviceName }: { deviceName: string }) {
   const [hovered, setHovered] = useState(false);
+  const hoverImage = useDeviceImage(deviceName);
 
   return (
     <div
@@ -193,49 +247,49 @@ export function DeviceScreens() {
             {/* Cinema — ultra-wide, far left, much larger */}
             <div className="w-[30%] max-w-[320px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.cinema")}</p>
-              <CinemaScreen hoverImage="/devices/cinema.jpg" />
+              <CinemaScreen deviceName="cinema" />
             </div>
 
             {/* TV ~55" — bigger */}
             <div className="w-[22%] max-w-[240px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tv")}</p>
-              <TVScreen hoverImage="/devices/tv.jpg" />
+              <TVScreen deviceName="tv" />
             </div>
 
             {/* Laptop ~15" */}
             <div className="w-[14%] max-w-[150px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.desktop")}</p>
-              <Laptop hoverImage="/devices/desktop.jpg" />
+              <Laptop deviceName="desktop" />
             </div>
 
             {/* Tablet ~11" portrait */}
             <div className="w-[7%] max-w-[75px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tablet")}</p>
-              <Tablet hoverImage="/devices/tablet.jpg" />
+              <Tablet deviceName="tablet" />
             </div>
 
             {/* Mobile ~6.5" — smaller */}
             <div className="w-[3.5%] max-w-[38px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">{t(language, "devices.mobile")}</p>
-              <MobilePhone hoverImage="/devices/mobile.jpg" />
+              <MobilePhone deviceName="mobile" />
             </div>
 
             {/* DOOH D6 — tall standalone panel */}
             <div className="w-[8%] max-w-[85px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.dooh")}</p>
-              <DOOHScreen hoverImage="/devices/dooh.png" />
+              <DOOHScreen deviceName="dooh" />
             </div>
 
             {/* Print — magazine/newspaper, far right */}
             <div className="w-[6%] max-w-[65px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.print")}</p>
-              <PrintMedia hoverImage="/devices/print.jpg" />
+              <PrintMedia deviceName="print" />
             </div>
 
             {/* Audio — AirPods, far right */}
             <div className="w-[5%] max-w-[55px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.audio")}</p>
-              <AudioDevice hoverImage="/devices/audio.jpg" />
+              <AudioDevice deviceName="audio" />
             </div>
           </div>
         </div>
