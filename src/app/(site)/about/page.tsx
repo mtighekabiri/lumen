@@ -230,17 +230,14 @@ export default function AboutPage() {
       </section>
 
       {/* ── Interactive Globe Section ─────────────────────────── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         <div className="mx-auto max-w-5xl">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <p className="text-sm font-semibold tracking-widest uppercase text-[#01b3d4] mb-3">
               <TranslatedText text="Global Reach" />
             </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              <TranslatedText text="Have we collected attention data where you are?" />
-            </h2>
-            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-              <TranslatedText text="Spin the globe and zoom in to find your country. We've gathered real-world eye-tracking data across 50+ countries." />
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              <TranslatedText text="We've gathered real-world eye-tracking data across 50+ countries. Spin the globe and click any country to check." />
             </p>
           </div>
 
