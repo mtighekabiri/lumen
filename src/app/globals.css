@@ -83,6 +83,20 @@ html {
   animation: gradient-drift 12s ease infinite;
 }
 
+/* Heatmap pulse: fade in 1s, fade out 1s, loop */
+@keyframes heatmap-pulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-heatmap-pulse {
+  animation: heatmap-pulse 2s ease-in-out infinite;
+}
+
 /* Brand carousel animation */
 @keyframes scroll {
   0% {

@@ -7,23 +7,23 @@ import { t } from "@/lib/translations";
 
 /* ─── useDeviceImage ────────────────────────────────────── */
 
-/** Resolves the actual image path for a device name (png/jpg/jpeg). */
-function useDeviceImage(name: string): string | null {
-  const [src, setSrc] = useState<string | null>(null);
+/** Resolves the actual image path(s) for a device name (png/jpg/jpeg). */
+function useDeviceImage(name: string): { src: string | null; heatmap: string | null } {
+  const [images, setImages] = useState<{ src: string | null; heatmap: string | null }>({ src: null, heatmap: null });
 
   useEffect(() => {
     fetch(`/api/device-image?name=${encodeURIComponent(name)}`)
       .then((r) => r.json())
-      .then((data) => setSrc(data.src ?? null))
-      .catch(() => setSrc(null));
+      .then((data) => setImages({ src: data.src ?? null, heatmap: data.heatmap ?? null }))
+      .catch(() => setImages({ src: null, heatmap: null }));
   }, [name]);
 
-  return src;
+  return images;
 }
 
 /* ─── InteractiveScreen ─────────────────────────────────── */
 
-/** Screen area that shows an image on hover */
+/** Screen area that shows an image on hover, with heatmap pulse if available */
 function InteractiveScreen({
   children,
   className,
@@ -34,7 +34,7 @@ function InteractiveScreen({
   deviceName?: string;
 }) {
   const [hovered, setHovered] = useState(false);
-  const hoverImage = useDeviceImage(deviceName ?? "");
+  const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName ?? "");
 
   return (
     <div
@@ -46,6 +46,11 @@ function InteractiveScreen({
       {hoverImage && (
         <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="320px" />
+          {heatmapImage && (
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-pulse" : "opacity-0"}`}>
+              <Image src={heatmapImage} alt="" fill className="object-contain" sizes="320px" />
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -143,8 +148,8 @@ function MobilePhone({ deviceName }: { deviceName: string }) {
 function DOOHScreen({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
-      {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
-      <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
+      {/* Portrait digital panel — 9:16 ratio to match image */}
+      <div className="w-full aspect-[9/16] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
         <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
           <DOOHSkeleton />
         </InteractiveScreen>
@@ -183,7 +188,7 @@ function PrintMedia({ deviceName }: { deviceName: string }) {
 
 function AudioDevice({ deviceName }: { deviceName: string }) {
   const [hovered, setHovered] = useState(false);
-  const hoverImage = useDeviceImage(deviceName);
+  const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName);
 
   return (
     <div
@@ -212,6 +217,11 @@ function AudioDevice({ deviceName }: { deviceName: string }) {
       {hoverImage && (
         <div className={`absolute inset-0 z-10 transition-opacity duration-300 rounded-lg overflow-hidden ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="110px" />
+          {heatmapImage && (
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-pulse" : "opacity-0"}`}>
+              <Image src={heatmapImage} alt="" fill className="object-contain" sizes="110px" />
+            </div>
+          )}
         </div>
       )}
     </div>
