@@ -1,9 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Heart,
-  Lightbulb,
-  Shield,
   Users,
   TrendingUp,
   Globe,
@@ -17,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { TranslatedText } from "@/components/translated-text";
 import GlobeSection from "@/components/globe-section";
 
-export default function AboutPage() {
+export default function CompanyPage() {
   return (
     <>
       {/* ── Hero Section ─────────────────────────────────────── */}
@@ -162,66 +159,6 @@ export default function AboutPage() {
                 </p>
                 <p className="text-sm font-semibold text-gray-900 leading-snug">
                   <TranslatedText text={award} />
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Values Section ────────────────────────────────────── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <p className="text-sm font-semibold tracking-widest uppercase text-[#01b3d4] mb-3">
-              <TranslatedText text="Culture" />
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
-              <TranslatedText text="Our Values" />
-            </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              <TranslatedText text="The principles that guide everything we do at Lumen Research" />
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Heart,
-                title: "Kind",
-                desc: "We treat everyone with respect and empathy. Our relationships with clients, partners, and each other are built on mutual understanding and care.",
-                gradient: "from-pink-500/10 to-rose-500/5",
-                iconColor: "text-pink-500",
-              },
-              {
-                icon: Lightbulb,
-                title: "Brilliant",
-                desc: "We bring innovative thinking to every challenge. Our team constantly pushes the boundaries of what's possible in attention measurement.",
-                gradient: "from-amber-500/10 to-yellow-500/5",
-                iconColor: "text-amber-500",
-              },
-              {
-                icon: Shield,
-                title: "Honest",
-                desc: "We deliver transparent and truthful insights. Our data tells the real story, helping you make decisions based on facts, not assumptions.",
-                gradient: "from-[#01b3d4]/10 to-cyan-500/5",
-                iconColor: "text-[#01b3d4]",
-              },
-            ].map((value) => (
-              <div
-                key={value.title}
-                className="group relative text-center p-10 rounded-2xl border border-gray-100 bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300"
-              >
-                <div
-                  className={`h-20 w-20 rounded-2xl bg-gradient-to-br ${value.gradient} flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <value.icon className={`h-10 w-10 ${value.iconColor}`} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  <TranslatedText text={value.title} />
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  <TranslatedText text={value.desc} />
                 </p>
               </div>
             ))}

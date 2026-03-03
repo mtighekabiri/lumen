@@ -125,11 +125,11 @@ function DeviceLabel({
   const showStats = hovered && !!stats;
 
   return (
-    <div className="relative mb-2 h-[3.25rem]">
-      {/* Device name — centered by default, slides to top on hover */}
+    <div className="relative mb-1 h-[3.25rem]">
+      {/* Device name — near bottom by default, slides to top on hover */}
       <div
         className={`absolute inset-x-0 transition-all duration-300 ease-in-out ${
-          showStats ? "top-0" : "top-1/2 -translate-y-1/2"
+          showStats ? "top-0" : "bottom-0"
         }`}
       >
         <span className="block text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
