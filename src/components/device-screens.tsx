@@ -59,11 +59,35 @@ type StatConfig = {
   decimals: number;
 };
 
-/** Per-device hover stats. Add entries as data becomes available. */
+/** Per-device hover stats. Audio is intentionally excluded. */
 const DEVICE_STATS: Record<string, { stat1: StatConfig; stat2: StatConfig }> = {
+  cinema: {
+    stat1: { value: 90, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 2.5, suffix: "", label: "seconds", decimals: 1 },
+  },
+  tv: {
+    stat1: { value: 71, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 1.8, suffix: "", label: "seconds", decimals: 1 },
+  },
+  desktop: {
+    stat1: { value: 54, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 1.1, suffix: "", label: "seconds", decimals: 1 },
+  },
+  tablet: {
+    stat1: { value: 68, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 1.5, suffix: "", label: "seconds", decimals: 1 },
+  },
+  mobile: {
+    stat1: { value: 45, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 0.8, suffix: "", label: "seconds", decimals: 1 },
+  },
   dooh: {
     stat1: { value: 82, suffix: "%", label: "viewed", decimals: 0 },
     stat2: { value: 1.3, suffix: "", label: "seconds", decimals: 1 },
+  },
+  print: {
+    stat1: { value: 65, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 1.6, suffix: "", label: "seconds", decimals: 1 },
   },
 };
 
@@ -98,7 +122,7 @@ function DeviceLabel({
   const showStats = hovered && !!stats;
 
   return (
-    <div className="relative mb-2 h-[2.75rem]">
+    <div className="relative mb-2 h-[3.25rem]">
       {/* Device name — centered by default, slides to top on hover */}
       <div
         className={`absolute inset-x-0 transition-all duration-300 ease-in-out ${
@@ -424,6 +448,10 @@ export function DeviceScreens() {
               <AudioDevice deviceName="audio" />
             </DeviceSlot>
           </div>
+
+          <p className="mt-6 text-center text-xs text-gray-400 italic">
+            Example subset of Lumen&apos;s attention benchmarks; more channels, formats, and granularity are available.
+          </p>
         </div>
       </div>
     </section>
