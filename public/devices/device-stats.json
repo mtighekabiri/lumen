@@ -1,34 +1,34 @@
 {
-  "dooh": {
+  "DOOH": {
     "stat1": { "value": 82, "suffix": "%", "label": "viewed", "decimals": 0 },
     "stat2": { "value": 1.3, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "cinema": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Cinema": {
+    "stat1": { "value": 98, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 15.2, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "tv": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "TV": {
+    "stat1": { "value": 62, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 8.9, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "desktop": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Open Web": {
+    "stat1": { "value": 21, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0.4, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "tablet": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Gaming": {
+    "stat1": { "value": 49, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 2.4, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "mobile": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Social": {
+    "stat1": { "value": 33, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 1.0, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "print": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Print": {
+    "stat1": { "value": 53, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 2.1, "suffix": "", "label": "seconds", "decimals": 1 }
   },
-  "audio": {
-    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
-    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  "Audio": {
+    "stat1": { "value": 81, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 9.3, "suffix": "", "label": "seconds", "decimals": 1 }
   }
 }
