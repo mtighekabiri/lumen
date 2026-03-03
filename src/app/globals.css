@@ -83,19 +83,19 @@ html {
   animation: gradient-drift 12s ease infinite;
 }
 
-/* Heatmap crossfade: device image shows first, then fades to heatmap over 1s, back over 1s, repeating */
-@keyframes heatmap-pulse {
-  0%, 100% {
+/* Heatmap reveal: device image shows first, then heatmap fades in and stays */
+@keyframes heatmap-reveal {
+  0% {
     opacity: 0;
   }
-  50% {
+  100% {
     opacity: 1;
   }
 }
 
-.animate-heatmap-pulse {
+.animate-heatmap-reveal {
   opacity: 0;
-  animation: heatmap-pulse 2s ease-in-out 0.5s infinite;
+  animation: heatmap-reveal 1s ease-in-out 0.5s forwards;
 }
 
 /* Brand carousel animation */
