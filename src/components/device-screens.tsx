@@ -540,7 +540,7 @@ export function DeviceScreens() {
             {/* DOOH D6 — tall standalone panel */}
             <div className="w-[8%] max-w-[85px]">
               <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.dooh")}</p>
-              <DOOHScreen hoverImage="/devices/dooh.jpg" />
+              <DOOHScreen hoverImage="/devices/dooh.png" />
             </div>
 
             {/* Print — magazine/newspaper, far right */}
