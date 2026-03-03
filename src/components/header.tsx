@@ -299,8 +299,8 @@ export function Header() {
 
           {/* Desktop Search + Language + CTA — pinned right */}
           <div className="hidden lg:flex lg:items-center lg:gap-2 ml-auto" ref={searchContainerRef}>
-            {/* Search area */}
-            <div className="relative flex items-center">
+            {/* Search icon */}
+            <div className="relative">
               <button
                 type="button"
                 onClick={handleSearchToggle}
@@ -314,10 +314,10 @@ export function Header() {
                 )}
               </button>
 
-              {/* Sliding search bar */}
+              {/* Search bar — expands to the right of the icon */}
               <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  searchOpen ? "w-64 opacity-100 ml-2" : "w-0 opacity-0 ml-0"
+                className={`absolute left-full top-1/2 -translate-y-1/2 overflow-hidden transition-all duration-300 ease-in-out ${
+                  searchOpen ? "w-64 opacity-100 ml-2" : "w-0 opacity-0"
                 }`}
               >
                 <input
@@ -332,7 +332,7 @@ export function Header() {
 
               {/* Search results dropdown */}
               {searchOpen && searchQuery.trim().length > 0 && (
-                <div className="absolute top-full right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 max-h-80 overflow-y-auto z-50">
+                <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 max-h-80 overflow-y-auto z-50">
                   {searchResults.length > 0 ? (
                     searchResults.map((result, index) => (
                       <button
@@ -354,13 +354,13 @@ export function Header() {
               )}
             </div>
 
-            {/* Get In Touch button */}
-            <Link href="/#contact">
-              <Button>{t(language, "header.getInTouch")}</Button>
-            </Link>
-
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+            {/* Get In Touch + Language — slide right when search expands */}
+            <div className={`flex items-center gap-2 transition-transform duration-300 ease-in-out ${searchOpen ? "translate-x-[17rem]" : ""}`}>
+              <Link href="/#contact">
+                <Button>{t(language, "header.getInTouch")}</Button>
+              </Link>
+              <LanguageSwitcher />
+            </div>
           </div>
 
           {/* Mobile menu + search */}
