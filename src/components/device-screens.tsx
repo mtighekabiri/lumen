@@ -180,7 +180,7 @@ function DeviceSlot({
 
 /* ─── InteractiveScreen ─────────────────────────────────── */
 
-/** Screen area that shows an image on hover; heatmap fades in and stays permanently */
+/** Screen area that shows an image + heatmap on hover; reverts to skeleton on leave */
 function InteractiveScreen({
   children,
   className,
@@ -191,10 +191,7 @@ function InteractiveScreen({
   deviceName?: string;
 }) {
   const [hovered, setHovered] = useState(false);
-  const [revealed, setRevealed] = useState(false);
   const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName ?? "");
-
-  const showOverlay = hovered || revealed;
 
   return (
     <div
@@ -204,13 +201,10 @@ function InteractiveScreen({
     >
       {children}
       {hoverImage && (
-        <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${showOverlay ? "opacity-100" : "opacity-0"}`}>
+        <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="320px" />
           {heatmapImage && (
-            <div
-              className={`absolute inset-0 ${showOverlay ? "animate-heatmap-reveal" : "opacity-0"}`}
-              onAnimationEnd={() => setRevealed(true)}
-            >
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-reveal" : "opacity-0"}`}>
               <Image src={heatmapImage} alt="" fill className="object-contain" sizes="320px" />
             </div>
           )}
@@ -351,10 +345,7 @@ function PrintMedia({ deviceName }: { deviceName: string }) {
 
 function AudioDevice({ deviceName }: { deviceName: string }) {
   const [hovered, setHovered] = useState(false);
-  const [revealed, setRevealed] = useState(false);
   const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName);
-
-  const showOverlay = hovered || revealed;
 
   return (
     <div
@@ -381,13 +372,10 @@ function AudioDevice({ deviceName }: { deviceName: string }) {
         </div>
       </div>
       {hoverImage && (
-        <div className={`absolute inset-0 z-10 transition-opacity duration-300 rounded-lg overflow-hidden ${showOverlay ? "opacity-100" : "opacity-0"}`}>
+        <div className={`absolute inset-0 z-10 transition-opacity duration-300 rounded-lg overflow-hidden ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="110px" />
           {heatmapImage && (
-            <div
-              className={`absolute inset-0 ${showOverlay ? "animate-heatmap-reveal" : "opacity-0"}`}
-              onAnimationEnd={() => setRevealed(true)}
-            >
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-reveal" : "opacity-0"}`}>
               <Image src={heatmapImage} alt="" fill className="object-contain" sizes="110px" />
             </div>
           )}
