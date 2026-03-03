@@ -105,7 +105,7 @@ export default function GlobeSection() {
             <TranslatedText text="Global Reach" />
           </p>
           <p className="text-lg font-bold tracking-tight text-gray-900 leading-snug">
-            <TranslatedText text="We've gathered real-world eye-tracking data across 50+ countries." />
+            <TranslatedText text="We've gathered real-world eye-tracking data from 750k+ user sessions across 50+ countries." />
           </p>
           <div className="w-12 h-1 bg-[#01b3d4] rounded-full" />
           <p className="text-sm text-gray-600 leading-relaxed">
