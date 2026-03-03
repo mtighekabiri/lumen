@@ -230,21 +230,31 @@ export default function AboutPage() {
       </section>
 
       {/* ── Interactive Globe Section ─────────────────────────── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
-        <div className="mx-auto max-w-5xl">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold tracking-widest uppercase text-[#01b3d4] mb-3">
-              <TranslatedText text="Global Reach" />
-            </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              <TranslatedText text="Have we collected attention data where you are?" />
-            </h2>
-            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-              <TranslatedText text="Spin the globe and zoom in to find your country. We've gathered real-world eye-tracking data across 50+ countries." />
-            </p>
-          </div>
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+            {/* Globe (left) */}
+            <div className="w-full lg:w-1/2 shrink-0">
+              <GlobeSection />
+            </div>
 
-          <GlobeSection />
+            {/* Copy (right) */}
+            <div className="w-full lg:w-1/2 flex flex-col gap-6">
+              <p className="text-sm font-semibold tracking-widest uppercase text-[#01b3d4]">
+                <TranslatedText text="Global Reach" />
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-snug">
+                <TranslatedText text="We've gathered real-world eye-tracking data across 50+ countries." />
+              </h2>
+              <div className="w-12 h-1 bg-[#01b3d4] rounded-full" />
+              <p className="text-gray-600 leading-relaxed">
+                <TranslatedText text="Any algorithm that predicts attention levels must be informed by real-world measurements and observations — more granularity, more accuracy, equals a better prediction." />
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                <TranslatedText text="Human attention, and eye balls, work the same around the world but there can be small differences in certain contexts — the market changes attention by ~1%, it's other variables like device, ad size, or platforms that has the most significant changes in the attention adverts receive." />
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
