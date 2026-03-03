@@ -12,12 +12,23 @@ export async function GET(req: NextRequest) {
 
   const devicesDir = path.join(process.cwd(), "public", "devices");
 
+  let src: string | null = null;
+  let heatmap: string | null = null;
+
   for (const ext of EXTENSIONS) {
-    const filePath = path.join(devicesDir, `${name}${ext}`);
-    if (fs.existsSync(filePath)) {
-      return NextResponse.json({ src: `/devices/${name}${ext}` });
+    if (!src) {
+      const filePath = path.join(devicesDir, `${name}${ext}`);
+      if (fs.existsSync(filePath)) {
+        src = `/devices/${name}${ext}`;
+      }
+    }
+    if (!heatmap) {
+      const heatmapPath = path.join(devicesDir, `${name}_heatmap${ext}`);
+      if (fs.existsSync(heatmapPath)) {
+        heatmap = `/devices/${name}_heatmap${ext}`;
+      }
     }
   }
 
-  return NextResponse.json({ src: null });
+  return NextResponse.json({ src, heatmap });
 }

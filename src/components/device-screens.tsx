@@ -1,29 +1,155 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
 /* ─── useDeviceImage ────────────────────────────────────── */
 
-/** Resolves the actual image path for a device name (png/jpg/jpeg). */
-function useDeviceImage(name: string): string | null {
-  const [src, setSrc] = useState<string | null>(null);
+/** Resolves the actual image path(s) for a device name (png/jpg/jpeg). */
+function useDeviceImage(name: string): { src: string | null; heatmap: string | null } {
+  const [images, setImages] = useState<{ src: string | null; heatmap: string | null }>({ src: null, heatmap: null });
 
   useEffect(() => {
     fetch(`/api/device-image?name=${encodeURIComponent(name)}`)
       .then((r) => r.json())
-      .then((data) => setSrc(data.src ?? null))
-      .catch(() => setSrc(null));
+      .then((data) => setImages({ src: data.src ?? null, heatmap: data.heatmap ?? null }))
+      .catch(() => setImages({ src: null, heatmap: null }));
   }, [name]);
 
-  return src;
+  return images;
+}
+
+/* ─── Count-up animation ─────────────────────────────────── */
+
+/** Animates a number from 0 to `target` over `durationMs` when `active` is true. */
+function useCountUp(target: number, durationMs: number, active: boolean): number {
+  const [value, setValue] = useState(0);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (!active) {
+      setValue(0);
+      return;
+    }
+
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / durationMs, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setValue(eased * target);
+      if (progress < 1) rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [active, target, durationMs]);
+
+  return value;
+}
+
+/* ─── Device stats config ────────────────────────────────── */
+
+type StatConfig = {
+  value: number;
+  suffix: string;
+  label: string;
+  decimals: number;
+};
+
+/** Per-device hover stats. Add entries as data becomes available. */
+const DEVICE_STATS: Record<string, { stat1: StatConfig; stat2: StatConfig }> = {
+  dooh: {
+    stat1: { value: 82, suffix: "%", label: "viewed", decimals: 0 },
+    stat2: { value: 1.3, suffix: "", label: "seconds", decimals: 1 },
+  },
+};
+
+function CountUpStat({
+  value,
+  suffix,
+  label,
+  decimals,
+  active,
+}: StatConfig & { active: boolean }) {
+  const animated = useCountUp(value, 2000, active);
+
+  return (
+    <span className="text-[10px] sm:text-xs font-semibold text-[#01b3d4] whitespace-nowrap leading-tight">
+      {animated.toFixed(decimals)}{suffix} {label}
+    </span>
+  );
+}
+
+/* ─── DeviceLabel (slide-up to reveal stats) ─────────────── */
+
+function DeviceLabel({
+  label,
+  hovered,
+  deviceName,
+}: {
+  label: string;
+  hovered: boolean;
+  deviceName: string;
+}) {
+  const stats = DEVICE_STATS[deviceName];
+  const showStats = hovered && !!stats;
+
+  return (
+    <div className="overflow-hidden mb-2 h-7">
+      <div
+        className={`flex flex-col transition-transform duration-300 ease-in-out ${showStats ? "-translate-y-1/2" : "translate-y-0"}`}
+      >
+        {/* Row 1: device name */}
+        <div className="h-7 flex items-center justify-center">
+          <span className="text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">{label}</span>
+        </div>
+        {/* Row 2: stats that count up from 0 */}
+        <div className="h-7 flex flex-col items-center justify-center">
+          {stats && (
+            <>
+              <CountUpStat {...stats.stat1} active={hovered} />
+              <CountUpStat {...stats.stat2} active={hovered} />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── DeviceSlot (hover wrapper for label + screen) ──────── */
+
+function DeviceSlot({
+  label,
+  deviceName,
+  className,
+  children,
+}: {
+  label: string;
+  deviceName: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className={className}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <DeviceLabel label={label} hovered={hovered} deviceName={deviceName} />
+      {children}
+    </div>
+  );
 }
 
 /* ─── InteractiveScreen ─────────────────────────────────── */
 
-/** Screen area that shows an image on hover */
+/** Screen area that shows an image on hover, with heatmap pulse if available */
 function InteractiveScreen({
   children,
   className,
@@ -34,7 +160,7 @@ function InteractiveScreen({
   deviceName?: string;
 }) {
   const [hovered, setHovered] = useState(false);
-  const hoverImage = useDeviceImage(deviceName ?? "");
+  const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName ?? "");
 
   return (
     <div
@@ -46,6 +172,11 @@ function InteractiveScreen({
       {hoverImage && (
         <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="320px" />
+          {heatmapImage && (
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-pulse" : "opacity-0"}`}>
+              <Image src={heatmapImage} alt="" fill className="object-contain" sizes="320px" />
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -143,8 +274,8 @@ function MobilePhone({ deviceName }: { deviceName: string }) {
 function DOOHScreen({ deviceName }: { deviceName: string }) {
   return (
     <div className="flex flex-col items-center">
-      {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
-      <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
+      {/* Portrait digital panel — 9:16 ratio to match image */}
+      <div className="w-full aspect-[9/16] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
         <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" deviceName={deviceName}>
           <DOOHSkeleton />
         </InteractiveScreen>
@@ -183,7 +314,7 @@ function PrintMedia({ deviceName }: { deviceName: string }) {
 
 function AudioDevice({ deviceName }: { deviceName: string }) {
   const [hovered, setHovered] = useState(false);
-  const hoverImage = useDeviceImage(deviceName);
+  const { src: hoverImage, heatmap: heatmapImage } = useDeviceImage(deviceName);
 
   return (
     <div
@@ -212,6 +343,11 @@ function AudioDevice({ deviceName }: { deviceName: string }) {
       {hoverImage && (
         <div className={`absolute inset-0 z-10 transition-opacity duration-300 rounded-lg overflow-hidden ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-contain" sizes="110px" />
+          {heatmapImage && (
+            <div className={`absolute inset-0 ${hovered ? "animate-heatmap-pulse" : "opacity-0"}`}>
+              <Image src={heatmapImage} alt="" fill className="object-contain" sizes="110px" />
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -245,52 +381,44 @@ export function DeviceScreens() {
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
             {/* Cinema — ultra-wide, far left, much larger */}
-            <div className="w-[30%] max-w-[320px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.cinema")}</p>
+            <DeviceSlot className="w-[30%] max-w-[320px]" label={t(language, "devices.cinema")} deviceName="cinema">
               <CinemaScreen deviceName="cinema" />
-            </div>
+            </DeviceSlot>
 
             {/* TV ~55" — bigger */}
-            <div className="w-[22%] max-w-[240px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tv")}</p>
+            <DeviceSlot className="w-[22%] max-w-[240px]" label={t(language, "devices.tv")} deviceName="tv">
               <TVScreen deviceName="tv" />
-            </div>
+            </DeviceSlot>
 
             {/* Laptop ~15" */}
-            <div className="w-[14%] max-w-[150px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.desktop")}</p>
+            <DeviceSlot className="w-[14%] max-w-[150px]" label={t(language, "devices.desktop")} deviceName="desktop">
               <Laptop deviceName="desktop" />
-            </div>
+            </DeviceSlot>
 
             {/* Tablet ~11" portrait */}
-            <div className="w-[7%] max-w-[75px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.tablet")}</p>
+            <DeviceSlot className="w-[7%] max-w-[75px]" label={t(language, "devices.tablet")} deviceName="tablet">
               <Tablet deviceName="tablet" />
-            </div>
+            </DeviceSlot>
 
             {/* Mobile ~6.5" — smaller */}
-            <div className="w-[3.5%] max-w-[38px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2 whitespace-nowrap">{t(language, "devices.mobile")}</p>
+            <DeviceSlot className="w-[3.5%] max-w-[38px]" label={t(language, "devices.mobile")} deviceName="mobile">
               <MobilePhone deviceName="mobile" />
-            </div>
+            </DeviceSlot>
 
             {/* DOOH D6 — tall standalone panel */}
-            <div className="w-[8%] max-w-[85px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.dooh")}</p>
+            <DeviceSlot className="w-[8%] max-w-[85px]" label={t(language, "devices.dooh")} deviceName="dooh">
               <DOOHScreen deviceName="dooh" />
-            </div>
+            </DeviceSlot>
 
             {/* Print — magazine/newspaper, far right */}
-            <div className="w-[6%] max-w-[65px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.print")}</p>
+            <DeviceSlot className="w-[6%] max-w-[65px]" label={t(language, "devices.print")} deviceName="print">
               <PrintMedia deviceName="print" />
-            </div>
+            </DeviceSlot>
 
             {/* Audio — AirPods, far right */}
-            <div className="w-[5%] max-w-[55px]">
-              <p className="text-center text-xs sm:text-sm font-medium text-gray-500 mb-2">{t(language, "devices.audio")}</p>
+            <DeviceSlot className="w-[5%] max-w-[55px]" label={t(language, "devices.audio")} deviceName="audio">
               <AudioDevice deviceName="audio" />
-            </div>
+            </DeviceSlot>
           </div>
         </div>
       </div>
