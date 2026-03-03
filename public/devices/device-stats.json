@@ -1,0 +1,34 @@
+{
+  "dooh": {
+    "stat1": { "value": 82, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 1.3, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "cinema": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "tv": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "desktop": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "tablet": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "mobile": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "print": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  },
+  "audio": {
+    "stat1": { "value": 0, "suffix": "%", "label": "viewed", "decimals": 0 },
+    "stat2": { "value": 0, "suffix": "", "label": "seconds", "decimals": 1 }
+  }
+}
