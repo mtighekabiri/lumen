@@ -1,0 +1,40 @@
+[
+  {
+    "_INSTRUCTIONS": "To add a new award: 1) Drop the award image (PNG/JPG) into this folder. 2) Copy one of the entries below and fill in the fields. 3) Save this file. The website will update automatically.",
+    "_FIELDS": {
+      "title": "Name of the award e.g. Best Custom Research Project",
+      "placement": "One of: Winner, Gold, Silver, Bronze, Finalist, Runner-Up, Shortlisted, Highly Commended, 1st, 2nd, 3rd",
+      "year": "Year the award was received e.g. 2024",
+      "image": "Filename of the image in this folder e.g. best-research-2024.png (leave empty for default trophy icon)",
+      "organisation": "Optional - who gave the award e.g. MRS, ESOMAR, The Drum"
+    }
+  },
+  {
+    "title": "Best Custom Research Project",
+    "placement": "Winner",
+    "year": "2024",
+    "image": "",
+    "organisation": ""
+  },
+  {
+    "title": "Best Use of Emerging Technology",
+    "placement": "Winner",
+    "year": "2024",
+    "image": "",
+    "organisation": ""
+  },
+  {
+    "title": "Tech Team of the Year",
+    "placement": "Winner",
+    "year": "2024",
+    "image": "",
+    "organisation": ""
+  },
+  {
+    "title": "Research Insights Award",
+    "placement": "Winner",
+    "year": "2024",
+    "image": "",
+    "organisation": ""
+  }
+]
