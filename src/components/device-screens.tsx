@@ -45,7 +45,7 @@ function InteractiveScreen({
       {children}
       {hoverImage && (
         <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
-          <Image src={hoverImage} alt="" fill className="object-cover" sizes="320px" />
+          <Image src={hoverImage} alt="" fill className="object-contain" sizes="320px" />
         </div>
       )}
     </div>
