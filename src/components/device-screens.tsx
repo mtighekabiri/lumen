@@ -392,7 +392,7 @@ export function DeviceScreens() {
   const { language } = useLanguage();
 
   return (
-    <section className="pt-4 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
+    <section className="hidden md:block pt-4 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
       <div className="mx-auto max-w-7xl">
         <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6">
