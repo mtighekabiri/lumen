@@ -1,339 +1,36 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
-/* ───────────────────────────────────────────────────────────
-   HeatmapOverlay – canvas overlay that renders an autonomous
-   animated attention-heatmap when the parent is hovered.
+/* ─── InteractiveScreen ─────────────────────────────────── */
 
-   Hotspots drift, pulse, and fade using radial gradients in
-   classic heatmap colours (red / orange / yellow / green).
-   ─────────────────────────────────────────────────────────── */
-
-interface HotSpot {
-  x: number;       // 0–1 normalised position
-  y: number;
-  r: number;       // base radius (fraction of canvas width)
-  intensity: number; // 0–1
-  phase: number;   // animation phase offset
-  dx: number;      // drift speed x
-  dy: number;      // drift speed y
-}
-
-function generateHotspots(count: number): HotSpot[] {
-  return Array.from({ length: count }, () => ({
-    x: 0.15 + Math.random() * 0.7,
-    y: 0.1 + Math.random() * 0.8,
-    r: 0.08 + Math.random() * 0.14,
-    intensity: 0.4 + Math.random() * 0.6,
-    phase: Math.random() * Math.PI * 2,
-    dx: (Math.random() - 0.5) * 0.0003,
-    dy: (Math.random() - 0.5) * 0.0003,
-  }));
-}
-
-function heatColor(intensity: number): [number, number, number] {
-  // 0→green, 0.35→yellow, 0.7→orange, 1→red
-  const n = Math.max(0, Math.min(1, intensity));
-  if (n < 0.35) {
-    const p = n / 0.35;
-    return [Math.round(p * 255), Math.round(200 + p * 55), Math.round(50 * (1 - p))];
-  }
-  if (n < 0.7) {
-    const p = (n - 0.35) / 0.35;
-    return [255, Math.round(255 - p * 100), 0];
-  }
-  const p = (n - 0.7) / 0.3;
-  return [Math.round(255 - p * 30), Math.round(155 - p * 100), 0];
-}
-
-/* ───────────────────────────────────────────────────────────
-   ScrollingContent – fake webpage content that auto-scrolls
-   vertically when the parent InteractiveScreen is hovered.
-   ─────────────────────────────────────────────────────────── */
-
-function ScrollingContent({ variant }: { variant: "desktop" | "tablet" | "mobile" }) {
-  const innerRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<number>(0);
-  const dirRef = useRef<1 | -1>(1);
-  const animRef = useRef<number>(0);
-  const activeRef = useRef(false);
-
-  const speed = variant === "mobile" ? 0.3 : variant === "tablet" ? 0.4 : 0.5;
-
-  useEffect(() => {
-    let running = true;
-    const tick = () => {
-      if (!running) return;
-      const el = innerRef.current;
-      if (el && activeRef.current) {
-        scrollRef.current += speed * dirRef.current;
-        const maxScroll = el.scrollHeight - el.clientHeight;
-        if (scrollRef.current >= maxScroll) { scrollRef.current = maxScroll; dirRef.current = -1; }
-        if (scrollRef.current <= 0) { scrollRef.current = 0; dirRef.current = 1; }
-        el.scrollTop = scrollRef.current;
-      }
-      animRef.current = requestAnimationFrame(tick);
-    };
-    animRef.current = requestAnimationFrame(tick);
-    return () => { running = false; cancelAnimationFrame(animRef.current); };
-  }, [speed]);
-
-  // Expose activation via data attribute read by parent
-  useEffect(() => {
-    const el = innerRef.current;
-    if (!el) return;
-    const parent = el.closest("[data-interactive-screen]");
-    if (!parent) return;
-    const onEnter = () => { activeRef.current = true; };
-    const onLeave = () => { activeRef.current = false; };
-    parent.addEventListener("mouseenter", onEnter);
-    parent.addEventListener("mouseleave", onLeave);
-    return () => { parent.removeEventListener("mouseenter", onEnter); parent.removeEventListener("mouseleave", onLeave); };
-  }, []);
-
-  const navHeight = variant === "mobile" ? "h-[8%]" : "h-[6%]";
-  const heroHeight = variant === "mobile" ? "h-28" : variant === "tablet" ? "h-32" : "h-36";
-
-  return (
-    <div ref={innerRef} className="w-full h-full overflow-hidden">
-      <div className="min-h-[250%] bg-white">
-        {/* Nav bar */}
-        <div className={`${navHeight} w-full bg-gray-800 flex items-center px-[5%] gap-[3%]`}>
-          <div className="w-[12%] h-[40%] bg-[#01b3d4] rounded-sm" />
-          <div className="flex-1" />
-          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
-          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
-          <div className="w-[6%] h-[30%] bg-gray-500 rounded-sm" />
-        </div>
-        {/* Hero */}
-        <div className={`${heroHeight} w-full bg-gradient-to-r from-[#01b3d4]/20 to-blue-100 flex flex-col justify-center px-[6%] gap-[6%]`}>
-          <div className="h-[14%] w-[60%] bg-gray-800/80 rounded-sm" />
-          <div className="h-[8%] w-[40%] bg-gray-400/70 rounded-sm" />
-          <div className="h-[10%] w-[22%] bg-[#01b3d4] rounded-sm mt-1" />
-        </div>
-        {/* Content blocks */}
-        <div className="p-[5%] space-y-[4%]">
-          <div className="h-3 w-[75%] bg-gray-300/70 rounded-sm" />
-          <div className="h-3 w-[90%] bg-gray-200/70 rounded-sm" />
-          <div className="h-3 w-[60%] bg-gray-200/70 rounded-sm" />
-          <div className="flex gap-[3%] mt-2">
-            <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />
-            <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />
-            {variant !== "mobile" && <div className="flex-1 aspect-[4/3] bg-gray-200/60 rounded" />}
-          </div>
-          <div className="h-3 w-[80%] bg-gray-300/70 rounded-sm" />
-          <div className="h-3 w-[65%] bg-gray-200/70 rounded-sm" />
-          <div className="h-3 w-[85%] bg-gray-200/70 rounded-sm" />
-          <div className="h-3 w-[50%] bg-gray-200/70 rounded-sm" />
-          {/* Cards section */}
-          <div className="flex gap-[3%] mt-3">
-            <div className="flex-1 bg-gray-100 rounded p-[4%] space-y-2">
-              <div className="w-full aspect-[3/2] bg-gray-200/70 rounded" />
-              <div className="h-2 w-[70%] bg-gray-300/60 rounded-sm" />
-              <div className="h-2 w-[90%] bg-gray-200/60 rounded-sm" />
-            </div>
-            <div className="flex-1 bg-gray-100 rounded p-[4%] space-y-2">
-              <div className="w-full aspect-[3/2] bg-gray-200/70 rounded" />
-              <div className="h-2 w-[60%] bg-gray-300/60 rounded-sm" />
-              <div className="h-2 w-[85%] bg-gray-200/60 rounded-sm" />
-            </div>
-          </div>
-          <div className="h-3 w-[70%] bg-gray-300/70 rounded-sm mt-3" />
-          <div className="h-3 w-[88%] bg-gray-200/70 rounded-sm" />
-          <div className="h-3 w-[55%] bg-gray-200/70 rounded-sm" />
-          {/* CTA section */}
-          <div className="w-full bg-[#01b3d4]/10 rounded p-[5%] flex flex-col items-center gap-2 mt-3">
-            <div className="h-3 w-[50%] bg-gray-700/60 rounded-sm" />
-            <div className="h-2 w-[65%] bg-gray-400/50 rounded-sm" />
-            <div className="h-5 w-[25%] bg-[#01b3d4] rounded-sm mt-1" />
-          </div>
-          {/* Footer */}
-          <div className="w-full bg-gray-800 rounded p-[5%] mt-4 space-y-2">
-            <div className="h-2 w-[30%] bg-gray-500/60 rounded-sm" />
-            <div className="h-2 w-[45%] bg-gray-600/40 rounded-sm" />
-            <div className="h-2 w-[35%] bg-gray-600/40 rounded-sm" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/** Wrapper: hovering triggers the heatmap + optional scrolling + optional hover image */
+/** Screen area that shows an image on hover */
 function InteractiveScreen({
   children,
   className,
-  scrollable,
   hoverImage,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
-  scrollable?: "desktop" | "tablet" | "mobile";
   hoverImage?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const heatmapActive = useRef(false);
   const [hovered, setHovered] = useState(false);
-
-  // Expose hover to HeatmapOverlay
-  const onEnter = () => {
-    heatmapActive.current = true;
-    setHovered(true);
-    const canvas = ref.current?.querySelector("canvas");
-    if (canvas) (canvas as HTMLCanvasElement).dataset.active = "true";
-  };
-  const onLeave = () => {
-    heatmapActive.current = false;
-    setHovered(false);
-    const canvas = ref.current?.querySelector("canvas");
-    if (canvas) (canvas as HTMLCanvasElement).dataset.active = "false";
-  };
 
   return (
     <div
-      ref={ref}
-      data-interactive-screen
       className={`relative ${className ?? ""}`}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {scrollable ? <ScrollingContent variant={scrollable} /> : children}
+      {children}
       {hoverImage && (
         <div className={`absolute inset-0 z-[5] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
           <Image src={hoverImage} alt="" fill className="object-cover" sizes="320px" />
         </div>
       )}
-      <HeatmapOverlayBridge parentRef={ref} />
-    </div>
-  );
-}
-
-/**
- * Bridge component that connects the parent hover state to the
- * HeatmapOverlay's internal activeRef.
- */
-function HeatmapOverlayBridge({ parentRef }: { parentRef: React.RefObject<HTMLDivElement | null> }) {
-  const [, setTick] = useState(0);
-
-  useEffect(() => {
-    const parent = parentRef.current;
-    if (!parent) return;
-
-    // We use pointer events on the parent to toggle heatmap
-    const enter = () => setTick((t) => t + 1);
-    const leave = () => setTick((t) => t + 1);
-    parent.addEventListener("mouseenter", enter);
-    parent.addEventListener("mouseleave", leave);
-    return () => {
-      parent.removeEventListener("mouseenter", enter);
-      parent.removeEventListener("mouseleave", leave);
-    };
-  }, [parentRef]);
-
-  return <HeatmapOverlayWithParent parentRef={parentRef} />;
-}
-
-function HeatmapOverlayWithParent({ parentRef }: { parentRef: React.RefObject<HTMLDivElement | null> }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const spotsRef = useRef<HotSpot[]>(generateHotspots(6));
-  const animRef = useRef<number>(0);
-  const opacityRef = useRef(0);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const parent = canvas.parentElement;
-    if (!parent) return;
-
-    const sync = () => {
-      const { width, height } = parent.getBoundingClientRect();
-      const w = Math.round(width);
-      const h = Math.round(height);
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-    };
-    sync();
-    const ro = new ResizeObserver(sync);
-    ro.observe(parent);
-
-    let running = true;
-    const draw = (time: number) => {
-      if (!running) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) { animRef.current = requestAnimationFrame(draw); return; }
-
-      const isHovered = parentRef.current?.matches(":hover") ?? false;
-      const target = isHovered ? 1 : 0;
-      opacityRef.current += (target - opacityRef.current) * 0.04;
-
-      if (opacityRef.current < 0.005 && !isHovered) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        animRef.current = requestAnimationFrame(draw);
-        return;
-      }
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const globalAlpha = opacityRef.current * 0.55;
-
-      for (const spot of spotsRef.current) {
-        spot.x += spot.dx;
-        spot.y += spot.dy;
-        if (spot.x < 0.05 || spot.x > 0.95) spot.dx *= -1;
-        if (spot.y < 0.05 || spot.y > 0.95) spot.dy *= -1;
-
-        const pulse = 0.7 + 0.3 * Math.sin(time * 0.0015 + spot.phase);
-        const cx = spot.x * canvas.width;
-        const cy = spot.y * canvas.height;
-        const radius = spot.r * canvas.width * pulse;
-        const [r, g, b] = heatColor(spot.intensity * pulse);
-
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        grad.addColorStop(0, `rgba(${r},${g},${b},${globalAlpha * spot.intensity * pulse})`);
-        grad.addColorStop(0.5, `rgba(${r},${g},${b},${globalAlpha * spot.intensity * pulse * 0.4})`);
-        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
-        ctx.fillStyle = grad;
-        ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-      }
-
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    animRef.current = requestAnimationFrame(draw);
-    return () => { running = false; cancelAnimationFrame(animRef.current); ro.disconnect(); };
-  }, [parentRef]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full z-10 pointer-events-none"
-    />
-  );
-}
-
-/* ─── Skeleton placeholders ─────────────────────────────── */
-
-function Skeleton() {
-  return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[8%] flex flex-col gap-[5%]">
-      <div className="h-[8%] w-[55%] bg-gray-300/70 rounded-sm animate-pulse" />
-      <div className="h-[5%] w-[85%] bg-gray-200/70 rounded-sm animate-pulse" />
-      <div className="h-[5%] w-[70%] bg-gray-200/70 rounded-sm animate-pulse" />
-      <div className="flex-1 w-full bg-gray-200/50 rounded-sm animate-pulse" />
-      <div className="h-[5%] w-[35%] bg-gray-200/70 rounded-sm animate-pulse" />
-    </div>
-  );
-}
-
-function DOOHSkeleton() {
-  return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 p-[6%]">
-      <div className="w-full h-full bg-gray-200/60 rounded-sm animate-pulse" />
     </div>
   );
 }
@@ -345,9 +42,7 @@ function TVScreen({ hoverImage }: { hoverImage?: string }) {
     <div className="flex flex-col items-center">
       {/* Thin-bezel panel */}
       <div className="w-full aspect-[16/9] bg-[#1a1a1a] rounded-[3px] sm:rounded-[4px] p-[1.8%] shadow-xl ring-1 ring-black/10">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage}>
-          <Skeleton />
-        </InteractiveScreen>
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
       </div>
       {/* Slim neck */}
       <div className="w-[12%] h-2.5 sm:h-3.5 bg-gradient-to-b from-[#2a2a2a] to-[#3a3a3a]" />
@@ -363,9 +58,7 @@ function Laptop({ hoverImage }: { hoverImage?: string }) {
       {/* Screen with thicker bezel at bottom */}
       <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[4px] sm:rounded-t-[6px] overflow-hidden shadow-xl ring-1 ring-black/10"
         style={{ padding: "2.5% 3% 4% 3%" }}>
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" scrollable="desktop" hoverImage={hoverImage}>
-          <Skeleton />
-        </InteractiveScreen>
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
       </div>
       {/* Hinge */}
       <div className="w-[104%] h-[3px] sm:h-[4px] bg-gradient-to-b from-[#c0c0c0] to-[#a0a0a0] rounded-[1px]" />
@@ -378,9 +71,7 @@ function Laptop({ hoverImage }: { hoverImage?: string }) {
 function Tablet({ hoverImage }: { hoverImage?: string }) {
   return (
     <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[6%] p-[4.5%] shadow-xl ring-1 ring-black/10">
-      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white" scrollable="tablet" hoverImage={hoverImage}>
-        <Skeleton />
-      </InteractiveScreen>
+      <InteractiveScreen className="w-full h-full rounded-[3%] overflow-hidden bg-white" hoverImage={hoverImage} />
     </div>
   );
 }
@@ -395,9 +86,7 @@ function MobilePhone({ hoverImage }: { hoverImage?: string }) {
       {/* Volume buttons — left */}
       <div className="absolute top-[18%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
       <div className="absolute top-[25%] -left-[3%] w-[2.5%] h-[5%] bg-[#2a2a2a] rounded-l-sm" />
-      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white" scrollable="mobile" hoverImage={hoverImage}>
-        <Skeleton />
-      </InteractiveScreen>
+      <InteractiveScreen className="w-full h-full rounded-[14%] overflow-hidden bg-white" hoverImage={hoverImage} />
       {/* Home indicator bar */}
       <div className="absolute bottom-[2.5%] left-1/2 -translate-x-1/2 w-[35%] h-[1%] bg-gray-600 rounded-full" />
     </div>
@@ -409,9 +98,7 @@ function DOOHScreen({ hoverImage }: { hoverImage?: string }) {
     <div className="flex flex-col items-center">
       {/* Portrait digital panel — D6 sheet ratio (1200×1800mm ≈ 2:3) */}
       <div className="w-full aspect-[2/3] bg-[#222] rounded-[3px] sm:rounded-[4px] p-[2.5%] shadow-xl ring-1 ring-black/10">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage}>
-          <DOOHSkeleton />
-        </InteractiveScreen>
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
       </div>
       {/* Pole */}
       <div className="w-[6%] h-8 sm:h-12 bg-gradient-to-b from-[#666] to-[#888]" />
@@ -426,9 +113,7 @@ function CinemaScreen({ hoverImage }: { hoverImage?: string }) {
     <div className="flex flex-col items-center">
       {/* Ultra-wide cinema screen — 2.39:1 scope ratio */}
       <div className="w-full aspect-[2.39/1] bg-[#111] rounded-[2px] sm:rounded-[3px] p-[2%] shadow-xl ring-1 ring-black/20">
-        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage}>
-          <DOOHSkeleton />
-        </InteractiveScreen>
+        <InteractiveScreen className="w-full h-full rounded-[1px] overflow-hidden bg-white" hoverImage={hoverImage} />
       </div>
     </div>
   );
@@ -438,9 +123,7 @@ function PrintMedia({ hoverImage }: { hoverImage?: string }) {
   return (
     <div className="flex flex-col items-center">
       {/* Magazine / newspaper page */}
-      <InteractiveScreen className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden" hoverImage={hoverImage}>
-        <Skeleton />
-      </InteractiveScreen>
+      <InteractiveScreen className="w-full aspect-[3/4] bg-white rounded-[2px] sm:rounded-[3px] shadow-xl ring-1 ring-gray-200 overflow-hidden" hoverImage={hoverImage} />
     </div>
   );
 }
