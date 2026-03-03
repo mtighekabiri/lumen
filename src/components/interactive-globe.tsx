@@ -147,9 +147,12 @@ function GlobeInner() {
 
     /* ── Globe sphere ──────────────────────────────── */
     const globeGeometry = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 64);
+    const textureLoader = new THREE.TextureLoader();
+    const earthTexture = textureLoader.load(
+      "https://unpkg.com/three-globe/example/img/earth-dark.jpg"
+    );
     const globeMaterial = new THREE.MeshPhongMaterial({
-      color: new THREE.Color("#0a1628"),
-      emissive: new THREE.Color("#020a18"),
+      map: earthTexture,
       specular: new THREE.Color("#01b3d4"),
       shininess: 15,
       transparent: true,
