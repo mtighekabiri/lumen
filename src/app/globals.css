@@ -83,7 +83,7 @@ html {
   animation: gradient-drift 12s ease infinite;
 }
 
-/* Heatmap pulse: fade in 1s, fade out 1s, loop */
+/* Heatmap crossfade: device image shows first, then fades to heatmap over 1s, back over 1s, repeating */
 @keyframes heatmap-pulse {
   0%, 100% {
     opacity: 0;
@@ -94,7 +94,8 @@ html {
 }
 
 .animate-heatmap-pulse {
-  animation: heatmap-pulse 2s ease-in-out infinite;
+  opacity: 0;
+  animation: heatmap-pulse 2s ease-in-out 0.5s infinite;
 }
 
 /* Brand carousel animation */
