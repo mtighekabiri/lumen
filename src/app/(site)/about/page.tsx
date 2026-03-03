@@ -1,11 +1,11 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   ArrowRight,
   Users,
   TrendingUp,
   Globe,
   Eye,
-  Trophy,
   Zap,
   BarChart3,
   Target,
@@ -13,6 +13,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { TranslatedText } from "@/components/translated-text";
 import GlobeSection from "@/components/globe-section";
+
+const AwardsMosaic = dynamic(
+  () => import("@/components/awards-mosaic").then((m) => ({ default: m.AwardsMosaic })),
+);
 
 export default function CompanyPage() {
   return (
@@ -125,7 +129,7 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      {/* ── Awards Section ────────────────────────────────────── */}
+      {/* ── Awards Mosaic ──────────────────────────────────────── */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
@@ -140,29 +144,7 @@ export default function CompanyPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              "Best Custom Research Project",
-              "Best Use of Emerging Technology",
-              "Tech Team of the Year",
-              "Research Insights Award",
-            ].map((award) => (
-              <div
-                key={award}
-                className="group relative text-center p-8 rounded-2xl border border-gray-100 bg-white hover:shadow-lg hover:shadow-[#01b3d4]/[0.06] hover:border-[#01b3d4]/20 transition-all duration-300"
-              >
-                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/5 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
-                  <Trophy className="h-8 w-8 text-[#01b3d4]" />
-                </div>
-                <p className="text-xs font-bold uppercase tracking-widest text-[#01b3d4] mb-2">
-                  <TranslatedText text="Winner" />
-                </p>
-                <p className="text-sm font-semibold text-gray-900 leading-snug">
-                  <TranslatedText text={award} />
-                </p>
-              </div>
-            ))}
-          </div>
+          <AwardsMosaic />
         </div>
       </section>
 
