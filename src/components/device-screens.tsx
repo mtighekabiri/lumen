@@ -59,41 +59,41 @@ type StatConfig = {
   decimals: number;
 };
 
-/** Per-device hover stats. */
-const DEVICE_STATS: Record<string, { stat1: StatConfig; stat2: StatConfig }> = {
-  cinema: {
-    stat1: { value: 90, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 2.5, suffix: "", label: "seconds", decimals: 1 },
-  },
-  tv: {
-    stat1: { value: 71, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 1.8, suffix: "", label: "seconds", decimals: 1 },
-  },
-  desktop: {
-    stat1: { value: 54, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 1.1, suffix: "", label: "seconds", decimals: 1 },
-  },
-  tablet: {
-    stat1: { value: 68, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 1.5, suffix: "", label: "seconds", decimals: 1 },
-  },
-  mobile: {
-    stat1: { value: 45, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 0.8, suffix: "", label: "seconds", decimals: 1 },
-  },
-  dooh: {
-    stat1: { value: 82, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 1.3, suffix: "", label: "seconds", decimals: 1 },
-  },
-  print: {
-    stat1: { value: 65, suffix: "%", label: "viewed", decimals: 0 },
-    stat2: { value: 1.6, suffix: "", label: "seconds", decimals: 1 },
-  },
-  audio: {
-    stat1: { value: 73, suffix: "%", label: "listened", decimals: 0 },
-    stat2: { value: 2.1, suffix: "", label: "seconds", decimals: 1 },
-  },
+type DeviceStats = Record<string, { stat1: StatConfig; stat2: StatConfig }>;
+
+/** Maps component device names to JSON keys in /devices/device-stats.json */
+const STATS_NAME_MAP: Record<string, string> = {
+  cinema: "Cinema",
+  tv: "TV",
+  desktop: "Open Web",
+  tablet: "Gaming",
+  mobile: "Social",
+  dooh: "DOOH",
+  print: "Print",
+  audio: "Audio",
 };
+
+/** Fetches device stats from the public JSON file and maps keys to component device names. */
+function useDeviceStats(): DeviceStats {
+  const [stats, setStats] = useState<DeviceStats>({});
+
+  useEffect(() => {
+    fetch("/devices/device-stats.json")
+      .then((r) => r.json())
+      .then((data: DeviceStats) => {
+        const mapped: DeviceStats = {};
+        for (const [deviceName, jsonKey] of Object.entries(STATS_NAME_MAP)) {
+          if (data[jsonKey]) {
+            mapped[deviceName] = data[jsonKey];
+          }
+        }
+        setStats(mapped);
+      })
+      .catch(() => setStats({}));
+  }, []);
+
+  return stats;
+}
 
 function CountUpStat({
   value,
@@ -116,13 +116,12 @@ function CountUpStat({
 function DeviceLabel({
   label,
   hovered,
-  deviceName,
+  stats,
 }: {
   label: string;
   hovered: boolean;
-  deviceName: string;
+  stats?: { stat1: StatConfig; stat2: StatConfig };
 }) {
-  const stats = DEVICE_STATS[deviceName];
   const showStats = hovered && !!stats;
 
   return (
@@ -156,12 +155,12 @@ function DeviceLabel({
 
 function DeviceSlot({
   label,
-  deviceName,
+  stats,
   className,
   children,
 }: {
   label: string;
-  deviceName: string;
+  stats?: { stat1: StatConfig; stat2: StatConfig };
   className?: string;
   children: React.ReactNode;
 }) {
@@ -173,7 +172,7 @@ function DeviceSlot({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <DeviceLabel label={label} hovered={hovered} deviceName={deviceName} />
+      <DeviceLabel label={label} hovered={hovered} stats={stats} />
       {children}
     </div>
   );
@@ -390,6 +389,7 @@ function AudioDevice({ deviceName }: { deviceName: string }) {
 
 export function DeviceScreens() {
   const { language } = useLanguage();
+  const deviceStats = useDeviceStats();
 
   return (
     <section className="hidden md:block pt-4 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
@@ -413,50 +413,50 @@ export function DeviceScreens() {
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
             {/* Cinema — ultra-wide, far left, much larger */}
-            <DeviceSlot className="w-[30%] max-w-[320px]" label={t(language, "devices.cinema")} deviceName="cinema">
+            <DeviceSlot className="w-[30%] max-w-[320px]" label={t(language, "devices.cinema")} stats={deviceStats.cinema}>
               <CinemaScreen deviceName="cinema" />
             </DeviceSlot>
 
             {/* TV ~55" — bigger */}
-            <DeviceSlot className="w-[22%] max-w-[240px]" label={t(language, "devices.tv")} deviceName="tv">
+            <DeviceSlot className="w-[22%] max-w-[240px]" label={t(language, "devices.tv")} stats={deviceStats.tv}>
               <TVScreen deviceName="tv" />
             </DeviceSlot>
 
             {/* Laptop ~15" */}
-            <DeviceSlot className="w-[14%] max-w-[150px]" label={t(language, "devices.desktop")} deviceName="desktop">
+            <DeviceSlot className="w-[14%] max-w-[150px]" label={t(language, "devices.desktop")} stats={deviceStats.desktop}>
               <Laptop deviceName="desktop" />
             </DeviceSlot>
 
             {/* Tablet ~11" portrait */}
-            <DeviceSlot className="w-[7%] max-w-[75px]" label={t(language, "devices.tablet")} deviceName="tablet">
+            <DeviceSlot className="w-[7%] max-w-[75px]" label={t(language, "devices.tablet")} stats={deviceStats.tablet}>
               <Tablet deviceName="tablet" />
             </DeviceSlot>
 
             {/* Mobile ~6.5" — smaller */}
-            <DeviceSlot className="w-[3.5%] max-w-[38px]" label={t(language, "devices.mobile")} deviceName="mobile">
+            <DeviceSlot className="w-[3.5%] max-w-[38px]" label={t(language, "devices.mobile")} stats={deviceStats.mobile}>
               <MobilePhone deviceName="mobile" />
             </DeviceSlot>
 
             {/* DOOH D6 — tall standalone panel */}
-            <DeviceSlot className="w-[8%] max-w-[85px]" label={t(language, "devices.dooh")} deviceName="dooh">
+            <DeviceSlot className="w-[8%] max-w-[85px]" label={t(language, "devices.dooh")} stats={deviceStats.dooh}>
               <DOOHScreen deviceName="dooh" />
             </DeviceSlot>
 
             {/* Print — magazine/newspaper, far right */}
-            <DeviceSlot className="w-[6%] max-w-[65px]" label={t(language, "devices.print")} deviceName="print">
+            <DeviceSlot className="w-[6%] max-w-[65px]" label={t(language, "devices.print")} stats={deviceStats.print}>
               <PrintMedia deviceName="print" />
             </DeviceSlot>
 
             {/* Audio — AirPods, far right */}
-            <DeviceSlot className="w-[5%] max-w-[55px]" label={t(language, "devices.audio")} deviceName="audio">
+            <DeviceSlot className="w-[5%] max-w-[55px]" label={t(language, "devices.audio")} stats={deviceStats.audio}>
               <AudioDevice deviceName="audio" />
             </DeviceSlot>
           </div>
-
-          <p className="mt-6 text-center text-xs text-gray-400 italic">
-            Example subset of Lumen&apos;s attention benchmarks; more channels, formats, and granularity are available.
-          </p>
         </div>
+
+        <p className="mt-6 text-center text-xs text-gray-400 italic">
+          Example subset of Lumen&apos;s attention benchmarks; more channels, formats, and granularity are available across markets, devices, contexts, and audiences.
+        </p>
       </div>
     </section>
   );
