@@ -44,7 +44,12 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
-                  {t(language, "nav.about")}
+                  {t(language, "nav.company")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about/team" className="text-gray-400 hover:text-[#01b3d4] transition-colors">
+                  {t(language, "nav.team")}
                 </Link>
               </li>
               <li>

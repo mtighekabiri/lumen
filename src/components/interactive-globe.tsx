@@ -173,8 +173,16 @@ function drawPolygonRings(
     for (let i = 0; i < ring.length; i++) {
       const x = projX(ring[i][0]);
       const y = projY(ring[i][1]);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        const prevX = projX(ring[i - 1][0]);
+        if (Math.abs(x - prevX) > TEX_W * 0.5) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
     }
     ctx.closePath();
   }
@@ -385,16 +393,6 @@ function GlobeInner({
         renderIdCanvas(idCtx, geoFeatures);
         canvasTexture.needsUpdate = true;
       });
-
-    /* ── Subtle rim wireframe ───────────────────────── */
-    const rimGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.4, 64, 64);
-    const rimMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color("#c0c0c0"),
-      wireframe: true,
-      transparent: true,
-      opacity: 0.04,
-    });
-    scene.add(new THREE.Mesh(rimGeo, rimMat));
 
     /* ── Lighting ───────────────────────────────────── */
     scene.add(new THREE.AmbientLight(0xffffff, 1.0));
