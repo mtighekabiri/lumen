@@ -38,7 +38,7 @@ function useCountUp(target: number, durationMs: number, active: boolean): number
 
     const tick = (now: number) => {
       const progress = Math.min((now - start) / durationMs, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 4); // ease-out quartic — fast start, gentle finish
       setValue(eased * target);
       if (progress < 1) rafRef.current = requestAnimationFrame(tick);
     };
@@ -98,24 +98,28 @@ function DeviceLabel({
   const showStats = hovered && !!stats;
 
   return (
-    <div className="overflow-hidden mb-2 h-7">
+    <div className="relative mb-2 h-[2.75rem]">
+      {/* Device name — centered by default, slides to top on hover */}
       <div
-        className={`flex flex-col transition-transform duration-300 ease-in-out ${showStats ? "-translate-y-1/2" : "translate-y-0"}`}
+        className={`absolute inset-x-0 transition-all duration-300 ease-in-out ${
+          showStats ? "top-0" : "top-1/2 -translate-y-1/2"
+        }`}
       >
-        {/* Row 1: device name */}
-        <div className="h-7 flex items-center justify-center">
-          <span className="text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">{label}</span>
-        </div>
-        {/* Row 2: stats that count up from 0 */}
-        <div className="h-7 flex flex-col items-center justify-center">
-          {stats && (
-            <>
-              <CountUpStat {...stats.stat1} active={hovered} />
-              <CountUpStat {...stats.stat2} active={hovered} />
-            </>
-          )}
-        </div>
+        <span className="block text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+          {label}
+        </span>
       </div>
+      {/* Stats — slide up into view below the label */}
+      {stats && (
+        <div
+          className={`absolute inset-x-0 bottom-0 flex flex-col items-center transition-all duration-300 ease-in-out ${
+            showStats ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+          }`}
+        >
+          <CountUpStat {...stats.stat1} active={hovered} />
+          <CountUpStat {...stats.stat2} active={hovered} />
+        </div>
+      )}
     </div>
   );
 }
