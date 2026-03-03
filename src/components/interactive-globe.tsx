@@ -196,7 +196,11 @@ function renderIdCanvas(
 }
 
 /* ── Component ─────────────────────────────────────────────────── */
-function GlobeInner() {
+function GlobeInner({
+  onCountryClick,
+}: {
+  onCountryClick?: (name: string, hasData: boolean) => void;
+}) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(600);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
@@ -205,6 +209,9 @@ function GlobeInner() {
     positive: boolean;
   } | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const onClickRef = useRef(onCountryClick);
+  onClickRef.current = onCountryClick;
+  const allNamesRef = useRef(new Map<string, string>(ISO_TO_NAME));
 
   const showToast = useCallback((message: string, positive: boolean) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
@@ -299,6 +306,13 @@ function GlobeInner() {
       .then((topology: WorldTopology) => {
         const countries = feature(topology, topology.objects.countries);
         geoFeatures = countries.features;
+        for (const feat of geoFeatures) {
+          const id = String(feat.id);
+          if (!allNamesRef.current.has(id)) {
+            const name = (feat.properties as Record<string, unknown>)?.name;
+            if (typeof name === "string") allNamesRef.current.set(id, name);
+          }
+        }
         renderVisualCanvas(visualCtx, geoFeatures, revealedIds);
         renderIdCanvas(idCtx, geoFeatures);
         canvasTexture.needsUpdate = true;
@@ -354,7 +368,7 @@ function GlobeInner() {
         if (countryId !== currentHoveredId) {
           currentHoveredId = countryId;
           if (countryId) {
-            const name = ISO_TO_NAME.get(countryId);
+            const name = allNamesRef.current.get(countryId);
             setHoveredCountry(name ?? null);
             renderer.domElement.style.cursor = "pointer";
           } else {
@@ -400,12 +414,15 @@ function GlobeInner() {
           revealedIds.add(countryId);
           renderVisualCanvas(visualCtx, geoFeatures, revealedIds);
           canvasTexture.needsUpdate = true;
-          const name = ISO_TO_NAME.get(countryId) ?? "this region";
+          const name = allNamesRef.current.get(countryId) ?? "this region";
           const msgFn =
             POSITIVE_MSGS[Math.floor(Math.random() * POSITIVE_MSGS.length)];
           showToast(msgFn(name), true);
+          onClickRef.current?.(name, true);
         } else {
+          const name = allNamesRef.current.get(countryId) ?? "Unknown";
           showToast("Not yet, watch this space!", false);
+          onClickRef.current?.(name, false);
         }
       }
     };
@@ -445,37 +462,8 @@ function GlobeInner() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative" style={{ width: size, maxWidth: "100%" }}>
-        {/* Curved question text arcing above the globe */}
-        <svg
-          viewBox="0 0 600 110"
-          className="w-[90%] mx-auto block -mb-2 select-none pointer-events-none"
-          aria-hidden="true"
-        >
-          <defs>
-            <path id="textArc" d="M 40,100 Q 300,5 560,100" fill="none" />
-          </defs>
-          <text
-            fill="#01b3d4"
-            fontSize="21"
-            fontWeight="600"
-            letterSpacing="0.3"
-          >
-            <textPath href="#textArc" startOffset="50%" textAnchor="middle">
-              Have we collected attention data where you are?
-            </textPath>
-          </text>
-        </svg>
-
-        {/* Globe canvas */}
-        <div
-          ref={mountRef}
-          style={{ width: size, height: size, cursor: "grab" }}
-        />
-      </div>
-
-      {/* Feedback area: toast → hover name → default hint */}
-      <div className="h-12 flex items-center justify-center mt-1">
+      {/* Feedback area above globe: toast → hover name → default hint */}
+      <div className="h-10 flex items-center justify-center mb-2">
         {toast ? (
           <span
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium shadow-md animate-fade-in ${
@@ -494,16 +482,26 @@ function GlobeInner() {
             {hoveredCountry}
           </span>
         ) : (
-          <span className="text-xs text-gray-400 select-none">
+          <span className="text-sm text-gray-400 select-none">
             Click on any country to find out
           </span>
         )}
       </div>
+
+      {/* Globe canvas */}
+      <div
+        ref={mountRef}
+        style={{ width: size, height: size, cursor: "grab", maxWidth: "100%" }}
+      />
     </div>
   );
 }
 
-export default function InteractiveGlobe() {
+export default function InteractiveGlobe({
+  onCountryClick,
+}: {
+  onCountryClick?: (name: string, hasData: boolean) => void;
+}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   if (!mounted) {
@@ -513,5 +511,5 @@ export default function InteractiveGlobe() {
       </div>
     );
   }
-  return <GlobeInner />;
+  return <GlobeInner onCountryClick={onCountryClick} />;
 }
