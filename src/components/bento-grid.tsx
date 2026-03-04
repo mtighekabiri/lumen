@@ -108,10 +108,10 @@ function AttentionProfitChart() {
     return () => cancelAnimationFrame(raf.current);
   }, [inView]);
 
-  const tabs: { key: ChartTab; label: string }[] = [
-    { key: "profit", label: "Profit" },
-    { key: "brandLift", label: "Brand Lift" },
-    { key: "performance", label: "Performance" },
+  const tabs: { key: ChartTab; label: string; title: string }[] = [
+    { key: "profit", label: "Profit", title: "Attention drives profit" },
+    { key: "brandLift", label: "Brand Lift", title: "Attention drives brand lift" },
+    { key: "performance", label: "Performance", title: "Attention drives performance" },
   ];
 
   // Chart dimensions
@@ -153,15 +153,14 @@ function AttentionProfitChart() {
 
   return (
     <div ref={ref} className="w-full h-full flex flex-col">
-      {/* Header with headline + tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-        <h4 className="text-lg font-bold text-gray-900">Attention drives…</h4>
-        <div className="flex gap-1">
+      {/* Header with tabs (left) + chart title */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
+        <div className="flex gap-1.5">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors ${
                 activeTab === tab.key
                   ? "bg-[#01b3d4] text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-gray-300"
@@ -171,6 +170,9 @@ function AttentionProfitChart() {
             </button>
           ))}
         </div>
+        <h4 className="text-sm font-medium text-gray-800 sm:ml-3">
+          {tabs.find((tab) => tab.key === activeTab)?.title}
+        </h4>
       </div>
 
       {/* Chart area */}
