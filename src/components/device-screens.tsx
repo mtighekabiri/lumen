@@ -402,13 +402,9 @@ export function DeviceScreens() {
             </span>
           </h3>
 
-          <ul className="mb-12 list-disc pl-5 space-y-2 text-gray-600 leading-relaxed">
-            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletPlanning")}</span> {t(language, "devices.bulletPlanningDesc")}</li>
-            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletBuying")}</span> {t(language, "devices.bulletBuyingDesc")}</li>
-            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletActivation")}</span> {t(language, "devices.bulletActivationDesc")}</li>
-            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletMeasure")}</span> {t(language, "devices.bulletMeasureDesc")}</li>
-            <li><span className="font-semibold text-gray-900">{t(language, "devices.bulletEconometrics")}</span> {t(language, "devices.bulletEconometricsDesc")}</li>
-          </ul>
+          <p className="mb-12 text-gray-600 leading-relaxed max-w-3xl">
+            {t(language, "devices.missionText")}
+          </p>
 
           {/* Devices row — sizes approximate real-world proportions */}
           <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-5">
