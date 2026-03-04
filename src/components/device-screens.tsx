@@ -395,10 +395,10 @@ export function DeviceScreens() {
     <section className="hidden md:block pt-4 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
       <div className="mx-auto max-w-7xl">
         <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
-          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6">
-            <span className="italic text-[#01b3d4]">{t(language, "devices.headingHighlight1")}</span>{" "}
+          <h3 className="text-4xl sm:text-5xl lg:text-6xl font-light italic text-[#01b3d4] mb-6">
+            {t(language, "devices.headingHighlight1")}{" "}
             {t(language, "devices.headingMid1")}{" "}
-            <span className="italic text-[#01b3d4]">{t(language, "devices.headingHighlight2")}</span>{" "}
+            {t(language, "devices.headingHighlight2")}{" "}
             {t(language, "devices.headingMid2")}
           </h3>
 
