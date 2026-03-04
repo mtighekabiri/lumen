@@ -6,7 +6,7 @@ import { T } from "@/components/t";
 import { TranslatedText } from "@/components/translated-text";
 import { HomeFaqSection } from "@/components/home-faq-section";
 import { HomeContactForm } from "@/components/home-contact-form";
-import GlobeSection from "@/components/globe-section";
+
 
 export const revalidate = 60;
 
@@ -87,13 +87,6 @@ export default function Home() {
               <p className="mt-1 text-sm text-gray-600"><T id="home.stat4Label" /></p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Globe — "Have we collected data where you are?" */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <GlobeSection />
         </div>
       </section>
 
