@@ -7,7 +7,7 @@ import { T } from "@/components/t";
 import { TranslatedText } from "@/components/translated-text";
 
 export async function LatestNews() {
-  const posts = await getLatestPosts(4);
+  const posts = await getLatestPosts(3);
 
   if (posts.length === 0) {
     return (
@@ -41,8 +41,8 @@ export async function LatestNews() {
           </h2>
         </div>
 
-        {/* Compact grid — 4 columns on desktop, 2 on tablet, 1 on mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Compact grid — 3 columns on desktop, 2 on tablet, 1 on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <Link key={post.id} href={`/news/${post.slug}`} className="group">
               <article className="rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100">

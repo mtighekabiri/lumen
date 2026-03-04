@@ -136,6 +136,7 @@ const LAND_FILL = "#d4d4d4";
 const OCEAN_FILL = "#ffffff";
 const BORDER_COLOR = "#bfbfbf";
 const GREEN_FILL = "#4ade80";
+const NO_DATA_FILL = "#ececec";
 const AUTO_ROTATE_PAUSE_MS = 10_000;
 
 const POSITIVE_MSGS = [
@@ -244,16 +245,76 @@ function strokeFeature(ctx: CanvasRenderingContext2D, feat: GeoFeature) {
   }
 }
 
+function drawCrossHatch(
+  ctx: CanvasRenderingContext2D,
+  feat: GeoFeature,
+  hatchColor: string
+) {
+  ctx.save();
+
+  // Clip to the country shape
+  ctx.beginPath();
+  const clipRings = (rings: number[][][]) => {
+    for (const ring of rings) {
+      for (let i = 0; i < ring.length; i++) {
+        const x = projX(ring[i][0]);
+        const y = projY(ring[i][1]);
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          const prevX = projX(ring[i - 1][0]);
+          if (Math.abs(x - prevX) > TEX_W * 0.5) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+      }
+      ctx.closePath();
+    }
+  };
+
+  if (feat.geometry.type === "Polygon") {
+    clipRings(feat.geometry.coordinates);
+  } else if (feat.geometry.type === "MultiPolygon") {
+    for (const poly of feat.geometry.coordinates) clipRings(poly);
+  }
+  ctx.clip("evenodd");
+
+  // Draw diagonal lines across the clipped region
+  ctx.strokeStyle = hatchColor;
+  ctx.lineWidth = 2;
+  const spacing = 12;
+  const maxDim = TEX_W + TEX_H;
+  ctx.beginPath();
+  for (let d = -maxDim; d < maxDim; d += spacing) {
+    ctx.moveTo(d, 0);
+    ctx.lineTo(d + TEX_H, TEX_H);
+  }
+  ctx.stroke();
+
+  ctx.restore();
+}
+
 function renderVisualCanvas(
   ctx: CanvasRenderingContext2D,
   features: GeoFeature[],
-  revealedIds: Set<string>
+  revealedIds: Set<string>,
+  rejectedIds: Set<string>
 ) {
   ctx.fillStyle = OCEAN_FILL;
   ctx.fillRect(0, 0, TEX_W, TEX_H);
   for (const feat of features) {
     const id = String(feat.id);
-    drawFeature(ctx, feat, revealedIds.has(id) ? GREEN_FILL : LAND_FILL);
+    const fill = revealedIds.has(id)
+      ? GREEN_FILL
+      : rejectedIds.has(id)
+        ? NO_DATA_FILL
+        : LAND_FILL;
+    drawFeature(ctx, feat, fill);
+  }
+  // Draw cross-hatch on rejected countries
+  for (const feat of features) {
+    if (rejectedIds.has(String(feat.id))) {
+      drawCrossHatch(ctx, feat, "#d0d0d0");
+    }
   }
   for (const feat of features) strokeFeature(ctx, feat);
 }
@@ -374,6 +435,7 @@ function GlobeInner({
 
     /* ── State ──────────────────────────────────────── */
     const revealedIds = new Set<string>();
+    const rejectedIds = new Set<string>();
     let geoFeatures: GeoFeature[] = [];
 
     /* ── Fetch topology ─────────────────────────────── */
@@ -389,7 +451,7 @@ function GlobeInner({
             if (typeof name === "string") allNamesRef.current.set(id, name);
           }
         }
-        renderVisualCanvas(visualCtx, geoFeatures, revealedIds);
+        renderVisualCanvas(visualCtx, geoFeatures, revealedIds, rejectedIds);
         renderIdCanvas(idCtx, geoFeatures);
         canvasTexture.needsUpdate = true;
       });
@@ -478,7 +540,7 @@ function GlobeInner({
 
         if (DATA_COUNTRY_IDS.has(countryId)) {
           revealedIds.add(countryId);
-          renderVisualCanvas(visualCtx, geoFeatures, revealedIds);
+          renderVisualCanvas(visualCtx, geoFeatures, revealedIds, rejectedIds);
           canvasTexture.needsUpdate = true;
           const name = allNamesRef.current.get(countryId) ?? "this region";
           const msgFn =
@@ -486,6 +548,9 @@ function GlobeInner({
           showToast(msgFn(name), true);
           onClickRef.current?.(name, true);
         } else {
+          rejectedIds.add(countryId);
+          renderVisualCanvas(visualCtx, geoFeatures, revealedIds, rejectedIds);
+          canvasTexture.needsUpdate = true;
           const name = allNamesRef.current.get(countryId) ?? "Unknown";
           showToast("Not yet, watch this space!", false);
           onClickRef.current?.(name, false);
