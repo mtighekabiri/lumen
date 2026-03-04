@@ -13,11 +13,21 @@ interface NewsFilterProps {
   categories: string[];
 }
 
+const TAG_FILTERS = ["Reports", "Case studies", "Blogs", "News"] as const;
+
 export function NewsFilter({ posts, categories }: NewsFilterProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const filteredPosts = useMemo(() => {
     let result = posts;
+
+    if (activeTag) {
+      const tag = activeTag.toLowerCase();
+      result = result.filter((post) =>
+        post.tags.some((t) => t.toLowerCase() === tag)
+      );
+    }
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -30,7 +40,7 @@ export function NewsFilter({ posts, categories }: NewsFilterProps) {
     }
 
     return result;
-  }, [posts, searchQuery]);
+  }, [posts, searchQuery, activeTag]);
 
   return (
     <>
@@ -46,6 +56,23 @@ export function NewsFilter({ posts, categories }: NewsFilterProps) {
             className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-full bg-white text-gray-900 text-sm focus:ring-2 focus:ring-[#01b3d4] focus:border-transparent outline-none"
           />
         </div>
+      </div>
+
+      {/* Tag Filters */}
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        {TAG_FILTERS.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeTag === tag
+                ? "bg-[#01b3d4] text-white"
+                : "bg-white text-gray-600 border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4]"
+            }`}
+          >
+            {tag}
+          </button>
+        ))}
       </div>
 
       {/* Posts Grid */}

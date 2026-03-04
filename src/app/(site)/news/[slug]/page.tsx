@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, User, Tag, ArrowRight, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -116,8 +117,17 @@ export default async function BlogPostPage({ params }: PageProps) {
               {relatedPosts.map((relatedPost) => (
                 <Link key={relatedPost.id} href={`/news/${relatedPost.slug}`}>
                   <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow cursor-pointer group">
-                    <div className="h-32 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
-                      <Newspaper className="h-10 w-10 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
+                    <div className="relative h-48 bg-gradient-to-br from-[#01b3d4]/20 to-[#01b3d4]/40 flex items-center justify-center">
+                      {relatedPost.imageUrl ? (
+                        <Image
+                          src={relatedPost.imageUrl}
+                          alt={relatedPost.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <Newspaper className="h-10 w-10 text-[#01b3d4]/60 group-hover:scale-110 transition-transform" />
+                      )}
                     </div>
                     <CardHeader>
                       <TranslatedText text={relatedPost.category} className="text-sm text-[#01b3d4] font-medium" />
