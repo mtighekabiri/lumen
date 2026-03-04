@@ -5,12 +5,18 @@ import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
-/* ─── Partner logos (drop .svg/.png/.jpg into public/partners/) ── */
+/* ─── Partner logos (auto-detected from public/partners/) ─── */
 
-const PARTNER_LOGOS: { src: string; alt: string }[] = [
-  // Add logos here as you upload them to public/partners/
-  // e.g. { src: "/partners/partner-name.svg", alt: "Partner Name" },
-];
+function usePartnerLogos() {
+  const [logos, setLogos] = useState<{ src: string; alt: string }[]>([]);
+  useEffect(() => {
+    fetch("/api/partner-logos")
+      .then((r) => r.json())
+      .then(setLogos)
+      .catch(() => {});
+  }, []);
+  return logos;
+}
 
 /* ─── Animated count-up ───────────────────────────────────── */
 
@@ -387,6 +393,7 @@ function MiniDeviceScreens() {
 export function BentoGrid() {
   const { language } = useLanguage();
   const { ref: statsRef, inView: statsInView } = useInView(0.3);
+  const partnerLogos = usePartnerLogos();
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
@@ -429,12 +436,12 @@ export function BentoGrid() {
             </div>
 
             {/* In partnership with logos */}
-            {PARTNER_LOGOS.length > 0 && (
+            {partnerLogos.length > 0 && (
               <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
                 <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
                   In partnership with
                 </span>
-                {PARTNER_LOGOS.map((logo) => (
+                {partnerLogos.map((logo) => (
                   <Image
                     key={logo.src}
                     src={logo.src}
