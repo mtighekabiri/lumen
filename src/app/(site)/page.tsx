@@ -22,6 +22,10 @@ const LumenMediaCreative = dynamic(
 const DeviceScreens = dynamic(
   () => import("@/components/device-screens").then((m) => ({ default: m.DeviceScreens })),
 );
+const GlobeSection = dynamic(
+  () => import("@/components/globe-section"),
+  { ssr: false },
+);
 async function LatestNewsSection() {
   const { LatestNews } = await import("@/components/latest-news");
   return <LatestNews />;
@@ -52,6 +56,19 @@ export default function Home() {
         </div>
       </HeroBanner>
 
+      {/* Brand Logo Carousel */}
+      <BrandCarousel id="brands" brands={[
+        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
+        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
+        "google.png", "heineken.png", "ias.png", "mastercard.png",
+        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
+        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
+        "youtube.png",
+      ]} />
+
+      {/* Device Screens — Cross-Channel */}
+      <DeviceScreens />
+
       {/* Key Stats Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
         <div className="mx-auto max-w-7xl">
@@ -76,21 +93,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Device Screens — Cross-Channel */}
-      <DeviceScreens />
-
-      {/* Brand Logo Carousel */}
-      <BrandCarousel id="brands" brands={[
-        "dentsu.png", "adidas.png", "amazon.png", "anzu.png", "bbc.png",
-        "carlsberg.png", "condenast.png", "criteo.png", "facebook.png",
-        "google.png", "heineken.png", "ias.png", "mastercard.png",
-        "pinterest.png", "seedtag.png", "snapchat.png", "teads.png",
-        "thetradedesk.png", "tiktok.png", "tvision.png", "workday.png",
-        "youtube.png",
-      ]} />
-
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
+      {/* Globe — "Have we collected data where you are?" */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <GlobeSection />
+        </div>
+      </section>
 
       {/* News Section — streamed independently */}
       <Suspense fallback={
@@ -104,6 +112,9 @@ export default function Home() {
       }>
         <LatestNewsSection />
       </Suspense>
+
+      {/* For Advertisers & For Agencies */}
+      <LumenMediaCreative />
 
       {/* FAQs Section */}
       <HomeFaqSection />
