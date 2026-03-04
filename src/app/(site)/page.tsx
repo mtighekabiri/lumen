@@ -20,8 +20,8 @@ const BrandCarousel = dynamic(
 const LumenMediaCreative = dynamic(
   () => import("@/components/lumen-media-creative").then((m) => ({ default: m.LumenMediaCreative })),
 );
-const DeviceScreens = dynamic(
-  () => import("@/components/device-screens").then((m) => ({ default: m.DeviceScreens })),
+const BentoGrid = dynamic(
+  () => import("@/components/bento-grid").then((m) => ({ default: m.BentoGrid })),
 );
 async function LatestNewsSection() {
   const { LatestNews } = await import("@/components/latest-news");
@@ -63,32 +63,8 @@ export default function Home() {
         "youtube.png",
       ]} />
 
-      {/* Device Screens — Cross-Channel */}
-      <DeviceScreens />
-
-      {/* Key Stats Strip */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">750K+</p>
-              <p className="mt-1 text-sm text-gray-600"><T id="home.stat2Label" /></p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">1B+</p>
-              <p className="mt-1 text-sm text-gray-600"><T id="home.stat1LabelLine1" /><br /><T id="home.stat1LabelLine2" /></p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">50+</p>
-              <p className="mt-1 text-sm text-gray-600"><T id="home.stat3Label" /></p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-[#01b3d4]">13</p>
-              <p className="mt-1 text-sm text-gray-600"><T id="home.stat4Label" /></p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Bento Grid — headline, stats, devices, chart */}
+      <BentoGrid />
 
       {/* News Section — streamed independently */}
       <Suspense fallback={
