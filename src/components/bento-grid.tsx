@@ -338,7 +338,7 @@ function InsightsCarousel() {
   const total = posts.length;
 
   const goTo = useCallback(
-    (i: number) => setActive(((i % total) + total) % total),
+    (i: number) => setActive(Math.max(0, Math.min(i, total - 1))),
     [total],
   );
 
@@ -375,32 +375,28 @@ function InsightsCarousel() {
       >
         {posts.map((post, i) => {
           const offset = i - active;
-          // Wrap around for smooth looping feel
-          const norm =
-            offset > total / 2 ? offset - total : offset < -total / 2 ? offset + total : offset;
-          const absOff = Math.abs(norm);
 
-          if (absOff > 2) return null;
+          if (offset < -1 || offset > 2) return null;
 
-          const translateX = norm * 75;
-          const scale = 1 - absOff * 0.12;
-          const opacity = absOff === 0 ? 1 : absOff === 1 ? 0.45 : 0.2;
-          const zIndex = 10 - absOff;
+          const translateX = offset * 70;
+          const scale = offset === 0 ? 1 : 0.88;
+          const opacity = offset === 0 ? 1 : offset === 1 ? 0.4 : 0.15;
+          const zIndex = 10 - Math.abs(offset);
 
           return (
             <div
               key={post.id}
-              className="absolute inset-x-3 top-0 bottom-0 transition-all duration-500 ease-out"
+              className="absolute inset-x-4 top-0 bottom-0 transition-all duration-500 ease-out"
               style={{
                 transform: `translateX(${translateX}%) scale(${scale})`,
                 opacity,
                 zIndex,
-                pointerEvents: absOff === 0 ? "auto" : "none",
+                pointerEvents: offset === 0 ? "auto" : "none",
               }}
             >
               <Link href={`/news/${post.slug}`} className="block h-full">
-                <article className="h-full rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
-                  <div className="relative aspect-[16/10] bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30 flex-shrink-0">
+                <article className="h-full rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
+                  <div className="relative aspect-[16/9] bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30 flex-shrink-0">
                     {post.imageUrl ? (
                       <Image
                         src={post.imageUrl}
@@ -410,23 +406,22 @@ function InsightsCarousel() {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <Newspaper className="h-8 w-8 text-[#01b3d4]/30" />
+                        <Newspaper className="h-6 w-6 text-[#01b3d4]/30" />
                       </div>
                     )}
                   </div>
-                  <div className="p-4 flex flex-col flex-1">
-                    <span className="text-[10px] font-medium text-[#01b3d4]">
+                  <div className="p-3 flex flex-col flex-1">
+                    <span className="text-[9px] font-medium text-[#01b3d4]">
                       {post.category}
                     </span>
-                    <h4 className="mt-1 text-sm font-semibold text-gray-900 line-clamp-2">
+                    <h4 className="mt-0.5 text-xs font-semibold text-gray-900 line-clamp-2">
                       {post.title}
                     </h4>
-                    <div className="mt-auto pt-2 flex items-center gap-1 text-[10px] text-gray-400">
-                      <Calendar className="h-2.5 w-2.5" />
+                    <div className="mt-auto pt-1.5 flex items-center gap-1 text-[9px] text-gray-400">
+                      <Calendar className="h-2 w-2" />
                       {new Date(post.publishedAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
-                        year: "numeric",
                       })}
                     </div>
                   </div>
@@ -438,21 +433,23 @@ function InsightsCarousel() {
       </div>
 
       {/* Navigation arrows + dots */}
-      <div className="flex items-center justify-between mt-3">
+      <div className="flex items-center justify-between mt-2">
         <div className="flex gap-1.5">
           <button
             onClick={() => goTo(active - 1)}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] transition-colors"
+            disabled={active === 0}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             aria-label="Previous"
           >
-            <ChevronLeft className="h-3.5 w-3.5" />
+            <ChevronLeft className="h-3 w-3" />
           </button>
           <button
             onClick={() => goTo(active + 1)}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] transition-colors"
+            disabled={active >= total - 1}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             aria-label="Next"
           >
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-3 w-3" />
           </button>
         </div>
         <div className="flex gap-1">
@@ -461,7 +458,7 @@ function InsightsCarousel() {
               key={i}
               onClick={() => goTo(i)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-4 bg-[#01b3d4]" : "w-1.5 bg-gray-300"
+                i === active ? "w-3.5 bg-[#01b3d4]" : "w-1.5 bg-gray-300"
               }`}
               aria-label={`Article ${i + 1}`}
             />
@@ -534,7 +531,7 @@ export function BentoGrid() {
           </div>
 
           {/* ── Bottom-right: Latest Insights carousel ── */}
-          <div className="rounded-2xl bg-gray-100 p-6 min-h-[340px]">
+          <div className="rounded-2xl bg-gray-100 p-5 min-h-[280px]">
             <InsightsCarousel />
           </div>
 
