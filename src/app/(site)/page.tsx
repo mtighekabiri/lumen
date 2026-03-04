@@ -6,6 +6,7 @@ import { T } from "@/components/t";
 import { TranslatedText } from "@/components/translated-text";
 import { HomeFaqSection } from "@/components/home-faq-section";
 import { HomeContactForm } from "@/components/home-contact-form";
+import GlobeSection from "@/components/globe-section";
 
 export const revalidate = 60;
 
@@ -21,10 +22,6 @@ const LumenMediaCreative = dynamic(
 );
 const DeviceScreens = dynamic(
   () => import("@/components/device-screens").then((m) => ({ default: m.DeviceScreens })),
-);
-const GlobeSection = dynamic(
-  () => import("@/components/globe-section"),
-  { ssr: false },
 );
 async function LatestNewsSection() {
   const { LatestNews } = await import("@/components/latest-news");
