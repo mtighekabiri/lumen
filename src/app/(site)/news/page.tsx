@@ -23,7 +23,7 @@ export default async function NewsPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              <TranslatedText text="News & Insights" />
+              <TranslatedText text="Latest insights" />
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
               <TranslatedText text="Stay updated with the latest from Lumen Research. Industry news, case studies, research reports, and thought leadership." />
