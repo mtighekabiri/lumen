@@ -42,7 +42,7 @@ export async function LatestNews() {
           slug: p.slug,
           title: p.title,
           category: p.category,
-          imageUrl: p.imageUrl,
+          imageUrl: p.imageUrl ?? null,
           publishedAt: p.publishedAt,
         }))} />
       </div>
