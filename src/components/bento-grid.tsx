@@ -1,8 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
+
+/* ─── Partner logos (drop .svg/.png/.jpg into public/partners/) ── */
+
+const PARTNER_LOGOS: { src: string; alt: string }[] = [
+  // Add logos here as you upload them to public/partners/
+  // e.g. { src: "/partners/partner-name.svg", alt: "Partner Name" },
+];
 
 /* ─── Animated count-up ───────────────────────────────────── */
 
@@ -415,8 +423,29 @@ export function BentoGrid() {
           </div>
 
           {/* ── Bottom-right: Animated chart (spans 2 cols on lg) ── */}
-          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px]">
-            <AttentionProfitChart />
+          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px] flex flex-col">
+            <div className="flex-1 min-h-0">
+              <AttentionProfitChart />
+            </div>
+
+            {/* In partnership with logos */}
+            {PARTNER_LOGOS.length > 0 && (
+              <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                  In partnership with
+                </span>
+                {PARTNER_LOGOS.map((logo) => (
+                  <Image
+                    key={logo.src}
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={80}
+                    height={28}
+                    className="h-5 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
         </div>
