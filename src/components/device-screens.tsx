@@ -402,7 +402,7 @@ export function DeviceScreens() {
             </span>
           </h3>
 
-          <p className="mb-12 text-gray-600 leading-relaxed max-w-3xl">
+          <p className="mb-12 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl">
             {t(language, "devices.missionText")}
           </p>
 
