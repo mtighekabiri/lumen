@@ -29,7 +29,7 @@ function AnimatedStat({ value, suffix, label, active }: { value: number; suffix:
   const v = useCountUp(value, 2000, active);
   return (
     <div className="text-center">
-      <p className="text-2xl sm:text-3xl font-bold text-[#01b3d4]">
+      <p className="text-2xl sm:text-3xl font-normal text-[#01b3d4]">
         {Math.round(v).toLocaleString()}{suffix}
       </p>
       <p className="mt-1 text-xs text-gray-600">{label}</p>
@@ -290,51 +290,85 @@ function AttentionProfitChart() {
   );
 }
 
-/* ─── Mini device screens visual ──────────────────────────── */
+/* ─── Channel screen card with hover tooltip ────────────── */
+
+interface ChannelScreen {
+  label: string;
+  stat: string;
+  aspect: string;
+  shape: "wide" | "portrait" | "square" | "circle";
+}
+
+function ScreenCard({ label, stat, aspect, shape }: ChannelScreen) {
+  const [hovered, setHovered] = useState(false);
+
+  const bezel = shape === "circle"
+    ? "rounded-full"
+    : shape === "portrait"
+      ? "rounded-[6%]"
+      : "rounded-[3px]";
+
+  return (
+    <div
+      className="relative flex flex-col items-center group"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className={`w-full ${aspect} bg-[#1a1a1a] ${bezel} p-[5%] transition-transform duration-200 group-hover:scale-105`}>
+        <div className={`w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 ${bezel}`} />
+      </div>
+      <span className="text-[8px] text-gray-500 mt-1 font-medium">{label}</span>
+
+      {/* Hover tooltip */}
+      {hovered && (
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#01b3d4] text-white text-[9px] font-semibold px-2 py-1 rounded-md whitespace-nowrap z-10 shadow-md">
+          {stat}
+          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[#01b3d4]" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Cross-Channel Attention grid ───────────────────────── */
 
 function MiniDeviceScreens() {
   return (
-    <div className="w-full h-full flex items-end justify-center gap-1.5 pb-4 px-3">
-      {/* TV */}
-      <div className="flex flex-col items-center w-[28%]">
-        <div className="w-full aspect-[16/9] bg-[#1a1a1a] rounded-[2px] p-[2%]">
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-[1px]" />
-        </div>
-        <div className="w-[12%] h-1.5 bg-[#2a2a2a]" />
-        <div className="w-[35%] h-0.5 bg-[#3a3a3a]" />
-        <span className="text-[7px] text-gray-400 mt-1">TV</span>
+    <div className="w-full h-full flex flex-col gap-2 px-2 pb-2">
+      {/* Row 1: Cinema — full width */}
+      <div className="w-full max-w-[65%] mx-auto">
+        <ScreenCard label="Cinema" stat="22,000 APM · £100 profit" aspect="aspect-[21/9]" shape="wide" />
       </div>
-      {/* Laptop */}
-      <div className="flex flex-col items-center w-[22%]">
-        <div className="w-full aspect-[16/10] bg-[#1a1a1a] rounded-t-[2px] p-[3%]">
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-[1px]" />
-        </div>
-        <div className="w-[104%] h-[2px] bg-[#c0c0c0]" />
-        <div className="w-[104%] h-[3px] bg-[#d4d4d4] rounded-b-[2px]" />
-        <span className="text-[7px] text-gray-400 mt-1">Desktop</span>
+
+      {/* Row 2: TV */}
+      <div className="w-full max-w-[50%] mx-auto">
+        <ScreenCard label="TV / CTV" stat="6,500 APM · £45 profit" aspect="aspect-[16/9]" shape="wide" />
       </div>
-      {/* Tablet */}
-      <div className="flex flex-col items-center w-[12%]">
-        <div className="w-full aspect-[3/4] bg-[#1a1a1a] rounded-[4%] p-[5%]">
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-[2%]" />
+
+      {/* Row 3: Open Web + Gaming side by side */}
+      <div className="flex gap-3 justify-center">
+        <div className="w-[38%]">
+          <ScreenCard label="Open Web" stat="550 APM · £2.50 profit" aspect="aspect-[16/10]" shape="wide" />
         </div>
-        <span className="text-[7px] text-gray-400 mt-1">Tablet</span>
+        <div className="w-[28%]">
+          <ScreenCard label="Gaming" stat="2,350 APM · £17 profit" aspect="aspect-[3/4]" shape="portrait" />
+        </div>
       </div>
-      {/* Mobile */}
-      <div className="flex flex-col items-center w-[6%]">
-        <div className="w-full aspect-[9/19.5] bg-[#1a1a1a] rounded-[16%] p-[5%]">
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-[12%]" />
+
+      {/* Row 4: Mobile, DOOH, Print, Audio */}
+      <div className="flex gap-2 justify-center items-end">
+        <div className="w-[14%]">
+          <ScreenCard label="Mobile" stat="800 APM · £9 profit" aspect="aspect-[9/16]" shape="portrait" />
         </div>
-        <span className="text-[7px] text-gray-400 mt-1">Mobile</span>
-      </div>
-      {/* DOOH */}
-      <div className="flex flex-col items-center w-[10%]">
-        <div className="w-full aspect-[9/16] bg-[#222] rounded-[2px] p-[3%]">
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-[1px]" />
+        <div className="w-[16%]">
+          <ScreenCard label="DOOH" stat="1,500 APM · £11 profit" aspect="aspect-[9/16]" shape="portrait" />
         </div>
-        <div className="w-[6%] h-3 bg-[#666]" />
-        <div className="w-[25%] h-0.5 bg-[#777]" />
-        <span className="text-[7px] text-gray-400 mt-1">DOOH</span>
+        <div className="w-[22%]">
+          <ScreenCard label="Print" stat="Measured via eye-tracking" aspect="aspect-[3/4]" shape="portrait" />
+        </div>
+        <div className="w-[18%]">
+          <ScreenCard label="Audio" stat="Audio attention measured" aspect="aspect-square" shape="circle" />
+        </div>
       </div>
     </div>
   );
@@ -353,7 +387,7 @@ export function BentoGrid() {
 
           {/* ── Top-left: Headline + description (spans 2 cols on lg) ── */}
           <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-8 sm:p-10 flex flex-col justify-center">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light italic text-[#01b3d4] mb-4">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold italic text-[#01b3d4] mb-4">
               {t(language, "devices.headingHighlight1")}{" "}
               {t(language, "devices.headingMid1")}{" "}
               {t(language, "devices.headingHighlight2")}{" "}
