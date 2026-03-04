@@ -396,10 +396,10 @@ export function DeviceScreens() {
       <div className="mx-auto max-w-7xl">
         <div className="rounded-2xl bg-gray-100 p-10 sm:p-14">
           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6">
-            {t(language, "devices.headingPrefix")}{" "}
             <span className="italic text-[#01b3d4]">{t(language, "devices.headingHighlight1")}</span>{" "}
-            {t(language, "devices.headingAnd")}{" "}
-            <span className="italic text-[#01b3d4]">{t(language, "devices.headingHighlight2")}</span>
+            {t(language, "devices.headingMid1")}{" "}
+            <span className="italic text-[#01b3d4]">{t(language, "devices.headingHighlight2")}</span>{" "}
+            {t(language, "devices.headingMid2")}
           </h3>
 
           <p className="mb-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl">
