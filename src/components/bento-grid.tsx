@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Newspaper, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
@@ -304,84 +306,164 @@ function AttentionProfitChart() {
   );
 }
 
-/* ─── Channel screen card with hover tooltip ────────────── */
 
-interface ChannelScreen {
-  label: string;
-  stat: string;
-  aspect: string;
-  shape: "wide" | "portrait" | "square" | "circle";
+/* ─── Latest Insights carousel for bento cell ────────────── */
+
+type InsightPost = {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  imageUrl: string | null;
+  publishedAt: string;
+};
+
+function useInsightPosts() {
+  const [posts, setPosts] = useState<InsightPost[]>([]);
+  useEffect(() => {
+    fetch("/api/posts")
+      .then((r) => r.json())
+      .then((data: InsightPost[]) => setPosts(data.slice(0, 8)))
+      .catch(() => {});
+  }, []);
+  return posts;
 }
 
-function ScreenCard({ label, stat, aspect, shape }: ChannelScreen) {
-  const [hovered, setHovered] = useState(false);
+function InsightsCarousel() {
+  const posts = useInsightPosts();
+  const [active, setActive] = useState(0);
+  const touchStart = useRef<number | null>(null);
+  const total = posts.length;
 
-  const bezel = shape === "circle"
-    ? "rounded-full"
-    : shape === "portrait"
-      ? "rounded-[6%]"
-      : "rounded-[3px]";
-
-  return (
-    <div
-      className="relative flex flex-col items-center group"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className={`w-full ${aspect} bg-[#1a1a1a] ${bezel} p-[5%] transition-transform duration-200 group-hover:scale-105`}>
-        <div className={`w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 ${bezel}`} />
-      </div>
-      <span className="text-[8px] text-gray-500 mt-1 font-medium">{label}</span>
-
-      {/* Hover tooltip */}
-      {hovered && (
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#01b3d4] text-white text-[9px] font-semibold px-2 py-1 rounded-md whitespace-nowrap z-10 shadow-md">
-          {stat}
-          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[#01b3d4]" />
-        </div>
-      )}
-    </div>
+  const goTo = useCallback(
+    (i: number) => setActive(((i % total) + total) % total),
+    [total],
   );
-}
 
-/* ─── Cross-Channel Attention grid ───────────────────────── */
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStart.current;
+    if (Math.abs(dx) > 40) goTo(active + (dx < 0 ? 1 : -1));
+    touchStart.current = null;
+  };
 
-function MiniDeviceScreens() {
+  if (posts.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Newspaper className="h-10 w-10 text-gray-300" />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full flex flex-col gap-2 px-2 pb-2">
-      {/* Row 1: Cinema — full width */}
-      <div className="w-full max-w-[65%] mx-auto">
-        <ScreenCard label="Cinema" stat="22,000 APM · £100 profit" aspect="aspect-[21/9]" shape="wide" />
+    <div className="flex flex-col h-full">
+      <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-3">
+        Latest Insights
+      </p>
+
+      {/* Carousel viewport */}
+      <div
+        className="relative flex-1 min-h-0 overflow-hidden"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{ perspective: "800px" }}
+      >
+        {posts.map((post, i) => {
+          const offset = i - active;
+          // Wrap around for smooth looping feel
+          const norm =
+            offset > total / 2 ? offset - total : offset < -total / 2 ? offset + total : offset;
+          const absOff = Math.abs(norm);
+
+          if (absOff > 2) return null;
+
+          const translateX = norm * 75;
+          const scale = 1 - absOff * 0.12;
+          const opacity = absOff === 0 ? 1 : absOff === 1 ? 0.45 : 0.2;
+          const zIndex = 10 - absOff;
+
+          return (
+            <div
+              key={post.id}
+              className="absolute inset-x-3 top-0 bottom-0 transition-all duration-500 ease-out"
+              style={{
+                transform: `translateX(${translateX}%) scale(${scale})`,
+                opacity,
+                zIndex,
+                pointerEvents: absOff === 0 ? "auto" : "none",
+              }}
+            >
+              <Link href={`/news/${post.slug}`} className="block h-full">
+                <article className="h-full rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
+                  <div className="relative aspect-[16/10] bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30 flex-shrink-0">
+                    {post.imageUrl ? (
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Newspaper className="h-8 w-8 text-[#01b3d4]/30" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 flex flex-col flex-1">
+                    <span className="text-[10px] font-medium text-[#01b3d4]">
+                      {post.category}
+                    </span>
+                    <h4 className="mt-1 text-sm font-semibold text-gray-900 line-clamp-2">
+                      {post.title}
+                    </h4>
+                    <div className="mt-auto pt-2 flex items-center gap-1 text-[10px] text-gray-400">
+                      <Calendar className="h-2.5 w-2.5" />
+                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </div>
+                  </div>
+                </article>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Row 2: TV */}
-      <div className="w-full max-w-[50%] mx-auto">
-        <ScreenCard label="TV / CTV" stat="6,500 APM · £45 profit" aspect="aspect-[16/9]" shape="wide" />
-      </div>
-
-      {/* Row 3: Open Web + Gaming side by side */}
-      <div className="flex gap-3 justify-center">
-        <div className="w-[38%]">
-          <ScreenCard label="Open Web" stat="550 APM · £2.50 profit" aspect="aspect-[16/10]" shape="wide" />
+      {/* Navigation arrows + dots */}
+      <div className="flex items-center justify-between mt-3">
+        <div className="flex gap-1.5">
+          <button
+            onClick={() => goTo(active - 1)}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] transition-colors"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </button>
+          <button
+            onClick={() => goTo(active + 1)}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] transition-colors"
+            aria-label="Next"
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
         </div>
-        <div className="w-[28%]">
-          <ScreenCard label="Gaming" stat="2,350 APM · £17 profit" aspect="aspect-[3/4]" shape="portrait" />
-        </div>
-      </div>
-
-      {/* Row 4: Mobile, DOOH, Print, Audio */}
-      <div className="flex gap-2 justify-center items-end">
-        <div className="w-[14%]">
-          <ScreenCard label="Mobile" stat="800 APM · £9 profit" aspect="aspect-[9/16]" shape="portrait" />
-        </div>
-        <div className="w-[16%]">
-          <ScreenCard label="DOOH" stat="1,500 APM · £11 profit" aspect="aspect-[9/16]" shape="portrait" />
-        </div>
-        <div className="w-[22%]">
-          <ScreenCard label="Print" stat="Measured via eye-tracking" aspect="aspect-[3/4]" shape="portrait" />
-        </div>
-        <div className="w-[18%]">
-          <ScreenCard label="Audio" stat="Audio attention measured" aspect="aspect-square" shape="circle" />
+        <div className="flex gap-1">
+          {posts.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === active ? "w-4 bg-[#01b3d4]" : "w-1.5 bg-gray-300"
+              }`}
+              aria-label={`Article ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -402,7 +484,7 @@ export function BentoGrid() {
 
           {/* ── Top-left: Headline + description (spans 2 cols on lg) ── */}
           <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-8 sm:p-10 flex flex-col justify-center">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold italic text-[#01b3d4] mb-4">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-normal italic text-[#01b3d4] mb-4">
               {t(language, "devices.headingHighlight1")}{" "}
               {t(language, "devices.headingMid1")}{" "}
               {t(language, "devices.headingHighlight2")}{" "}
@@ -423,13 +505,7 @@ export function BentoGrid() {
             </div>
           </div>
 
-          {/* ── Bottom-left: Mini device screens ── */}
-          <div className="rounded-2xl bg-gray-100 p-6 min-h-[220px] overflow-hidden">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-2">Cross-Channel Attention</p>
-            <MiniDeviceScreens />
-          </div>
-
-          {/* ── Bottom-right: Animated chart (spans 2 cols on lg) ── */}
+          {/* ── Bottom-left: Animated chart (spans 2 cols on lg) ── */}
           <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px] flex flex-col">
             <div className="flex-1 min-h-0">
               <AttentionProfitChart />
@@ -453,6 +529,11 @@ export function BentoGrid() {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* ── Bottom-right: Latest Insights carousel ── */}
+          <div className="rounded-2xl bg-gray-100 p-6 min-h-[340px]">
+            <InsightsCarousel />
           </div>
 
         </div>
