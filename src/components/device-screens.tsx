@@ -400,6 +400,8 @@ export function DeviceScreens() {
             <span className="italic text-[#01b3d4]">
               {t(language, "devices.headingSuffix")}
             </span>
+            <br />
+            <span>{t(language, "devices.headingLine2")}</span>
           </h3>
 
           <p className="mb-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl">
