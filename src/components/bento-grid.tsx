@@ -89,6 +89,14 @@ const PROFIT_DATA = [
 /* Magnifier zoom region — covers the cluster of close points */
 const ZOOM_REGION = { xMin: 0, xMax: 3200, yMin: 0, yMax: 22 };
 
+const PERFORMANCE_DATA = [
+  { label: "0-250", value: 0.03 },
+  { label: "250-500", value: 0.04 },
+  { label: "500-750", value: 0.06 },
+  { label: "750-1,000", value: 0.10 },
+  { label: ">1,000", value: 0.17 },
+];
+
 function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; alt: string; chart: string }[] }) {
   const { ref, inView } = useInView(0.4);
   const [progress, setProgress] = useState(0);
@@ -317,13 +325,75 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
               R² = 0.979
             </text>
           </svg>
+        ) : activeTab === "performance" ? (
+          /* ── Performance bar chart ── */
+          (() => {
+            const perfW = W;
+            const perfH = H;
+            const perfPad = { top: 20, right: 20, bottom: 55, left: 30 };
+            const perfPlotW = perfW - perfPad.left - perfPad.right;
+            const perfPlotH = perfH - perfPad.top - perfPad.bottom;
+            const barCount = PERFORMANCE_DATA.length;
+            const gap = perfPlotW * 0.15 / (barCount + 1);
+            const barW = (perfPlotW - gap * (barCount + 1)) / barCount;
+            const perfYMax = 0.20;
+
+            return (
+              <svg viewBox={`0 0 ${perfW} ${perfH}`} className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                {/* Bars */}
+                {PERFORMANCE_DATA.map((d, i) => {
+                  const barX = perfPad.left + gap + i * (barW + gap);
+                  const barH = (d.value / perfYMax) * perfPlotH;
+                  const barY = perfPad.top + perfPlotH - barH;
+                  const delay = i * 0.1;
+                  const barProgress = Math.max(0, Math.min(1, (progress - delay) / (1 - delay)));
+
+                  return (
+                    <g key={d.label}>
+                      <rect
+                        x={barX} y={perfPad.top + perfPlotH - barH * barProgress}
+                        width={barW} height={barH * barProgress}
+                        rx={3} fill="#01b3d4" opacity={0.8}
+                      />
+                      {/* Value label above bar */}
+                      <text
+                        x={barX + barW / 2} y={barY - 6}
+                        textAnchor="middle" className="fill-gray-700" fontSize={8} fontWeight={500}
+                        opacity={barProgress}
+                      >
+                        {d.value.toFixed(2)}%
+                      </text>
+                      {/* X-axis category label */}
+                      <text
+                        x={barX + barW / 2} y={perfPad.top + perfPlotH + 14}
+                        textAnchor="middle" className="fill-gray-500" fontSize={8}
+                      >
+                        {d.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Baseline */}
+                <line
+                  x1={perfPad.left} y1={perfPad.top + perfPlotH}
+                  x2={perfW - perfPad.right} y2={perfPad.top + perfPlotH}
+                  stroke="#d1d5db" strokeWidth={0.5}
+                />
+
+                {/* X-axis label */}
+                <text x={perfPad.left + perfPlotW / 2} y={perfH - 2} textAnchor="middle"
+                  className="fill-gray-500" fontSize={8}>
+                  Attentive seconds per 1,000 impressions (APM)
+                </text>
+              </svg>
+            );
+          })()
         ) : (
-          /* ── Placeholder for Brand Lift / Performance tabs ── */
+          /* ── Placeholder for Brand Lift tab ── */
           <div className="w-full h-full flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200">
             <div className="text-center">
-              <p className="text-sm font-semibold text-gray-400">
-                {activeTab === "brandLift" ? "Brand Lift" : "Performance"} chart
-              </p>
+              <p className="text-sm font-semibold text-gray-400">Brand Lift chart</p>
               <p className="text-xs text-gray-300 mt-1">Coming soon</p>
             </div>
           </div>
