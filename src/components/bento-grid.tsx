@@ -10,7 +10,7 @@ import { t } from "@/lib/translations";
 /* ─── Partner logos (auto-detected from public/partners/) ─── */
 
 function usePartnerLogos() {
-  const [logos, setLogos] = useState<{ src: string; alt: string }[]>([]);
+  const [logos, setLogos] = useState<{ src: string; alt: string; chart: string }[]>([]);
   useEffect(() => {
     fetch("/api/partner-logos")
       .then((r) => r.json())
@@ -89,7 +89,15 @@ const PROFIT_DATA = [
 /* Magnifier zoom region — covers the cluster of close points */
 const ZOOM_REGION = { xMin: 0, xMax: 3200, yMin: 0, yMax: 22 };
 
-function AttentionProfitChart() {
+const PERFORMANCE_DATA = [
+  { label: "0-250", value: 0.03 },
+  { label: "250-500", value: 0.04 },
+  { label: "500-750", value: 0.06 },
+  { label: "750-1,000", value: 0.10 },
+  { label: ">1,000", value: 0.17 },
+];
+
+function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; alt: string; chart: string }[] }) {
   const { ref, inView } = useInView(0.4);
   const [progress, setProgress] = useState(0);
   const [activeTab, setActiveTab] = useState<ChartTab>("profit");
@@ -127,27 +135,39 @@ function AttentionProfitChart() {
   const toX = (v: number) => PAD.left + (v / xMax) * plotW;
   const toY = (v: number) => PAD.top + plotH - (v / yMax) * plotH;
 
-  // Trend curve (quadratic fit)
-  const curvePts: string[] = [];
-  for (let i = 0; i <= 50; i++) {
-    const xv = (i / 50) * xMax;
-    const yv = Math.min(0.0000017 * xv * xv + 0.0015 * xv + 3, yMax);
-    curvePts.push(`${toX(xv)},${toY(yv)}`);
-  }
-  const curvePath = `M${curvePts.join(" L")}`;
+  // Linear regression (best fit straight line through data)
+  const n = PROFIT_DATA.length;
+  const sumX = PROFIT_DATA.reduce((s, p) => s + p.x, 0);
+  const sumY = PROFIT_DATA.reduce((s, p) => s + p.y, 0);
+  const sumXY = PROFIT_DATA.reduce((s, p) => s + p.x * p.y, 0);
+  const sumX2 = PROFIT_DATA.reduce((s, p) => s + p.x * p.x, 0);
+  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / n;
+  const lineY = (xv: number) => Math.max(0, Math.min(slope * xv + intercept, yMax));
+
+  const lineStart = `${toX(0)},${toY(lineY(0))}`;
+  const lineEnd = `${toX(xMax)},${toY(lineY(xMax))}`;
+  const linePath = `M${lineStart} L${lineEnd}`;
 
   const yTicks = [0, 20, 40, 60, 80, 100, 120];
   const xTicks = [0, 5000, 10000, 15000, 20000, 25000];
 
   /* ── Magnifier inset dimensions ── */
+  /* Positioned so bottom edge aligns roughly with the £5 mark on y-axis */
   const magW = 120;
   const magH = 90;
   const magX = W - PAD.right - magW - 4;
-  const magY = PAD.top + 22;
+  const magY = toY(5) - magH;
   const magPad = 14;
 
   const zoomToX = (v: number) => magX + magPad + ((v - ZOOM_REGION.xMin) / (ZOOM_REGION.xMax - ZOOM_REGION.xMin)) * (magW - magPad * 2);
   const zoomToY = (v: number) => magY + magH - magPad - ((v - ZOOM_REGION.yMin) / (ZOOM_REGION.yMax - ZOOM_REGION.yMin)) * (magH - magPad * 2);
+
+  /* Correlation line clipped to zoom region */
+  const zoomLineX1 = ZOOM_REGION.xMin;
+  const zoomLineX2 = ZOOM_REGION.xMax;
+  const zoomLineY1 = lineY(zoomLineX1);
+  const zoomLineY2 = lineY(zoomLineX2);
 
   const clusteredPoints = PROFIT_DATA.filter((pt) => !pt.showLabel);
 
@@ -188,7 +208,7 @@ function AttentionProfitChart() {
             {/* Y-axis labels */}
             {yTicks.map((v) => (
               <text key={`yl-${v}`} x={PAD.left - 6} y={toY(v) + 3} textAnchor="end"
-                className="fill-gray-500" fontSize={9}>
+                className="fill-gray-500" fontSize={8}>
                 £{v}
               </text>
             ))}
@@ -196,7 +216,7 @@ function AttentionProfitChart() {
             {/* X-axis labels */}
             {xTicks.map((v) => (
               <text key={`xl-${v}`} x={toX(v)} y={PAD.top + plotH + 14} textAnchor="middle"
-                className="fill-gray-500" fontSize={9}>
+                className="fill-gray-500" fontSize={8}>
                 {v === 0 ? "0" : `${(v / 1000).toFixed(0)}k`}
               </text>
             ))}
@@ -211,8 +231,8 @@ function AttentionProfitChart() {
               Incremental profit per 1,000 impressions
             </text>
 
-            {/* Trend curve */}
-            <path d={curvePath} fill="none" stroke="#01b3d4" strokeWidth={2}
+            {/* Straight correlation line */}
+            <path d={linePath} fill="none" stroke="#01b3d4" strokeWidth={2}
               strokeDasharray="6 3" opacity={0.5}
               style={{
                 strokeDashoffset: (1 - progress) * 800,
@@ -261,9 +281,22 @@ function AttentionProfitChart() {
                 stroke="#01b3d4" strokeWidth={0.5} strokeDasharray="2 2" opacity={0.5}
               />
 
-              {/* Magnifier background */}
+              {/* Magnifier background — matches chart bg */}
+              <defs>
+                <clipPath id="mag-clip">
+                  <rect x={magX} y={magY} width={magW} height={magH} rx={4} />
+                </clipPath>
+              </defs>
               <rect x={magX} y={magY} width={magW} height={magH}
-                rx={4} fill="white" stroke="#01b3d4" strokeWidth={1} />
+                rx={4} fill="#f3f4f6" stroke="#01b3d4" strokeWidth={1} />
+
+              {/* Correlation line inside magnifier */}
+              <line
+                x1={zoomToX(zoomLineX1)} y1={zoomToY(zoomLineY1)}
+                x2={zoomToX(zoomLineX2)} y2={zoomToY(zoomLineY2)}
+                stroke="#01b3d4" strokeWidth={1.5} strokeDasharray="4 2" opacity={0.5}
+                clipPath="url(#mag-clip)"
+              />
 
               {/* Magnifier icon */}
               <circle cx={magX + 10} cy={magY + 10} r={4} fill="none" stroke="#01b3d4" strokeWidth={0.8} />
@@ -278,7 +311,7 @@ function AttentionProfitChart() {
                   <g key={`zoom-${pt.label}`}>
                     <circle cx={zx} cy={zy} r={3} fill="#01b3d4" />
                     <text x={zx} y={zy - 6} textAnchor="middle"
-                      className="fill-gray-700" fontSize={6} fontWeight={500}>
+                      className="fill-gray-700" fontSize={8} fontWeight={500}>
                       {pt.label}
                     </text>
                   </g>
@@ -292,18 +325,103 @@ function AttentionProfitChart() {
               R² = 0.979
             </text>
           </svg>
+        ) : activeTab === "performance" ? (
+          /* ── Performance bar chart ── */
+          (() => {
+            const perfW = W;
+            const perfH = H;
+            const perfPad = { top: 20, right: 20, bottom: 55, left: 30 };
+            const perfPlotW = perfW - perfPad.left - perfPad.right;
+            const perfPlotH = perfH - perfPad.top - perfPad.bottom;
+            const barCount = PERFORMANCE_DATA.length;
+            const gap = perfPlotW * 0.15 / (barCount + 1);
+            const barW = (perfPlotW - gap * (barCount + 1)) / barCount;
+            const perfYMax = 0.20;
+
+            return (
+              <svg viewBox={`0 0 ${perfW} ${perfH}`} className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                {/* Bars */}
+                {PERFORMANCE_DATA.map((d, i) => {
+                  const barX = perfPad.left + gap + i * (barW + gap);
+                  const barH = (d.value / perfYMax) * perfPlotH;
+                  const barY = perfPad.top + perfPlotH - barH;
+                  const delay = i * 0.1;
+                  const barProgress = Math.max(0, Math.min(1, (progress - delay) / (1 - delay)));
+
+                  return (
+                    <g key={d.label}>
+                      <rect
+                        x={barX} y={perfPad.top + perfPlotH - barH * barProgress}
+                        width={barW} height={barH * barProgress}
+                        rx={3} fill="#01b3d4" opacity={0.8}
+                      />
+                      {/* Value label above bar */}
+                      <text
+                        x={barX + barW / 2} y={barY - 6}
+                        textAnchor="middle" className="fill-gray-700" fontSize={8} fontWeight={500}
+                        opacity={barProgress}
+                      >
+                        {d.value.toFixed(2)}%
+                      </text>
+                      {/* X-axis category label */}
+                      <text
+                        x={barX + barW / 2} y={perfPad.top + perfPlotH + 14}
+                        textAnchor="middle" className="fill-gray-500" fontSize={8}
+                      >
+                        {d.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Baseline */}
+                <line
+                  x1={perfPad.left} y1={perfPad.top + perfPlotH}
+                  x2={perfW - perfPad.right} y2={perfPad.top + perfPlotH}
+                  stroke="#d1d5db" strokeWidth={0.5}
+                />
+
+                {/* X-axis label */}
+                <text x={perfPad.left + perfPlotW / 2} y={perfH - 2} textAnchor="middle"
+                  className="fill-gray-500" fontSize={8}>
+                  Attentive seconds per 1,000 impressions (APM)
+                </text>
+              </svg>
+            );
+          })()
         ) : (
-          /* ── Placeholder for Brand Lift / Performance tabs ── */
+          /* ── Placeholder for Brand Lift tab ── */
           <div className="w-full h-full flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200">
             <div className="text-center">
-              <p className="text-sm font-semibold text-gray-400">
-                {activeTab === "brandLift" ? "Brand Lift" : "Performance"} chart
-              </p>
+              <p className="text-sm font-semibold text-gray-400">Brand Lift chart</p>
               <p className="text-xs text-gray-300 mt-1">Coming soon</p>
             </div>
           </div>
         )}
       </div>
+
+      {/* Partner logos for active chart */}
+      {(() => {
+        const filtered = partnerLogos.filter((l) => l.chart === activeTab);
+        if (filtered.length === 0) return null;
+        return (
+          <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
+            <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
+              In partnership with
+            </span>
+            {filtered.map((logo) => (
+              <Image
+                key={logo.src}
+                src={logo.src}
+                alt={logo.alt}
+                width={80}
+                height={28}
+                className="h-5 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+              />
+            ))}
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -505,29 +623,8 @@ export function BentoGrid() {
           </div>
 
           {/* ── Bottom-left: Animated chart (spans 2 cols on lg) ── */}
-          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px] flex flex-col">
-            <div className="flex-1 min-h-0">
-              <AttentionProfitChart />
-            </div>
-
-            {/* In partnership with logos */}
-            {partnerLogos.length > 0 && (
-              <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
-                <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
-                  In partnership with
-                </span>
-                {partnerLogos.map((logo) => (
-                  <Image
-                    key={logo.src}
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={80}
-                    height={28}
-                    className="h-5 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
-                  />
-                ))}
-              </div>
-            )}
+          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px]">
+            <AttentionProfitChart partnerLogos={partnerLogos} />
           </div>
 
           {/* ── Bottom-right: Latest Insights carousel ── */}
