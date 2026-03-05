@@ -119,7 +119,7 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
   const tabs: { key: ChartTab; label: string; title: string }[] = [
     { key: "profit", label: "Profit", title: "Attention drives profit" },
     { key: "brandLift", label: "Brand Lift", title: "Attention drives brand lift" },
-    { key: "performance", label: "Performance", title: "Attention drives performance" },
+    { key: "performance", label: "Performance", title: "Attention drives digital performance" },
   ];
 
   // Chart dimensions
@@ -373,6 +373,31 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
                     </g>
                   );
                 })}
+
+                {/* Upward arrow from first to last bar */}
+                {(() => {
+                  const first = PERFORMANCE_DATA[0];
+                  const last = PERFORMANCE_DATA[PERFORMANCE_DATA.length - 1];
+                  const firstX = perfPad.left + gap + barW / 2;
+                  const lastX = perfPad.left + gap + (barCount - 1) * (barW + gap) + barW / 2;
+                  const firstY = perfPad.top + perfPlotH - (first.value / perfYMax) * perfPlotH - 14;
+                  const lastY = perfPad.top + perfPlotH - (last.value / perfYMax) * perfPlotH - 14;
+                  return (
+                    <g opacity={progress}>
+                      <defs>
+                        <marker id="perf-arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                          <polygon points="0 0, 6 2.5, 0 5" fill="#01b3d4" />
+                        </marker>
+                      </defs>
+                      <line
+                        x1={firstX} y1={firstY}
+                        x2={lastX} y2={lastY}
+                        stroke="#01b3d4" strokeWidth={1.5} strokeDasharray="4 2"
+                        markerEnd="url(#perf-arrowhead)"
+                      />
+                    </g>
+                  );
+                })()}
 
                 {/* Baseline */}
                 <line
