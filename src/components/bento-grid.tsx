@@ -10,7 +10,7 @@ import { t } from "@/lib/translations";
 /* ─── Partner logos (auto-detected from public/partners/) ─── */
 
 function usePartnerLogos() {
-  const [logos, setLogos] = useState<{ src: string; alt: string }[]>([]);
+  const [logos, setLogos] = useState<{ src: string; alt: string; chart: string }[]>([]);
   useEffect(() => {
     fetch("/api/partner-logos")
       .then((r) => r.json())
@@ -89,7 +89,7 @@ const PROFIT_DATA = [
 /* Magnifier zoom region — covers the cluster of close points */
 const ZOOM_REGION = { xMin: 0, xMax: 3200, yMin: 0, yMax: 22 };
 
-function AttentionProfitChart() {
+function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; alt: string; chart: string }[] }) {
   const { ref, inView } = useInView(0.4);
   const [progress, setProgress] = useState(0);
   const [activeTab, setActiveTab] = useState<ChartTab>("profit");
@@ -304,6 +304,29 @@ function AttentionProfitChart() {
           </div>
         )}
       </div>
+
+      {/* Partner logos for active chart */}
+      {(() => {
+        const filtered = partnerLogos.filter((l) => l.chart === activeTab);
+        if (filtered.length === 0) return null;
+        return (
+          <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
+            <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
+              In partnership with
+            </span>
+            {filtered.map((logo) => (
+              <Image
+                key={logo.src}
+                src={logo.src}
+                alt={logo.alt}
+                width={80}
+                height={28}
+                className="h-5 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+              />
+            ))}
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -505,29 +528,8 @@ export function BentoGrid() {
           </div>
 
           {/* ── Bottom-left: Animated chart (spans 2 cols on lg) ── */}
-          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px] flex flex-col">
-            <div className="flex-1 min-h-0">
-              <AttentionProfitChart />
-            </div>
-
-            {/* In partnership with logos */}
-            {partnerLogos.length > 0 && (
-              <div className="mt-4 pt-3 border-t border-gray-200 flex items-center gap-4 flex-wrap">
-                <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
-                  In partnership with
-                </span>
-                {partnerLogos.map((logo) => (
-                  <Image
-                    key={logo.src}
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={80}
-                    height={28}
-                    className="h-5 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
-                  />
-                ))}
-              </div>
-            )}
+          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px]">
+            <AttentionProfitChart partnerLogos={partnerLogos} />
           </div>
 
           {/* ── Bottom-right: Latest Insights carousel ── */}
