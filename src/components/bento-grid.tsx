@@ -127,27 +127,39 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
   const toX = (v: number) => PAD.left + (v / xMax) * plotW;
   const toY = (v: number) => PAD.top + plotH - (v / yMax) * plotH;
 
-  // Trend curve (quadratic fit)
-  const curvePts: string[] = [];
-  for (let i = 0; i <= 50; i++) {
-    const xv = (i / 50) * xMax;
-    const yv = Math.min(0.0000017 * xv * xv + 0.0015 * xv + 3, yMax);
-    curvePts.push(`${toX(xv)},${toY(yv)}`);
-  }
-  const curvePath = `M${curvePts.join(" L")}`;
+  // Linear regression (best fit straight line through data)
+  const n = PROFIT_DATA.length;
+  const sumX = PROFIT_DATA.reduce((s, p) => s + p.x, 0);
+  const sumY = PROFIT_DATA.reduce((s, p) => s + p.y, 0);
+  const sumXY = PROFIT_DATA.reduce((s, p) => s + p.x * p.y, 0);
+  const sumX2 = PROFIT_DATA.reduce((s, p) => s + p.x * p.x, 0);
+  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / n;
+  const lineY = (xv: number) => Math.max(0, Math.min(slope * xv + intercept, yMax));
+
+  const lineStart = `${toX(0)},${toY(lineY(0))}`;
+  const lineEnd = `${toX(xMax)},${toY(lineY(xMax))}`;
+  const linePath = `M${lineStart} L${lineEnd}`;
 
   const yTicks = [0, 20, 40, 60, 80, 100, 120];
   const xTicks = [0, 5000, 10000, 15000, 20000, 25000];
 
   /* ── Magnifier inset dimensions ── */
+  /* Positioned so bottom edge aligns roughly with the £5 mark on y-axis */
   const magW = 120;
   const magH = 90;
   const magX = W - PAD.right - magW - 4;
-  const magY = PAD.top + 22;
+  const magY = toY(5) - magH;
   const magPad = 14;
 
   const zoomToX = (v: number) => magX + magPad + ((v - ZOOM_REGION.xMin) / (ZOOM_REGION.xMax - ZOOM_REGION.xMin)) * (magW - magPad * 2);
   const zoomToY = (v: number) => magY + magH - magPad - ((v - ZOOM_REGION.yMin) / (ZOOM_REGION.yMax - ZOOM_REGION.yMin)) * (magH - magPad * 2);
+
+  /* Correlation line clipped to zoom region */
+  const zoomLineX1 = ZOOM_REGION.xMin;
+  const zoomLineX2 = ZOOM_REGION.xMax;
+  const zoomLineY1 = lineY(zoomLineX1);
+  const zoomLineY2 = lineY(zoomLineX2);
 
   const clusteredPoints = PROFIT_DATA.filter((pt) => !pt.showLabel);
 
@@ -211,8 +223,8 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
               Incremental profit per 1,000 impressions
             </text>
 
-            {/* Trend curve */}
-            <path d={curvePath} fill="none" stroke="#01b3d4" strokeWidth={2}
+            {/* Straight correlation line */}
+            <path d={linePath} fill="none" stroke="#01b3d4" strokeWidth={2}
               strokeDasharray="6 3" opacity={0.5}
               style={{
                 strokeDashoffset: (1 - progress) * 800,
@@ -261,9 +273,22 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
                 stroke="#01b3d4" strokeWidth={0.5} strokeDasharray="2 2" opacity={0.5}
               />
 
-              {/* Magnifier background */}
+              {/* Magnifier background — matches chart bg */}
+              <defs>
+                <clipPath id="mag-clip">
+                  <rect x={magX} y={magY} width={magW} height={magH} rx={4} />
+                </clipPath>
+              </defs>
               <rect x={magX} y={magY} width={magW} height={magH}
-                rx={4} fill="white" stroke="#01b3d4" strokeWidth={1} />
+                rx={4} fill="#f3f4f6" stroke="#01b3d4" strokeWidth={1} />
+
+              {/* Correlation line inside magnifier */}
+              <line
+                x1={zoomToX(zoomLineX1)} y1={zoomToY(zoomLineY1)}
+                x2={zoomToX(zoomLineX2)} y2={zoomToY(zoomLineY2)}
+                stroke="#01b3d4" strokeWidth={1.5} strokeDasharray="4 2" opacity={0.5}
+                clipPath="url(#mag-clip)"
+              />
 
               {/* Magnifier icon */}
               <circle cx={magX + 10} cy={magY + 10} r={4} fill="none" stroke="#01b3d4" strokeWidth={0.8} />
