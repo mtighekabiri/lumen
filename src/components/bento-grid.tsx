@@ -188,7 +188,7 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
             {/* Y-axis labels */}
             {yTicks.map((v) => (
               <text key={`yl-${v}`} x={PAD.left - 6} y={toY(v) + 3} textAnchor="end"
-                className="fill-gray-500" fontSize={9}>
+                className="fill-gray-500" fontSize={8}>
                 £{v}
               </text>
             ))}
@@ -196,7 +196,7 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
             {/* X-axis labels */}
             {xTicks.map((v) => (
               <text key={`xl-${v}`} x={toX(v)} y={PAD.top + plotH + 14} textAnchor="middle"
-                className="fill-gray-500" fontSize={9}>
+                className="fill-gray-500" fontSize={8}>
                 {v === 0 ? "0" : `${(v / 1000).toFixed(0)}k`}
               </text>
             ))}
@@ -278,7 +278,7 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
                   <g key={`zoom-${pt.label}`}>
                     <circle cx={zx} cy={zy} r={3} fill="#01b3d4" />
                     <text x={zx} y={zy - 6} textAnchor="middle"
-                      className="fill-gray-700" fontSize={6} fontWeight={500}>
+                      className="fill-gray-700" fontSize={8} fontWeight={500}>
                       {pt.label}
                     </text>
                   </g>
