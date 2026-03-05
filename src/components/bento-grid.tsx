@@ -12,10 +12,21 @@ import { t } from "@/lib/translations";
 function usePartnerLogos() {
   const [logos, setLogos] = useState<{ src: string; alt: string; chart: string }[]>([]);
   useEffect(() => {
-    fetch("/api/partner-logos")
+    let ignore = false;
+    const controller = new AbortController();
+    fetch("/api/partner-logos", { signal: controller.signal })
       .then((r) => r.json())
-      .then(setLogos)
+      .then((data: { src: string; alt: string; chart: string }[]) => {
+        if (!ignore) {
+          const seen = new Set<string>();
+          setLogos(data.filter((l) => (seen.has(l.src) ? false : (seen.add(l.src), true))));
+        }
+      })
       .catch(() => {});
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
   }, []);
   return logos;
 }
@@ -434,9 +445,9 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
             <span className="text-[10px] text-gray-400 uppercase tracking-wider whitespace-nowrap">
               In partnership with
             </span>
-            {filtered.map((logo) => (
+            {filtered.map((logo, i) => (
               <Image
-                key={logo.src}
+                key={`${logo.chart}-${logo.src}-${i}`}
                 src={logo.src}
                 alt={logo.alt}
                 width={80}
