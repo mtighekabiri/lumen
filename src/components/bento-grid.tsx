@@ -769,9 +769,7 @@ export function BentoGrid() {
           {/* ── Top-left: Headline + description (7 of 12 cols) ── */}
           <div className="md:col-span-2 lg:col-span-7 rounded-2xl bg-gray-100 p-8 sm:p-10 flex flex-col justify-center">
             <h3 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 mb-4 leading-[1.1]">
-              Turn <span className="italic font-normal text-[#01b3d4]">attention</span>
-              <br />
-              into action.
+              <span className="italic font-normal text-[#01b3d4]">Minimise waste,<br />maximise return.</span>
             </h3>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
               Data-driven advertisers use our cutting-edge eye-tracking data for live media measurement, post campaign audits, optimise creative, pre-bid targeting, and more.

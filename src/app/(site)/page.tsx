@@ -43,8 +43,8 @@ export default function Home() {
               className="h-4 sm:h-5 w-auto mb-5"
             />
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight text-gray-900">
-              <span className="italic text-[#01b3d4] font-normal"><T id="home.heroAttention" /></span>{" "}
-              <T id="home.heroSubtext" />
+              Turn <span className="italic text-[#01b3d4] font-normal"><T id="home.heroAttention" /></span>{" "}
+              into action
             </h1>
             <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
               <T id="home.heroDesc" />
