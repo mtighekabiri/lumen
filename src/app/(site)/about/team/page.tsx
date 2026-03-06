@@ -8,6 +8,15 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TranslatedText } from "@/components/translated-text";
+import { PolaroidStack } from "@/components/polaroid-stack";
+
+const teamPhotos = [
+  { src: "/team/team1.jpg" },
+  { src: "/team/team2.jpg" },
+  { src: "/team/team3.jpg" },
+  { src: "/team/team4.jpg" },
+  { src: "/team/team5.jpg" },
+];
 
 export default function TeamPage() {
   return (
@@ -37,6 +46,24 @@ export default function TeamPage() {
               <TranslatedText text="A global team united by curiosity, kindness, and a shared belief that attention is the most valuable currency in advertising." />
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ── Team Polaroid Stack ────────────────────────────────── */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-[#01b3d4] mb-3">
+              <TranslatedText text="Meet the Team" />
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+              <TranslatedText text="The Faces Behind Lumen" />
+            </h2>
+          </div>
+          <PolaroidStack photos={teamPhotos} />
+          <p className="mt-10 text-center text-sm text-gray-500">
+            <TranslatedText text="Click a photo to shuffle through the stack" />
+          </p>
         </div>
       </section>
 
