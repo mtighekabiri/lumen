@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Newspaper, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Newspaper, Calendar, ChevronUp, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
@@ -602,6 +602,7 @@ function InsightsCarousel() {
   const posts = useInsightPosts();
   const [active, setActive] = useState(0);
   const touchStart = useRef<number | null>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const total = posts.length;
 
   const goTo = useCallback(
@@ -609,15 +610,30 @@ function InsightsCarousel() {
     [total],
   );
 
+  /* Vertical swipe (mobile) */
   const onTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientX;
+    touchStart.current = e.touches[0].clientY;
   };
   const onTouchEnd = (e: React.TouchEvent) => {
     if (touchStart.current === null) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current;
-    if (Math.abs(dx) > 40) goTo(active + (dx < 0 ? 1 : -1));
+    const dy = e.changedTouches[0].clientY - touchStart.current;
+    if (Math.abs(dy) > 40) goTo(active + (dy < 0 ? 1 : -1));
     touchStart.current = null;
   };
+
+  /* Mouse wheel (desktop) */
+  const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onWheel = useCallback(
+    (e: React.WheelEvent) => {
+      if (wheelTimeout.current) return;
+      if (Math.abs(e.deltaY) < 10) return;
+      goTo(active + (e.deltaY > 0 ? 1 : -1));
+      wheelTimeout.current = setTimeout(() => {
+        wheelTimeout.current = null;
+      }, 300);
+    },
+    [active, goTo],
+  );
 
   if (posts.length === 0) {
     return (
@@ -629,33 +645,54 @@ function InsightsCarousel() {
 
   return (
     <div className="flex flex-col h-full">
-      <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-3">
-        Latest Insights
-      </p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4]">
+          Latest Insights
+        </p>
+        <div className="flex gap-1.5">
+          <button
+            onClick={() => goTo(active - 1)}
+            disabled={active === 0}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            aria-label="Previous"
+          >
+            <ChevronUp className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => goTo(active + 1)}
+            disabled={active >= total - 1}
+            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            aria-label="Next"
+          >
+            <ChevronDown className="h-3 w-3" />
+          </button>
+        </div>
+      </div>
 
-      {/* Carousel viewport */}
+      {/* Vertical carousel viewport */}
       <div
+        ref={viewportRef}
         className="relative flex-1 min-h-0 overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
-        style={{ perspective: "800px" }}
+        onWheel={onWheel}
       >
         {posts.map((post, i) => {
           const offset = i - active;
 
           if (offset < -1 || offset > 2) return null;
 
-          const translateX = offset * 70;
-          const scale = offset === 0 ? 1 : 0.88;
-          const opacity = offset === 0 ? 1 : offset === 1 ? 0.4 : 0.15;
+          const translateY = offset * 100;
+          const scale = offset === 0 ? 1 : 0.92;
+          const opacity = offset === 0 ? 1 : offset === 1 ? 0.3 : 0;
           const zIndex = 10 - Math.abs(offset);
 
           return (
             <div
               key={post.id}
-              className="absolute inset-x-4 top-0 bottom-0 transition-all duration-500 ease-out"
+              className="absolute inset-x-0 top-0 bottom-0 transition-all duration-500 ease-out"
               style={{
-                transform: `translateX(${translateX}%) scale(${scale})`,
+                transform: `translateY(${translateY}%) scale(${scale})`,
                 opacity,
                 zIndex,
                 pointerEvents: offset === 0 ? "auto" : "none",
@@ -663,16 +700,17 @@ function InsightsCarousel() {
             >
               <Link href={`/news/${post.slug}`} className="block h-full">
                 <article className="h-full rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
-                  <div className="relative aspect-[16/9] bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30 flex-shrink-0">
+                  <div className="relative w-full flex-shrink-0" style={{ aspectRatio: "16/9" }}>
                     {post.imageUrl ? (
                       <Image
                         src={post.imageUrl}
                         alt={post.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30">
                         <Newspaper className="h-6 w-6 text-[#01b3d4]/30" />
                       </div>
                     )}
@@ -699,38 +737,18 @@ function InsightsCarousel() {
         })}
       </div>
 
-      {/* Navigation arrows + dots */}
-      <div className="flex items-center justify-between mt-2">
-        <div className="flex gap-1.5">
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-1 mt-2">
+        {posts.map((_, i) => (
           <button
-            onClick={() => goTo(active - 1)}
-            disabled={active === 0}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="h-3 w-3" />
-          </button>
-          <button
-            onClick={() => goTo(active + 1)}
-            disabled={active >= total - 1}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            aria-label="Next"
-          >
-            <ChevronRight className="h-3 w-3" />
-          </button>
-        </div>
-        <div className="flex gap-1">
-          {posts.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-3.5 bg-[#01b3d4]" : "w-1.5 bg-gray-300"
-              }`}
-              aria-label={`Article ${i + 1}`}
-            />
-          ))}
-        </div>
+            key={i}
+            onClick={() => goTo(i)}
+            className={`rounded-full transition-all duration-300 ${
+              i === active ? "h-3.5 w-1.5 bg-[#01b3d4]" : "h-1.5 w-1.5 bg-gray-300"
+            }`}
+            aria-label={`Article ${i + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
