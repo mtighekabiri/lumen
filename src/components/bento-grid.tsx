@@ -100,6 +100,37 @@ const PROFIT_DATA = [
 /* Magnifier zoom region — covers the cluster of close points */
 const ZOOM_REGION = { xMin: 0, xMax: 3200, yMin: 0, yMax: 22 };
 
+const BRAND_LIFT_DATA = [
+  { x: 0,   awareness: 0.0, consideration: 0.0, preference: 0.0, actionIntent: 0.0 },
+  { x: 0.5, awareness: 0.8, consideration: 0.7, preference: 0.5, actionIntent: 0.3 },
+  { x: 1,   awareness: 1.2, consideration: 1.0, preference: 0.7, actionIntent: 0.4 },
+  { x: 1.5, awareness: 1.5, consideration: 1.3, preference: 0.9, actionIntent: 0.5 },
+  { x: 2,   awareness: 1.8, consideration: 1.5, preference: 1.1, actionIntent: 0.6 },
+  { x: 2.5, awareness: 2.2, consideration: 1.8, preference: 1.3, actionIntent: 0.7 },
+  { x: 3,   awareness: 2.4, consideration: 2.0, preference: 1.4, actionIntent: 0.8 },
+  { x: 3.5, awareness: 2.8, consideration: 2.2, preference: 1.6, actionIntent: 0.8 },
+  { x: 4,   awareness: 3.0, consideration: 2.3, preference: 1.6, actionIntent: 0.9 },
+  { x: 4.5, awareness: 3.1, consideration: 2.4, preference: 1.7, actionIntent: 0.9 },
+  { x: 5,   awareness: 3.3, consideration: 2.4, preference: 1.8, actionIntent: 0.9 },
+  { x: 5.5, awareness: 3.3, consideration: 2.5, preference: 1.8, actionIntent: 0.9 },
+  { x: 6,   awareness: 3.5, consideration: 2.6, preference: 1.8, actionIntent: 0.9 },
+  { x: 6.5, awareness: 3.7, consideration: 2.7, preference: 2.0, actionIntent: 1.0 },
+  { x: 7,   awareness: 3.7, consideration: 2.7, preference: 1.9, actionIntent: 1.0 },
+  { x: 7.5, awareness: 3.9, consideration: 2.8, preference: 2.0, actionIntent: 1.1 },
+  { x: 8,   awareness: 3.9, consideration: 2.9, preference: 2.1, actionIntent: 1.1 },
+  { x: 8.5, awareness: 4.0, consideration: 2.9, preference: 2.2, actionIntent: 1.1 },
+  { x: 9,   awareness: 4.2, consideration: 3.0, preference: 2.3, actionIntent: 1.2 },
+  { x: 9.5, awareness: 4.3, consideration: 3.1, preference: 2.3, actionIntent: 1.2 },
+  { x: 10,  awareness: 4.4, consideration: 3.1, preference: 2.3, actionIntent: 1.1 },
+];
+
+const BRAND_LIFT_SERIES: { key: keyof Omit<typeof BRAND_LIFT_DATA[0], "x">; label: string; color: string }[] = [
+  { key: "awareness", label: "Awareness", color: "#01b3d4" },
+  { key: "consideration", label: "Consideration", color: "#f59e0b" },
+  { key: "preference", label: "Preference", color: "#10b981" },
+  { key: "actionIntent", label: "Action Intent", color: "#8b5cf6" },
+];
+
 const PERFORMANCE_DATA = [
   { label: "0-250", value: 0.03 },
   { label: "250-500", value: 0.04 },
@@ -425,14 +456,96 @@ function AttentionProfitChart({ partnerLogos }: { partnerLogos: { src: string; a
               </svg>
             );
           })()
+        ) : activeTab === "brandLift" ? (
+          /* ── Brand Lift multi-line chart ── */
+          (() => {
+            const blW = W;
+            const blH = H;
+            const blPad = { top: 20, right: 15, bottom: 55, left: 40 };
+            const blPlotW = blW - blPad.left - blPad.right;
+            const blPlotH = blH - blPad.top - blPad.bottom;
+            const blXMax = 10;
+            const blYMax = 5;
+
+            const blToX = (v: number) => blPad.left + (v / blXMax) * blPlotW;
+            const blToY = (v: number) => blPad.top + blPlotH - (v / blYMax) * blPlotH;
+
+            const xTicks = [0, 2, 4, 6, 8, 10];
+            const yTicks = [0, 1, 2, 3, 4, 5];
+
+            return (
+              <svg viewBox={`0 0 ${blW} ${blH}`} className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                {/* Grid lines */}
+                {yTicks.map((v) => (
+                  <line key={`blg-${v}`} x1={blPad.left} x2={blW - blPad.right}
+                    y1={blToY(v)} y2={blToY(v)} stroke="#e5e7eb" strokeWidth={0.5} />
+                ))}
+
+                {/* Y-axis labels */}
+                {yTicks.map((v) => (
+                  <text key={`bly-${v}`} x={blPad.left - 6} y={blToY(v) + 3}
+                    textAnchor="end" className="fill-gray-500" fontSize={8}>
+                    {v.toFixed(1)}%
+                  </text>
+                ))}
+
+                {/* X-axis labels */}
+                {xTicks.map((v) => (
+                  <text key={`blx-${v}`} x={blToX(v)} y={blPad.top + blPlotH + 14}
+                    textAnchor="middle" className="fill-gray-500" fontSize={8}>
+                    {v}
+                  </text>
+                ))}
+
+                {/* Axis labels */}
+                <text x={blPad.left + blPlotW / 2} y={blH - 2} textAnchor="middle"
+                  className="fill-gray-500" fontSize={8}>
+                  Attentive seconds threshold
+                </text>
+                <text transform={`translate(10, ${blPad.top + blPlotH / 2}) rotate(-90)`}
+                  textAnchor="middle" className="fill-gray-500" fontSize={7}>
+                  Brand lift (% points lift vs campaign avg)
+                </text>
+
+                {/* Series lines + dots */}
+                {BRAND_LIFT_SERIES.map((series) => {
+                  const points = BRAND_LIFT_DATA.map((d) => ({
+                    x: blToX(d.x),
+                    y: blToY(d[series.key] as number),
+                  }));
+                  const pathD = points
+                    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
+                    .join(" ");
+
+                  return (
+                    <g key={series.key} opacity={progress}>
+                      <path d={pathD} fill="none" stroke={series.color} strokeWidth={1.5} />
+                      {/* Show dots at sparse intervals to keep it clean */}
+                      {points.filter((_, i) => i % 4 === 0 || i === points.length - 1).map((p, i) => (
+                        <circle key={i} cx={p.x} cy={p.y} r={2.5} fill={series.color} />
+                      ))}
+                    </g>
+                  );
+                })}
+
+                {/* Legend */}
+                {BRAND_LIFT_SERIES.map((series, i) => {
+                  const lx = blPad.left + 8 + i * 82;
+                  const ly = blPad.top + blPlotH + 30;
+                  return (
+                    <g key={`leg-${series.key}`} opacity={progress}>
+                      <line x1={lx} y1={ly} x2={lx + 12} y2={ly} stroke={series.color} strokeWidth={2} />
+                      <text x={lx + 16} y={ly + 3} className="fill-gray-600" fontSize={7}>
+                        {series.label}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            );
+          })()
         ) : (
-          /* ── Placeholder for Brand Lift tab ── */
-          <div className="w-full h-full flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200">
-            <div className="text-center">
-              <p className="text-sm font-semibold text-gray-400">Brand Lift chart</p>
-              <p className="text-xs text-gray-300 mt-1">Coming soon</p>
-            </div>
-          </div>
+          null
         )}
       </div>
 
