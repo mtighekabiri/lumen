@@ -63,27 +63,36 @@ export default function Home() {
         "youtube.png",
       ]} />
 
-      {/* Bento Grid — headline, stats, devices, chart */}
-      <BentoGrid />
+      {/* Faded lumen4 background wrapper — excludes brands carousel */}
+      <div className="relative">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.04] pointer-events-none"
+          style={{ backgroundImage: "url('/lumen4.jpg')" }}
+          aria-hidden="true"
+        />
 
-      {/* News Section — streamed independently */}
-      <Suspense fallback={
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-[#01b3d4]/[0.04] to-gray-50 animate-gradient-drift">
-          <div className="mx-auto max-w-7xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]"><T id="home.latestNews" /></p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl max-w-2xl"><T id="news.stayUpdated" /></h2>
-            <p className="mt-6 text-gray-400"><T id="home.loadingNews" /></p>
-          </div>
-        </section>
-      }>
-        <LatestNewsSection />
-      </Suspense>
+        {/* Bento Grid — headline, stats, devices, chart */}
+        <BentoGrid />
 
-      {/* For Advertisers & For Agencies */}
-      <LumenMediaCreative />
+        {/* News Section — streamed independently */}
+        <Suspense fallback={
+          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-[#01b3d4]/[0.04] to-gray-50 animate-gradient-drift">
+            <div className="mx-auto max-w-7xl">
+              <p className="text-sm font-semibold uppercase tracking-wider text-[#01b3d4]"><T id="home.latestNews" /></p>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl max-w-2xl"><T id="news.stayUpdated" /></h2>
+              <p className="mt-6 text-gray-400"><T id="home.loadingNews" /></p>
+            </div>
+          </section>
+        }>
+          <LatestNewsSection />
+        </Suspense>
 
-      {/* FAQs Section */}
-      <HomeFaqSection />
+        {/* For Advertisers & For Agencies */}
+        <LumenMediaCreative />
+
+        {/* FAQs Section */}
+        <HomeFaqSection />
+      </div>
 
       {/* Contact Section */}
       <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#01b3d4]">
