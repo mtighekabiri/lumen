@@ -746,23 +746,22 @@ export function BentoGrid() {
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#01b3d4]/[0.04] to-white animate-gradient-drift">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
 
-          {/* ── Top-left: Headline + description (spans 2 cols on lg) ── */}
-          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-8 sm:p-10 flex flex-col justify-center">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-normal italic text-[#01b3d4] mb-4">
-              {t(language, "devices.headingHighlight1")}{" "}
-              {t(language, "devices.headingMid1")}{" "}
-              {t(language, "devices.headingHighlight2")}{" "}
-              {t(language, "devices.headingMid2")}
+          {/* ── Top-left: Headline + description (7 of 12 cols) ── */}
+          <div className="md:col-span-2 lg:col-span-7 rounded-2xl bg-gray-100 p-8 sm:p-10 flex flex-col justify-center">
+            <h3 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 mb-4 leading-[1.1]">
+              Turn <span className="italic font-normal text-[#01b3d4]">attention</span>
+              <br />
+              into action.
             </h3>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
               Data-driven advertisers use our cutting-edge eye-tracking data for live media measurement, post campaign audits, optimise creative, pre-bid targeting, and more.
             </p>
           </div>
 
-          {/* ── Top-right: Stats ── */}
-          <div ref={statsRef} className="rounded-2xl bg-gray-100 p-8 flex flex-col justify-center">
+          {/* ── Top-right: Stats (5 of 12 cols) ── */}
+          <div ref={statsRef} className="lg:col-span-5 rounded-2xl bg-gray-100 p-8 flex flex-col justify-center">
             <div className="grid grid-cols-2 gap-4">
               <AnimatedStat value={750} suffix="K+" label={t(language, "home.stat2Label")} active={statsInView} />
               <AnimatedStat value={1} suffix="B+" label={t(language, "home.stat1LabelLine1")} active={statsInView} />
@@ -771,13 +770,13 @@ export function BentoGrid() {
             </div>
           </div>
 
-          {/* ── Bottom-left: Animated chart (spans 2 cols on lg) ── */}
-          <div className="lg:col-span-2 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px]">
+          {/* ── Bottom-left: Animated chart (8 of 12 cols) ── */}
+          <div className="md:col-span-2 lg:col-span-8 rounded-2xl bg-gray-100 p-6 sm:p-8 min-h-[300px]">
             <AttentionProfitChart partnerLogos={partnerLogos} />
           </div>
 
-          {/* ── Bottom-right: Latest Insights carousel ── */}
-          <div className="rounded-2xl bg-gray-100 p-5 min-h-[280px]">
+          {/* ── Bottom-right: Latest Insights carousel (4 of 12 cols) ── */}
+          <div className="lg:col-span-4 rounded-2xl bg-gray-100 p-5 min-h-[280px]">
             <InsightsCarousel />
           </div>
 
