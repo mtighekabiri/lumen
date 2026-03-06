@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Newspaper, Calendar, ChevronUp, ChevronDown } from "lucide-react";
+import { Newspaper, Calendar } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { t } from "@/lib/translations";
 
@@ -600,40 +600,6 @@ function useInsightPosts() {
 
 function InsightsCarousel() {
   const posts = useInsightPosts();
-  const [active, setActive] = useState(0);
-  const touchStart = useRef<number | null>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const total = posts.length;
-
-  const goTo = useCallback(
-    (i: number) => setActive(Math.max(0, Math.min(i, total - 1))),
-    [total],
-  );
-
-  /* Vertical swipe (mobile) */
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientY;
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart.current === null) return;
-    const dy = e.changedTouches[0].clientY - touchStart.current;
-    if (Math.abs(dy) > 40) goTo(active + (dy < 0 ? 1 : -1));
-    touchStart.current = null;
-  };
-
-  /* Mouse wheel (desktop) */
-  const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const onWheel = useCallback(
-    (e: React.WheelEvent) => {
-      if (wheelTimeout.current) return;
-      if (Math.abs(e.deltaY) < 10) return;
-      goTo(active + (e.deltaY > 0 ? 1 : -1));
-      wheelTimeout.current = setTimeout(() => {
-        wheelTimeout.current = null;
-      }, 300);
-    },
-    [active, goTo],
-  );
 
   if (posts.length === 0) {
     return (
@@ -645,109 +611,47 @@ function InsightsCarousel() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4]">
-          Latest Insights
-        </p>
-        <div className="flex gap-1.5">
-          <button
-            onClick={() => goTo(active - 1)}
-            disabled={active === 0}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            aria-label="Previous"
-          >
-            <ChevronUp className="h-3 w-3" />
-          </button>
-          <button
-            onClick={() => goTo(active + 1)}
-            disabled={active >= total - 1}
-            className="p-1 rounded-full border border-gray-200 hover:border-[#01b3d4] hover:text-[#01b3d4] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            aria-label="Next"
-          >
-            <ChevronDown className="h-3 w-3" />
-          </button>
-        </div>
-      </div>
+      <p className="text-xs font-semibold uppercase tracking-wider text-[#01b3d4] mb-3 flex-shrink-0">
+        Latest Insights
+      </p>
 
-      {/* Vertical carousel viewport */}
-      <div
-        ref={viewportRef}
-        className="relative flex-1 min-h-0 overflow-hidden"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onWheel={onWheel}
-      >
-        {posts.map((post, i) => {
-          const offset = i - active;
-
-          if (offset < -1 || offset > 2) return null;
-
-          const translateY = offset * 100;
-          const scale = offset === 0 ? 1 : 0.92;
-          const opacity = offset === 0 ? 1 : offset === 1 ? 0.3 : 0;
-          const zIndex = 10 - Math.abs(offset);
-
-          return (
-            <div
-              key={post.id}
-              className="absolute inset-x-0 top-0 bottom-0 transition-all duration-500 ease-out"
-              style={{
-                transform: `translateY(${translateY}%) scale(${scale})`,
-                opacity,
-                zIndex,
-                pointerEvents: offset === 0 ? "auto" : "none",
-              }}
-            >
-              <Link href={`/news/${post.slug}`} className="block h-full">
-                <article className="h-full rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
-                  <div className="relative w-full flex-shrink-0" style={{ aspectRatio: "16/9" }}>
-                    {post.imageUrl ? (
-                      <Image
-                        src={post.imageUrl}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30">
-                        <Newspaper className="h-6 w-6 text-[#01b3d4]/30" />
-                      </div>
-                    )}
+      {/* Scrollable feed */}
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1 scrollbar-thin">
+        {posts.map((post) => (
+          <Link key={post.id} href={`/news/${post.slug}`} className="block">
+            <article className="rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
+              <div className="relative w-full flex-shrink-0" style={{ aspectRatio: "16/9" }}>
+                {post.imageUrl ? (
+                  <Image
+                    src={post.imageUrl}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#01b3d4]/10 to-[#01b3d4]/30">
+                    <Newspaper className="h-6 w-6 text-[#01b3d4]/30" />
                   </div>
-                  <div className="p-3 flex flex-col flex-1">
-                    <span className="text-[9px] font-medium text-[#01b3d4]">
-                      {post.category}
-                    </span>
-                    <h4 className="mt-0.5 text-xs font-semibold text-gray-900 line-clamp-2">
-                      {post.title}
-                    </h4>
-                    <div className="mt-auto pt-1.5 flex items-center gap-1 text-[9px] text-gray-400">
-                      <Calendar className="h-2 w-2" />
-                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Dot indicators */}
-      <div className="flex justify-center gap-1 mt-2">
-        {posts.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className={`rounded-full transition-all duration-300 ${
-              i === active ? "h-3.5 w-1.5 bg-[#01b3d4]" : "h-1.5 w-1.5 bg-gray-300"
-            }`}
-            aria-label={`Article ${i + 1}`}
-          />
+                )}
+              </div>
+              <div className="p-3 flex flex-col">
+                <span className="text-[9px] font-medium text-[#01b3d4]">
+                  {post.category}
+                </span>
+                <h4 className="mt-0.5 text-xs font-semibold text-gray-900 line-clamp-2">
+                  {post.title}
+                </h4>
+                <div className="mt-1.5 flex items-center gap-1 text-[9px] text-gray-400">
+                  <Calendar className="h-2 w-2" />
+                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </div>
+              </div>
+            </article>
+          </Link>
         ))}
       </div>
     </div>
