@@ -85,15 +85,7 @@ export function Header() {
         { name: t(language, "nav.research"), href: "/solutions/research" },
       ],
     },
-    {
-      name: t(language, "nav.insights"),
-      href: "/news",
-      children: [
-        { name: t(language, "nav.newsSubmenu"), href: "/news" },
-        { name: t(language, "nav.reports"), href: "/insights/reports" },
-        { name: t(language, "nav.caseStudies"), href: "/insights/case-studies" },
-      ],
-    },
+    { name: t(language, "nav.insights"), href: "/news" },
     { name: t(language, "nav.learn"), href: "/learn" },
     { name: t(language, "nav.faqs"), href: "/faqs" },
   ];
